@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import { HashRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -76,7 +76,7 @@ const App: React.FC = () => {
 
   return (
     <ToastContext.Provider value={{ showToast }}>
-      <HashRouter>
+      <BrowserRouter>
         <ScrollToTop />
         <div className="flex flex-col min-h-screen">
           <Header />
@@ -113,7 +113,7 @@ const App: React.FC = () => {
             />
           )}
         </div>
-      </HashRouter>
+      </BrowserRouter>
     </ToastContext.Provider>
   );
 };
