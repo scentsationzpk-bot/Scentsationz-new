@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -76,7 +76,7 @@ const App: React.FC = () => {
 
   return (
     <ToastContext.Provider value={{ showToast }}>
-      <BrowserRouter>
+      <HashRouter>
         <ScrollToTop />
         <div className="flex flex-col min-h-screen">
           <Header />
@@ -100,6 +100,8 @@ const App: React.FC = () => {
                 <Route path="bundles" element={<AdminBundles />} />
                 <Route path="specs/:id" element={<AdminSpecs />} />
               </Route>
+              {/* Catch-all route to handle path-based routing issues in preview environments */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
           <Footer />
@@ -113,7 +115,7 @@ const App: React.FC = () => {
             />
           )}
         </div>
-      </BrowserRouter>
+      </HashRouter>
     </ToastContext.Provider>
   );
 };
