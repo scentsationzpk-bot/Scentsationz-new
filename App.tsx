@@ -100,7 +100,7 @@ const App: React.FC = () => {
                 <Route path="bundles" element={<AdminBundles />} />
                 <Route path="specs/:id" element={<AdminSpecs />} />
               </Route>
-              {/* Catch-all route to handle path-based routing issues in preview environments */}
+              {/* Catch-all route to handle path-based routing issues */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
@@ -155,7 +155,7 @@ const DashboardOverview = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
           <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em] bg-blue-50 px-4 py-2 rounded-full border border-blue-100 mb-4 inline-block">Vault Active</span>
-          <h1 className="text-5xl font-black text-slate-900 tracking-tighter">Command <span className="text-blue-600">Center</span> 🚀</h1>
+          <h1 className="text-5xl font-black text-slate-900 tracking-tighter uppercase">The <span className="text-blue-600">Registry</span></h1>
           <p className="text-slate-500 mt-2 font-bold text-lg">Real-time cloud registry status.</p>
         </div>
         <div className="bg-white px-8 py-5 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-6">
@@ -181,7 +181,7 @@ const DashboardOverview = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 bg-blue-600 rounded-[4rem] p-16 text-white relative overflow-hidden shadow-2xl shadow-blue-100 group">
           <div className="relative z-10 max-w-lg">
-            <h3 className="text-4xl font-black mb-6 tracking-tighter leading-tight">Registry Integrity Confirmed! 📈</h3>
+            <h3 className="text-4xl font-black mb-6 tracking-tighter leading-tight uppercase">Registry Integrity Confirmed! 📈</h3>
             <p className="text-blue-100 text-xl font-medium leading-relaxed mb-10">All systems are operational. Orders are being processed efficiently from the Firebase Cloud Vault.</p>
             <Link to="/admin/products" className="inline-flex px-10 py-5 bg-white text-blue-600 font-black rounded-2xl hover:bg-blue-50 transition-all shadow-xl uppercase tracking-widest text-xs">Manage Drop</Link>
           </div>
@@ -193,7 +193,7 @@ const DashboardOverview = () => {
         <div className="bg-slate-900 rounded-[4rem] p-12 text-white flex flex-col justify-center items-center text-center space-y-8">
            <div className="text-5xl">💎</div>
            <div>
-             <h4 className="text-2xl font-black tracking-tight">System Status</h4>
+             <h4 className="text-2xl font-black tracking-tight uppercase">Security Vault</h4>
              <p className="text-slate-400 font-medium text-sm mt-2">Cloud Synced: Active ✅</p>
            </div>
            <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
