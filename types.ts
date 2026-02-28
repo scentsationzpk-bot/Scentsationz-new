@@ -1,4 +1,3 @@
-
 export interface Product {
   id: string;
   name: string;
@@ -7,6 +6,9 @@ export interface Product {
   description: string;
   category: string;
   imageUrl?: string;
+  tier?: 'Reserved Edition' | 'Collector’s Edition' | 'Signature Edition';
+  luxuryStory?: string;
+  packagingDetails?: string[];
   badge?: 'Offer' | 'Bestseller' | 'Limited Edition' | 'New Arrival' | 'Low Stock' | 'None';
   specifications?: {
     topNotes: string[];
@@ -32,6 +34,14 @@ export interface Review {
 export interface CartItem extends Product {
   quantity: number;
   isBundle?: boolean;
+  selectedTier?: 'Reserved Edition' | 'Collector’s Edition' | 'Signature Edition';
+  customization?: string;
+  isGift?: boolean;
+  giftName?: string;
+  giftMessage?: string;
+  giftImage?: string;
+  addDairyMilk?: boolean;
+  dairyMilkQuantity?: number;
 }
 
 export interface Bundle {
@@ -64,6 +74,8 @@ export interface Order {
   };
   items: CartItem[];
   total: number;
+  discountAmount?: number;
+  discountPercentage?: number;
   status: 'Pending' | 'Completed' | 'Cancelled';
   date: string;
 }

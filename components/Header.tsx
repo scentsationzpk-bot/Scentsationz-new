@@ -88,7 +88,6 @@ const Header: React.FC = () => {
             </div>
           </div>
         </div>
-       
       </header>
 
       {/* Full-screen Mobile Drawer */}

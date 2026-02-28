@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getProductById, getProducts, addToCart } from '../storage';
+import { getProductById, addToCart } from '../storage';
 import { Product } from '../types';
 import { useToast } from '../App';
 
@@ -9,13 +9,15 @@ const ProductDetail: React.FC = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-  const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [buying, setBuying] = useState(false);
   
-  // Stable random number under 150 (between 42 and 149) that stays static
-  const [watching] = useState(Math.floor(Math.random() * 108) + 42);
+  const [quantity, setQuantity] = useState(1);
+  const [isGift, setIsGift] = useState(false);
+  const [giftName, setGiftName] = useState('');
+  const [giftMessage, setGiftMessage] = useState('');
+  const [addDairyMilk, setAddDairyMilk] = useState(false);
+  const [dairyMilkQuantity, setDairyMilkQuantity] = useState(1);
+  const [giftImage, setGiftImage] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const fetch = async () => {
@@ -28,8 +30,6 @@ const ProductDetail: React.FC = () => {
           return;
         }
         setProduct(p);
-        const all = await getProducts();
-        setRelatedProducts(all.filter(item => item.id !== id).slice(0, 3));
       } catch (error) {
         console.error("Error loading product details:", error);
       } finally {
@@ -39,22 +39,41 @@ const ProductDetail: React.FC = () => {
     fetch();
   }, [id, navigate]);
 
-  const handleBuyNow = () => {
-    if (product && product.stock > 0) {
-      setBuying(true);
-      setTimeout(() => {
-        addToCart(product, quantity);
-        setBuying(false);
-        navigate('/checkout');
-      }, 400);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setGiftImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
+  };
+
+  const handleAddAction = () => {
+    if (!product) return;
+    addToCart(
+      product, 
+      quantity, 
+      undefined, 
+      undefined, 
+      isGift ? {
+        isGift,
+        giftName,
+        giftMessage,
+        giftImage,
+        addDairyMilk,
+        dairyMilkQuantity: addDairyMilk ? dairyMilkQuantity : undefined
+      } : undefined
+    );
+    showToast(`${product.name} added to your bag.`, 'success');
   };
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4 bg-white">
         <div className="w-12 h-12 border-4 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-400 font-black uppercase text-xs tracking-widest">Decoding Scent Profile...</p>
+        <p className="text-slate-400 font-black uppercase text-xs tracking-widest">Authenticating Assets...</p>
       </div>
     );
   }
@@ -67,166 +86,217 @@ const ProductDetail: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 md:py-24 space-y-24 md:space-y-48 animate-in fade-in duration-700">
-      <div className="flex flex-col lg:grid lg:grid-cols-2 gap-16 md:gap-32 items-start">
-        {/* Left Column: Visuals & Trust */}
-        <div className="w-full lg:sticky lg:top-36 space-y-12">
-           <div className="aspect-[4/5] bg-slate-50 rounded-[4rem] overflow-hidden shadow-[20px_20px_0px_0px_rgba(15,23,42,0.05)] relative group border-4 border-slate-900 flex items-center justify-center">
-              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-8 md:p-16 transition-transform duration-[2s] group-hover:scale-105" />
-           </div>
-           
-           <div className="grid grid-cols-2 gap-6">
-              <div className="bg-blue-600 p-8 rounded-3xl text-white flex flex-col items-center text-center shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 transition-transform hover:-translate-y-1">
-                 <span className="text-4xl mb-2">🔥</span>
-                 <p className="text-[10px] font-black uppercase tracking-widest opacity-80">Persistence</p>
-                 <p className="text-2xl font-black">14+ Hours</p>
-              </div>
-              <div className="bg-white p-8 rounded-3xl text-slate-900 flex flex-col items-center text-center shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 transition-transform hover:-translate-y-1">
-                 <span className="text-4xl mb-2">🧪</span>
-                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Purity</p>
-                 <p className="text-2xl font-black uppercase">Extrait</p>
-              </div>
-           </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
+      <div className="bg-white w-full max-w-5xl rounded-2xl shadow-[20px_20px_0px_0px_rgba(15,23,42,1)] overflow-hidden flex flex-col md:flex-row animate-in zoom-in duration-300 border-4 border-slate-900 max-h-[90vh] overflow-y-auto">
+        <div className="w-full md:w-1/2 bg-slate-50 relative flex flex-col items-center justify-start border-b-4 md:border-b-0 md:border-r-4 border-slate-900 p-8 overflow-y-auto">
+          <img 
+            src={product.imageUrl || 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800'} 
+            alt={product.name} 
+            className="w-full h-auto max-h-[60vh] object-contain mb-8" 
+          />
 
-           <div className="bg-slate-50 p-10 rounded-[3rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] flex items-center justify-center gap-8 group">
-              <span className="text-5xl animate-pulse">👁️</span>
-              <div>
-                <p className="text-xl font-black text-slate-900 tracking-tighter leading-none">{watching} collectors viewing</p>
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mt-2">Active Vault Item</p>
-              </div>
-           </div>
+          <button 
+            onClick={() => navigate('/shop')} 
+            className="absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-slate-900 hover:scale-110 transition-transform"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6 6 18"/>
+              <path d="m6 6 12 12"/>
+            </svg>
+          </button>
         </div>
+        <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-start bg-white text-center items-center overflow-y-auto">
+          <div className="space-y-6 flex flex-col items-center w-full">
+            <span className="text-blue-600 font-black text-[12px] uppercase tracking-widest bg-blue-50 px-6 py-2 rounded-xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
+              {product.category} Series
+            </span>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-tight uppercase">
+              {product.name}
+            </h2>
+            <p className="text-slate-500 text-lg font-black max-w-xs leading-relaxed">
+              {product.description}
+            </p>
+            
+            <div className="w-full text-left space-y-4 pt-6 border-t-4 border-slate-900">
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <div className="relative flex items-center justify-center w-8 h-8">
+                  <input 
+                    type="checkbox" 
+                    checked={isGift}
+                    onChange={(e) => setIsGift(e.target.checked)}
+                    className="peer appearance-none w-8 h-8 border-4 border-slate-900 rounded-lg checked:bg-blue-600 transition-colors cursor-pointer"
+                  />
+                  <svg className="absolute w-4 h-4 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <span className="font-black text-xl uppercase tracking-widest text-slate-900 group-hover:text-blue-600 transition-colors">Make it a Gift 🎁</span>
+              </label>
 
-        {/* Right Column: Information & Purchase */}
-        <div className="w-full space-y-16">
-          <div className="space-y-6 text-center">
-            <div className="inline-block">
-              <span className="text-blue-600 font-black text-sm uppercase tracking-[0.6em] bg-blue-50 px-6 py-2 rounded-2xl border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">{product.category} Series</span>
+              {isGift && (
+                <div className="space-y-4 animate-in slide-in-from-top-4 p-6 bg-slate-50 rounded-2xl border-4 border-slate-900">
+                  <div className="space-y-2">
+                    <label className="font-black text-sm uppercase tracking-widest text-slate-900">Recipient Name</label>
+                    <input 
+                      type="text" 
+                      value={giftName}
+                      onChange={(e) => setGiftName(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border-4 border-slate-900 font-bold outline-none focus:border-blue-600"
+                      placeholder="e.g. Sarah"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="font-black text-sm uppercase tracking-widest text-slate-900">Gift Message</label>
+                    <textarea 
+                      value={giftMessage}
+                      onChange={(e) => setGiftMessage(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border-4 border-slate-900 font-bold outline-none focus:border-blue-600 resize-none h-24"
+                      placeholder="Write your message here..."
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="font-black text-sm uppercase tracking-widest text-slate-900">Add Image (Optional)</label>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="w-full file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer"
+                    />
+                    {giftImage && <img src={giftImage} alt="Gift" className="w-24 h-24 object-cover rounded-xl border-4 border-slate-900 mt-2" />}
+                  </div>
+                  
+                  <div className="pt-4 border-t-4 border-slate-900">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <div className="relative flex items-center justify-center w-6 h-6">
+                        <input 
+                          type="checkbox" 
+                          checked={addDairyMilk}
+                          onChange={(e) => setAddDairyMilk(e.target.checked)}
+                          className="peer appearance-none w-6 h-6 border-4 border-slate-900 rounded-md checked:bg-blue-600 transition-colors cursor-pointer"
+                        />
+                        <svg className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </div>
+                      <span className="font-black text-sm uppercase tracking-widest text-slate-900">Add Dairy Milk (+Rs. 50) 🍫</span>
+                    </label>
+                    
+                    {addDairyMilk && (
+                      <div className="flex items-center gap-4 mt-4">
+                        <span className="font-bold text-sm uppercase tracking-widest text-slate-500">Qty:</span>
+                        <div className="flex items-center gap-2 bg-white p-1 rounded-xl border-4 border-slate-900">
+                          <button onClick={() => setDairyMilkQuantity(q => Math.max(1, q-1))} className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center font-black hover:bg-slate-200">-</button>
+                          <span className="font-black w-6 text-center">{dairyMilkQuantity}</span>
+                          <button onClick={() => setDairyMilkQuantity(q => q+1)} className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center font-black hover:bg-slate-200">+</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-            <h1 className="text-6xl md:text-9xl font-black text-slate-900 tracking-tighter leading-none uppercase">{product.name}</h1>
-            <p className="text-2xl md:text-4xl font-bold text-slate-400 italic leading-snug max-w-xl mx-auto">{product.description}</p>
+
+            <div className="py-8 border-y-4 border-slate-900 flex flex-col items-center justify-center w-full gap-6">
+              <span className="text-4xl font-black text-slate-900">
+                Rs. {(product.price + (addDairyMilk ? 50 * dairyMilkQuantity : 0)).toLocaleString()}
+              </span>
+              <div className="flex items-center gap-6 bg-slate-50 p-2 rounded-2xl border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+                <button 
+                  onClick={() => setQuantity(q => Math.max(1, q-1))} 
+                  className="w-12 h-12 rounded-xl bg-white flex items-center justify-center font-black border-4 border-slate-900 hover:bg-slate-900 hover:text-white transition-all text-2xl"
+                >
+                  -
+                </button>
+                <span className="font-black text-2xl px-4">{quantity}</span>
+                <button 
+                  onClick={() => setQuantity(q => q+1)} 
+                  className="w-12 h-12 rounded-xl bg-white flex items-center justify-center font-black border-4 border-slate-900 hover:bg-slate-900 hover:text-white transition-all text-2xl"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-4 pt-8 w-full">
+            <button 
+              onClick={handleAddAction} 
+              className="w-full py-6 border-4 border-slate-900 text-slate-900 font-black text-xl rounded-2xl hover:bg-slate-100 transition-all uppercase tracking-widest shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-1 active:translate-y-1"
+            >
+              Add to Bag 🛍️
+            </button>
+            <button 
+              onClick={() => { handleAddAction(); navigate('/checkout'); }} 
+              className="w-full py-6 bg-blue-600 text-white font-black text-xl rounded-2xl shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] hover:bg-blue-700 transition-all uppercase tracking-widest border-4 border-slate-900"
+            >
+              Checkout Now 🚀
+            </button>
           </div>
 
-          {/* Pricing & Checkout Block */}
-          <div className="p-10 md:p-16 bg-white rounded-[4rem] border-4 border-slate-900 shadow-[15px_15px_0px_0px_rgba(15,23,42,1)] space-y-12 flex flex-col items-center">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-10 w-full">
-               <div className="text-center md:text-left">
-                 <p className="text-6xl font-black text-slate-900 tracking-tighter">Rs. {product.price.toLocaleString()}</p>
-                 <p className="text-[10px] font-black text-green-600 uppercase tracking-widest mt-2 border-l-4 border-green-600 pl-3">Complimentary Nationwide Shipping 🚚</p>
-               </div>
-               <div className="flex items-center gap-4 bg-slate-50 p-3 rounded-[2.5rem] border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-                  <button onClick={() => setQuantity(q => Math.max(1, q-1))} className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-slate-900 shadow-lg active:scale-90 font-black border-2 border-slate-900">-</button>
-                  <span className="w-12 text-center text-3xl font-black">{quantity}</span>
-                  <button onClick={() => setQuantity(q => q+1)} className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-slate-900 shadow-lg active:scale-90 font-black border-2 border-slate-900">+</button>
-               </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-              <button 
-                onClick={() => { addToCart(product, quantity); showToast(`${product.name} secured! 🛍️`); }}
-                className="w-full py-7 border-4 border-slate-900 text-slate-900 font-black text-xl rounded-3xl hover:bg-slate-50 transition-all uppercase tracking-widest shadow-[6px_6px_0_0_rgba(15,23,42,1)] active:shadow-none active:translate-x-0.5 active:translate-y-0.5"
-              >
-                Add To Collection
-              </button>
-              <button 
-                onClick={handleBuyNow}
-                disabled={buying}
-                className="w-full py-7 bg-blue-600 text-white font-black text-xl rounded-3xl shadow-[0_20px_50px_rgba(37,99,235,0.4)] hover:bg-blue-700 active:scale-95 transition-all border-4 border-slate-900 border-b-[12px] uppercase tracking-widest"
-              >
-                {buying ? 'Syncing...' : 'Secure Order 🚀'}
-              </button>
-            </div>
-
-            {/* Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-10 border-t-4 border-slate-50 w-full">
-               <div className="space-y-3">
-                  <div className="flex justify-between items-end">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Projection</p>
-                    <span className="text-blue-600 font-black text-sm">{specs.sillage}</span>
-                  </div>
-                  <div className="h-3 bg-slate-50 rounded-full border-2 border-slate-900 p-0.5 overflow-hidden">
-                    <div className="h-full bg-blue-600 rounded-full" style={{ width: specs.sillage === 'Strong' ? '95%' : specs.sillage === 'Moderate' ? '65%' : '35%' }}></div>
-                  </div>
-               </div>
-               <div className="space-y-3">
-                  <div className="flex justify-between items-end">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Persistence</p>
-                    <span className="text-blue-600 font-black text-sm">{specs.longevity}%</span>
-                  </div>
-                  <div className="h-3 bg-slate-50 rounded-full border-2 border-slate-900 p-0.5 overflow-hidden">
-                    <div className="h-full bg-blue-600 rounded-full" style={{ width: `${specs.longevity}%` }}></div>
-                  </div>
-               </div>
+          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6">
+            <h3 className="text-2xl font-black uppercase tracking-widest text-slate-900">Why Scentsationz?</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border-2 border-slate-200">
+                <span className="text-2xl">⏳</span>
+                <div>
+                  <p className="font-black text-slate-900 uppercase text-sm tracking-widest">10+ Hours Lasting</p>
+                  <p className="text-xs font-bold text-slate-500 mt-1">Extrait de Parfum concentration ensures all-day performance.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border-2 border-slate-200">
+                <span className="text-2xl">✨</span>
+                <div>
+                  <p className="font-black text-slate-900 uppercase text-sm tracking-widest">Premium Ingredients</p>
+                  <p className="text-xs font-bold text-slate-500 mt-1">Sourced globally for an authentic, luxurious experience.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border-2 border-slate-200">
+                <span className="text-2xl">🚚</span>
+                <div>
+                  <p className="font-black text-slate-900 uppercase text-sm tracking-widest">Free Delivery</p>
+                  <p className="text-xs font-bold text-slate-500 mt-1">Complimentary nationwide shipping on all orders.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border-2 border-slate-200">
+                <span className="text-2xl">🎁</span>
+                <div>
+                  <p className="font-black text-slate-900 uppercase text-sm tracking-widest">Luxury Gifting</p>
+                  <p className="text-xs font-bold text-slate-500 mt-1">Make every unboxing a memorable experience with our gift options.</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Scent Journey Vertical Timeline */}
-          <div className="space-y-12">
-            <h3 className="text-4xl font-black tracking-tighter text-slate-900 uppercase flex items-center justify-center gap-4 text-center">
-              The Scent Journey <span className="text-blue-600">🧬</span>
-            </h3>
-            
-            <div className="relative pl-12 space-y-16">
-              {/* Vertical Line */}
-              <div className="absolute left-[22px] top-4 bottom-4 w-1.5 bg-slate-900 rounded-full"></div>
-
-              {/* Top Notes */}
-              <div className="relative group transition-all duration-500">
-                <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-125 transition-transform duration-500">🌿</div>
-                <div className="bg-slate-50 p-8 rounded-[2.5rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] group-hover:-translate-x-1 transition-transform">
-                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                      <h4 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Head Phase</h4>
-                      <span className="px-4 py-1.5 bg-blue-100 text-blue-700 border-2 border-slate-900 rounded-full font-black text-[10px] uppercase tracking-widest w-fit">The First 30 Mins</span>
-                   </div>
-                   <p className="text-slate-500 font-bold text-lg leading-relaxed">{specs.topNotes.join(' • ')}</p>
-                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-4">Immediate impact & awakening</p>
+          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6">
+            <h3 className="text-2xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2">Composition</h3>
+            <div className="relative pl-6 space-y-8 before:absolute before:inset-y-0 before:left-[11px] before:w-1 before:bg-slate-200">
+              <div className="relative">
+                <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
+                  <div className="w-2 h-2 rounded-full bg-blue-600"></div>
                 </div>
+                <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Top Notes</span>
+                <p className="text-slate-600 font-bold text-sm">{specs.topNotes.join(', ')}</p>
+                <p className="text-slate-400 text-[10px] uppercase tracking-widest mt-1 font-bold">0 - 15 Minutes</p>
               </div>
-
-              {/* Heart Notes */}
-              <div className="relative group transition-all duration-500">
-                <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-slate-900 border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-125 transition-transform duration-500">🌸</div>
-                <div className="bg-white p-8 rounded-[2.5rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] group-hover:-translate-x-1 transition-transform">
-                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                      <h4 className="text-2xl font-black uppercase tracking-tighter text-slate-900">Heart Phase</h4>
-                      <span className="px-4 py-1.5 bg-blue-600 text-white border-2 border-slate-900 rounded-full font-black text-[10px] uppercase tracking-widest w-fit">Hours 1 - 6</span>
-                   </div>
-                   <p className="text-slate-900 font-bold text-lg leading-relaxed">{specs.middleNotes.join(' • ')}</p>
-                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-4">The core character & signature</p>
+              <div className="relative">
+                <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
+                  <div className="w-2 h-2 rounded-full bg-blue-600"></div>
                 </div>
+                <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Heart Notes</span>
+                <p className="text-slate-600 font-bold text-sm">{specs.middleNotes.join(', ')}</p>
+                <p className="text-slate-400 text-[10px] uppercase tracking-widest mt-1 font-bold">15 Mins - 4 Hours</p>
               </div>
-
-              {/* Base Notes */}
-              <div className="relative group transition-all duration-500">
-                <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-125 transition-transform duration-500">🌲</div>
-                <div className="bg-slate-900 p-8 rounded-[2.5rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] text-white group-hover:-translate-x-1 transition-transform">
-                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                      <h4 className="text-2xl font-black uppercase tracking-tighter text-white">Dry-Down Phase</h4>
-                      <span className="px-4 py-1.5 bg-slate-800 text-white border-2 border-slate-700 rounded-full font-black text-[10px] uppercase tracking-widest w-fit">Hours 7 - 14+</span>
-                   </div>
-                   <p className="text-slate-300 font-bold text-lg leading-relaxed">{specs.baseNotes.join(' • ')}</p>
-                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-4">The lasting soul & legacy</p>
+              <div className="relative">
+                <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
+                  <div className="w-2 h-2 rounded-full bg-blue-600"></div>
                 </div>
+                <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Base Notes</span>
+                <p className="text-slate-600 font-bold text-sm">{specs.baseNotes.join(', ')}</p>
+                <p className="text-slate-400 text-[10px] uppercase tracking-widest mt-1 font-bold">4 - 10+ Hours</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <section className="space-y-16">
-        <h2 className="text-5xl md:text-8xl font-black text-slate-900 tracking-tighter text-center uppercase">Elite Pairings</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
-          {relatedProducts.map(p => (
-            <Link key={p.id} to={`/product/${p.id}`} className="group bg-white p-12 rounded-[4rem] border-4 border-slate-900 shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all text-center flex flex-col items-center">
-              <div className="aspect-square bg-slate-50 rounded-[3rem] mb-10 flex items-center justify-center border-2 border-slate-100 overflow-hidden w-full">
-                <img src={p.imageUrl} alt={p.name} className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-1000" />
-              </div>
-              <h3 className="text-3xl font-black text-slate-900 tracking-tighter uppercase">{p.name}</h3>
-              <p className="text-blue-600 font-black text-2xl tracking-tighter mt-2">Rs. {p.price.toLocaleString()}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   );
 };

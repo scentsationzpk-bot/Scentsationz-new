@@ -95,7 +95,7 @@ export const getStoreDataSync = (): StoreData => {
 const mapDocToProduct = (d: any): Product => ({
   ...d.data(),
   id: d.id,
-  price: Number(d.data().price) || 2250,
+  price: Number(d.data().price) || 2800,
   stock: Number(d.data().stock) || 0
 });
 
@@ -168,29 +168,110 @@ export const deleteOrder = async (orderId: string) => {
   await deleteDoc(doc(db, 'orders', orderId));
 };
 
-export const addToCart = (product: Product, quantity: number) => {
+export const addToCart = (
+  product: Product, 
+  quantity: number, 
+  tier?: 'Reserved Edition' | 'Collector’s Edition' | 'Signature Edition', 
+  customization?: string,
+  giftOptions?: {
+    isGift: boolean;
+    giftName?: string;
+    giftMessage?: string;
+    giftImage?: string;
+    addDairyMilk?: boolean;
+    dairyMilkQuantity?: number;
+  }
+) => {
   const cart = getLocalCart();
-  const existing = cart.find(i => i.id === product.id);
+  
+  // Luxury pricing logic
+  let finalPrice = product.price;
+  if (tier === 'Collector’s Edition') finalPrice += 1000;
+  if (tier === 'Signature Edition') finalPrice += 2000;
+  if (giftOptions?.addDairyMilk && giftOptions.dairyMilkQuantity) {
+    finalPrice += (50 * giftOptions.dairyMilkQuantity);
+  }
+
+  const existing = cart.find(i => 
+    i.id === product.id && 
+    i.selectedTier === tier && 
+    i.customization === customization &&
+    i.isGift === giftOptions?.isGift &&
+    i.giftName === giftOptions?.giftName &&
+    i.giftMessage === giftOptions?.giftMessage &&
+    i.giftImage === giftOptions?.giftImage &&
+    i.addDairyMilk === giftOptions?.addDairyMilk &&
+    i.dairyMilkQuantity === giftOptions?.dairyMilkQuantity
+  );
   
   if (existing) {
     existing.quantity += quantity;
   } else {
-    cart.push({ ...product, quantity });
+    cart.push({ 
+      ...product, 
+      price: finalPrice,
+      quantity, 
+      selectedTier: tier, 
+      customization,
+      ...giftOptions
+    });
   }
   
   setLocalCart(cart);
   window.dispatchEvent(new Event('storage'));
 };
 
-export const removeFromCart = (productId: string) => {
-  const cart = getLocalCart().filter(i => i.id !== productId);
+export const removeFromCart = (
+  productId: string, 
+  tier?: string, 
+  customization?: string,
+  isGift?: boolean,
+  giftName?: string,
+  giftMessage?: string,
+  giftImage?: string,
+  addDairyMilk?: boolean,
+  dairyMilkQuantity?: number
+) => {
+  const cart = getLocalCart().filter(i => 
+    !(i.id === productId && 
+      i.selectedTier === tier && 
+      i.customization === customization &&
+      i.isGift === isGift &&
+      i.giftName === giftName &&
+      i.giftMessage === giftMessage &&
+      i.giftImage === giftImage &&
+      i.addDairyMilk === addDairyMilk &&
+      i.dairyMilkQuantity === dairyMilkQuantity
+    )
+  );
   setLocalCart(cart);
   window.dispatchEvent(new Event('storage'));
 };
 
-export const updateCartQuantity = (productId: string, quantity: number) => {
+export const updateCartQuantity = (
+  productId: string, 
+  quantity: number, 
+  tier?: string, 
+  customization?: string,
+  isGift?: boolean,
+  giftName?: string,
+  giftMessage?: string,
+  giftImage?: string,
+  addDairyMilk?: boolean,
+  dairyMilkQuantity?: number
+) => {
   const cart = getLocalCart();
-  const item = cart.find(i => i.id === productId);
+  const item = cart.find(i => 
+    i.id === productId && 
+    i.selectedTier === tier && 
+    i.customization === customization &&
+    i.isGift === isGift &&
+    i.giftName === giftName &&
+    i.giftMessage === giftMessage &&
+    i.giftImage === giftImage &&
+    i.addDairyMilk === addDairyMilk &&
+    i.dairyMilkQuantity === dairyMilkQuantity
+  );
   if (item) {
     item.quantity = Math.max(1, quantity);
     setLocalCart(cart);
@@ -198,124 +279,132 @@ export const updateCartQuantity = (productId: string, quantity: number) => {
   }
 };
 
-export const MOCK_PRODUCTS: Product[] = [
-  {
-    id: 'starborn',
-    name: 'STARBORN',
-    price: 2250,
-    stock: 50,
-    description: 'Black Vault Series. A deep yellow-gold amber and dark oud symphony. 50ml Eau De Parfum.',
-    category: 'Bold',
-    imageUrl: '', // Manually upload via admin
-    badge: 'Bestseller',
-    specifications: {
-      topNotes: ['Saffron', 'Bergamot'],
-      middleNotes: ['Black Rose', 'Oud'],
-      baseNotes: ['Amber', 'Vanilla'],
-      longevity: 95,
-      sillage: 'Strong',
-      occasions: ['Evening ✨', 'Party 🕺']
-    }
-  },
-  {
-    id: 'cool-current',
-    name: 'COOL CURRENT',
-    price: 2250,
-    stock: 50,
-    description: 'Sky Blue Collection. A rush of glacial teal oceanic notes. 50ml Eau De Parfum.',
-    category: 'Fresh',
-    imageUrl: '', // Manually upload via admin
-    specifications: {
-      topNotes: ['Sea Salt', 'Lime'],
-      middleNotes: ['Mint', 'Neroli'],
-      baseNotes: ['Amberwood', 'Musk'],
-      longevity: 80,
-      sillage: 'Moderate',
-      occasions: ['Daily 💼', 'Summer ☀️']
-    }
-  },
-  {
-    id: 'forever-dawn',
-    name: 'FOREVER DAWN',
-    price: 2250,
-    stock: 50,
-    description: 'Pure White Edition. Radiant notes of first light and dewy teal gardenia. 50ml Eau De Parfum.',
-    category: 'Fresh',
-    imageUrl: '', // Manually upload via admin
-    badge: 'New Arrival',
-    specifications: {
-      topNotes: ['White Peach', 'Aldehydes'],
-      middleNotes: ['Dewy Rose', 'Peony'],
-      baseNotes: ['Iris', 'Solar Musk'],
-      longevity: 82,
-      sillage: 'Moderate',
-      occasions: ['Morning 🌞', 'Office']
-    }
-  },
-  {
-    id: 'golden-pulse',
-    name: 'GOLDEN PULSE',
-    price: 2250,
-    stock: 50,
-    description: 'Emerald and Orange Label. A warm pulse of saffron and teal amber. 50ml Eau De Parfum.',
-    category: 'Bold',
-    imageUrl: '', // Manually upload via admin
-    badge: 'Limited Edition',
-    specifications: {
-      topNotes: ['Saffron', 'Nutmeg'],
-      middleNotes: ['Amber', 'Labdanum'],
-      baseNotes: ['Sandalwood', 'Patchouli'],
-      longevity: 90,
-      sillage: 'Strong',
-      occasions: ['Formal 👔', 'Special Occasion 🎉']
-    }
-  },
-  {
-    id: 'tobacco-trail',
-    name: 'TOBACCO TRAIL',
-    price: 2250,
-    stock: 50,
-    description: 'Earthy Taupe Series. A smokey path of roasted tobacco and aged yellow oak. 50ml Eau De Parfum.',
-    category: 'Woody',
-    imageUrl: '', // Manually upload via admin
-    specifications: {
-      topNotes: ['Ginger', 'Spices'],
-      middleNotes: ['Tobacco Leaf', 'Cacao'],
-      baseNotes: ['Oak', 'Vanilla'],
-      longevity: 88,
-      sillage: 'Moderate',
-      occasions: ['Evening ✨', 'Formal 👔']
-    }
-  }
-];
-
 export const MOCK_BUNDLES: Bundle[] = [
   {
-    id: 'elite-duo',
-    title: 'The Elite Duo',
+    id: 'vault-duo',
+    title: 'The Vault Duo',
     productIds: ['starborn', 'cool-current'],
-    bundlePrice: 4000,
-    originalPrice: 4500,
-    discountText: 'Save Rs. 500 + FREE SHIPPING',
+    bundlePrice: 4500,
+    originalPrice: 5600,
+    discountText: 'Reserved Pairing • Free Concierge Shipping',
     type: 'duo',
     badge: 'Popular',
-    description: 'Select two for the ultimate night/day rotation. Includes Free Nationwide Delivery.'
+    description: 'Select the ultimate day/night rotation from our Reserved collections.'
   }
 ];
 
 export const seedIfEmpty = async () => {
   try {
-    const products = await getProducts();
-    if (products.length === 0) {
-      console.log('Seeding cloud registry...');
-      const batch = writeBatch(db);
-      for (const p of MOCK_PRODUCTS) {
+    const productsCol = collection(db, 'products');
+    const snapshot = await getDocs(productsCol);
+    
+    // Always update/seed to ensure latest descriptions are applied
+    console.log('Syncing luxury registry...');
+    const batch = writeBatch(db);
+    const mockProducts: Product[] = [
+        {
+          id: 'starborn',
+          name: 'STARBORN',
+          price: 2250,
+          stock: 50,
+          description: 'A bold, charismatic scent crafted for leaders and dreamers. Starborn blends smooth elegance with magnetic depth — the kind of fragrance that turns presence into power and moments into memories.',
+          category: 'Bold',
+          imageUrl: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800',
+          luxuryStory: 'Starborn is the scent of destiny. Crafted for those who leave an indelible mark on the world, it weaves the ancient depth of oud with the warm, glowing embrace of amber. A fragrance that doesn\'t just linger—it commands.',
+          packagingDetails: ['Weighted Obsidian Glass', 'Gold-Embossed Monogram', 'Magnetic Precision Cap'],
+          badge: 'Signature',
+          specifications: {
+            topNotes: ['Saffron', 'Bergamot', 'Spiced Cardamom'],
+            middleNotes: ['Black Rose', 'Aged Oud', 'Leather'],
+            baseNotes: ['Amber', 'Vanilla', 'Smoked Patchouli'],
+            longevity: 98,
+            sillage: 'Strong',
+            occasions: ['Gala Evenings', 'Power Meetings', 'Night Out']
+          }
+        },
+        {
+          id: 'cool-current',
+          name: 'COOL CURRENT',
+          price: 2250,
+          stock: 50,
+          description: 'Fresh, modern, and effortlessly confident. Cool Current delivers a crisp wave of energy that feels clean, uplifting, and sharp — perfect for daily wear that still makes a lasting impression.',
+          category: 'Fresh',
+          imageUrl: 'https://images.unsplash.com/photo-1590156546946-ce55a12a6a5d?auto=format&fit=crop&q=80&w=800',
+          luxuryStory: 'Cool Current is a breath of absolute clarity. Like a sudden plunge into arctic waters, it awakens the senses with sharp citrus and marine notes, settling into a clean, sophisticated musk. The ultimate companion for the modern visionary.',
+          packagingDetails: ['Matte Teal Finish', 'Silver Engraving', 'Soft-Touch Presentation Box'],
+          specifications: {
+            topNotes: ['Sea Salt', 'Iced Lemon', 'Grapefruit'],
+            middleNotes: ['Mint', 'Neroli', 'Lavender'],
+            baseNotes: ['Amberwood', 'White Musk', 'Cedar'],
+            longevity: 85,
+            sillage: 'Moderate',
+            occasions: ['Daily Wear', 'Summer Days', 'Office']
+          }
+        },
+        {
+          id: 'forever-dawn',
+          name: 'FOREVER DAWN',
+          price: 2250,
+          stock: 50,
+          description: 'Soft, clean, and emotionally timeless. Forever Dawn captures the feeling of fresh beginnings — a gentle yet memorable fragrance that stays close but leaves a beautiful trail.',
+          category: 'Floral',
+          imageUrl: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800',
+          luxuryStory: 'Forever Dawn captures the fleeting magic of morning light. Delicate jasmine and tuberose dance over a base of creamy sandalwood, creating a scent that is both intimately soft and enduringly beautiful. A promise of endless possibilities.',
+          packagingDetails: ['Frosted Glass', 'Rose Gold Accents', 'Velvet Interior'],
+          specifications: {
+            topNotes: ['Pear', 'Mandarin', 'Pink Pepper'],
+            middleNotes: ['Jasmine', 'Tuberose', 'Orange Blossom'],
+            baseNotes: ['Sandalwood', 'Vanilla', 'White Musk'],
+            longevity: 90,
+            sillage: 'Moderate',
+            occasions: ['Weddings', 'Spring Afternoons', 'Romantic Dinners']
+          }
+        },
+        {
+          id: 'golden-pulse',
+          name: 'GOLDEN PULSE',
+          price: 2250,
+          stock: 50,
+          description: 'Rich, playful, and undeniably attention-grabbing. Golden Pulse is a warm, luxurious scent made for celebrations, compliments, and standing out wherever you go.',
+          category: 'Warm',
+          imageUrl: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800',
+          luxuryStory: 'Golden Pulse is the rhythm of a night that never ends. It opens with a burst of sweet, spicy energy before melting into a luxurious, honeyed warmth. It is a fragrance for the bold, the charismatic, and the unforgettable.',
+          packagingDetails: ['Amber Tinted Glass', 'Gold Leaf Detailing', 'Premium Box'],
+          specifications: {
+            topNotes: ['Cinnamon', 'Honey', 'Blood Orange'],
+            middleNotes: ['Nutmeg', 'Orchid', 'Clove'],
+            baseNotes: ['Tonka Bean', 'Amber', 'Mahogany'],
+            longevity: 95,
+            sillage: 'Strong',
+            occasions: ['Parties', 'Winter Nights', 'Celebrations']
+          }
+        },
+        {
+          id: 'tobacco-trail',
+          name: 'TOBACCO TRAIL',
+          price: 2250,
+          stock: 50,
+          description: 'Deep, mature, and timeless. Tobacco Trail wraps smoky richness with refined warmth, creating a bold signature scent for those who appreciate classic masculinity with modern edge.',
+          category: 'Woody',
+          imageUrl: 'https://images.unsplash.com/photo-1615397323758-0e1069c9b451?auto=format&fit=crop&q=80&w=800',
+          luxuryStory: 'Tobacco Trail is an homage to classic masculinity and refined taste. The raw, earthy richness of tobacco is perfectly balanced by the smooth sweetness of vanilla and tonka bean. A scent that speaks of old libraries, leather armchairs, and quiet confidence.',
+          packagingDetails: ['Smoked Glass', 'Copper Engraving', 'Leather-Bound Box'],
+          specifications: {
+            topNotes: ['Tobacco Leaf', 'Spicy Notes', 'Bergamot'],
+            middleNotes: ['Vanilla', 'Cacao', 'Tonka Bean'],
+            baseNotes: ['Dried Fruits', 'Woody Notes', 'Sweet Sap'],
+            longevity: 92,
+            sillage: 'Strong',
+            occasions: ['Evening Events', 'Autumn Days', 'Formal Gatherings']
+          }
+        }
+      ];
+      for (const p of mockProducts) {
         const docRef = doc(db, 'products', p.id);
         batch.set(docRef, sanitizeForStorage(p));
       }
       await batch.commit();
-      console.log('Sync Complete.');
-    }
+      console.log('Seeding Complete.');
   } catch (e) {
     console.error('Seeding error:', e);
   }

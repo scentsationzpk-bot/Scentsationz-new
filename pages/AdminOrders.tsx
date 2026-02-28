@@ -157,6 +157,11 @@ const AdminOrders: React.FC = () => {
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Payment Method</p>
                     <p className="text-lg font-black text-blue-600">{selectedOrder.customer.paymentMethod}</p>
                     <p className="text-4xl font-black text-slate-900 mt-4">Rs. {selectedOrder.total.toLocaleString()}</p>
+                    {selectedOrder.discountAmount && selectedOrder.discountAmount > 0 && (
+                      <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mt-2">
+                        Includes {(selectedOrder.discountPercentage! * 100).toFixed(0)}% Bundle Discount (-Rs. {selectedOrder.discountAmount.toLocaleString()})
+                      </p>
+                    )}
                   </div>
                </div>
 
@@ -164,9 +169,31 @@ const AdminOrders: React.FC = () => {
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Items Purchased</p>
                   <div className="space-y-2">
                     {selectedOrder.items.map((item, idx) => (
-                      <div key={idx} className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border-2 border-white">
-                        <span className="font-black text-slate-800">{item.name} <span className="text-blue-600">x{item.quantity}</span></span>
-                        <span className="font-black text-slate-900">Rs. {(item.price * item.quantity).toLocaleString()}</span>
+                      <div key={idx} className="flex flex-col p-4 bg-slate-50 rounded-2xl border-2 border-white gap-2">
+                        <div className="flex justify-between items-center">
+                          <span className="font-black text-slate-800">{item.name} <span className="text-blue-600">x{item.quantity}</span></span>
+                          <span className="font-black text-slate-900">Rs. {(item.price * item.quantity).toLocaleString()}</span>
+                        </div>
+                        {item.selectedTier && (
+                          <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                            Tier: {item.selectedTier}
+                            {item.customization && ` (Custom: ${item.customization})`}
+                          </div>
+                        )}
+                        {item.isGift && (
+                          <div className="mt-2 p-3 bg-white rounded-xl border-2 border-slate-100 space-y-2">
+                            <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">🎁 Gift Options</p>
+                            {item.giftName && <p className="text-sm font-bold text-slate-700"><span className="text-slate-400">To:</span> {item.giftName}</p>}
+                            {item.giftMessage && <p className="text-sm font-bold text-slate-700"><span className="text-slate-400">Message:</span> {item.giftMessage}</p>}
+                            {item.addDairyMilk && <p className="text-sm font-bold text-slate-700"><span className="text-slate-400">Extras:</span> Dairy Milk x{item.dairyMilkQuantity}</p>}
+                            {item.giftImage && (
+                              <div className="mt-2">
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Attached Image</p>
+                                <img src={item.giftImage} alt="Gift Attachment" className="w-20 h-20 object-cover rounded-lg border-2 border-slate-200" />
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>

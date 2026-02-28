@@ -25,9 +25,21 @@ const Checkout: React.FC = () => {
     return <Navigate to="/shop" />;
   }
 
+  const totalItems = data.cart.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = data.cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  
+  let discountPercentage = 0;
+  if (totalItems >= 3) {
+    discountPercentage = 0.15;
+  } else if (totalItems === 2) {
+    discountPercentage = 0.10;
+  }
+  
+  const discountAmount = subtotal * discountPercentage;
+  const subtotalAfterDiscount = subtotal - discountAmount;
+  
   const codSurcharge = paymentMethod === 'Cash on Delivery' ? 300 : 0;
-  const finalTotal = subtotal + codSurcharge;
+  const finalTotal = subtotalAfterDiscount + codSurcharge;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +61,8 @@ const Checkout: React.FC = () => {
         },
         items: data.cart,
         total: finalTotal,
+        discountAmount: discountAmount,
+        discountPercentage: discountPercentage,
         status: 'Pending' as const
       };
 
@@ -78,23 +92,23 @@ const Checkout: React.FC = () => {
             <div className="space-y-8">
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Recipient Name</label>
-                <input required type="text" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} className="w-full px-8 py-5 rounded-[2rem] border-4 border-slate-50 bg-slate-50 focus:bg-white focus:border-blue-600 transition-all font-black text-xl outline-none" placeholder="Enter Full Name" />
+                <input required type="text" value={formData.name} onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))} className="w-full px-8 py-5 rounded-2xl border-4 border-slate-100 bg-slate-50 focus:bg-white focus:border-slate-900 transition-all font-black text-xl outline-none shadow-[4px_4px_0px_0px_rgba(15,23,42,0.05)] focus:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]" placeholder="Enter Full Name" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Phone Number</label>
-                  <input required type="tel" value={formData.phone} onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value }))} className="w-full px-8 py-5 rounded-[2rem] border-4 border-slate-50 bg-slate-50 focus:bg-white focus:border-blue-600 transition-all font-black text-xl outline-none" placeholder="03XX XXXXXXX" />
+                  <input required type="tel" value={formData.phone} onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value }))} className="w-full px-8 py-5 rounded-2xl border-4 border-slate-100 bg-slate-50 focus:bg-white focus:border-slate-900 transition-all font-black text-xl outline-none shadow-[4px_4px_0px_0px_rgba(15,23,42,0.05)] focus:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]" placeholder="03XX XXXXXXX" />
                 </div>
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">City</label>
-                  <input required type="text" value={formData.city} onChange={e => setFormData(prev => ({ ...prev, city: e.target.value }))} className="w-full px-8 py-5 rounded-[2rem] border-4 border-slate-50 bg-slate-50 focus:bg-white focus:border-blue-600 transition-all font-black text-xl outline-none" placeholder="e.g. Lahore" />
+                  <input required type="text" value={formData.city} onChange={e => setFormData(prev => ({ ...prev, city: e.target.value }))} className="w-full px-8 py-5 rounded-2xl border-4 border-slate-100 bg-slate-50 focus:bg-white focus:border-slate-900 transition-all font-black text-xl outline-none shadow-[4px_4px_0px_0px_rgba(15,23,42,0.05)] focus:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]" placeholder="e.g. Lahore" />
                 </div>
               </div>
 
               <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Delivery Address</label>
-                <textarea required value={formData.address} onChange={e => setFormData(prev => ({ ...prev, address: e.target.value }))} className="w-full px-8 py-5 rounded-[2rem] border-4 border-slate-50 bg-slate-50 focus:bg-white focus:border-blue-600 transition-all font-black text-xl outline-none h-40 resize-none" placeholder="Street, House No, Area..."></textarea>
+                <textarea required value={formData.address} onChange={e => setFormData(prev => ({ ...prev, address: e.target.value }))} className="w-full px-8 py-5 rounded-2xl border-4 border-slate-100 bg-slate-50 focus:bg-white focus:border-slate-900 transition-all font-black text-xl outline-none h-40 resize-none shadow-[4px_4px_0px_0px_rgba(15,23,42,0.05)] focus:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]" placeholder="Street, House No, Area..."></textarea>
               </div>
 
               {/* Payment Method Selector */}
@@ -104,41 +118,41 @@ const Checkout: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('JazzCash')}
-                    className={`p-6 rounded-[2rem] border-4 transition-all flex flex-col items-center gap-2 ${
+                    className={`p-6 rounded-2xl border-4 transition-all flex flex-col items-center gap-2 ${
                       paymentMethod === 'JazzCash' 
-                        ? 'border-blue-600 bg-blue-50 text-blue-600 shadow-xl' 
-                        : 'border-slate-50 bg-slate-50 text-slate-400 grayscale'
+                        ? 'border-slate-900 bg-slate-900 text-white shadow-[8px_8px_0px_0px_rgba(37,99,235,1)]' 
+                        : 'border-slate-100 bg-slate-50 text-slate-400 hover:border-slate-300'
                     }`}
                   >
                     <span className="text-4xl">📱</span>
                     <p className="font-black text-lg uppercase tracking-tight">JazzCash</p>
-                    <p className="text-[9px] font-bold opacity-70">Best Value • Free Ship</p>
+                    <p className={`text-[9px] font-bold uppercase tracking-widest ${paymentMethod === 'JazzCash' ? 'text-blue-300' : 'text-slate-400'}`}>Best Value • Free Ship</p>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('Cash on Delivery')}
-                    className={`p-6 rounded-[2rem] border-4 transition-all flex flex-col items-center gap-2 ${
+                    className={`p-6 rounded-2xl border-4 transition-all flex flex-col items-center gap-2 ${
                       paymentMethod === 'Cash on Delivery' 
-                        ? 'border-blue-600 bg-blue-50 text-blue-600 shadow-xl' 
-                        : 'border-slate-50 bg-slate-50 text-slate-400 grayscale'
+                        ? 'border-slate-900 bg-slate-900 text-white shadow-[8px_8px_0px_0px_rgba(37,99,235,1)]' 
+                        : 'border-slate-100 bg-slate-50 text-slate-400 hover:border-slate-300'
                     }`}
                   >
                     <span className="text-4xl">🚚</span>
                     <p className="font-black text-lg uppercase tracking-tight">COD</p>
-                    <p className="text-[9px] font-bold opacity-70">+Rs. 300 Service Fee</p>
+                    <p className={`text-[9px] font-bold uppercase tracking-widest ${paymentMethod === 'Cash on Delivery' ? 'text-blue-300' : 'text-slate-400'}`}>+Rs. 300 Service Fee</p>
                   </button>
                 </div>
               </div>
 
               {/* Payment Instruction Card */}
-              <div className="p-8 rounded-[2rem] border-4 border-blue-600 bg-blue-50 text-blue-600 flex items-center gap-6 animate-in zoom-in duration-300">
+              <div className="p-8 rounded-2xl border-4 border-slate-900 bg-blue-50 text-slate-900 flex items-center gap-6 animate-in zoom-in duration-300 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
                 {paymentMethod === 'JazzCash' ? (
                   <>
                     <span className="text-5xl shrink-0">📱</span>
                     <div>
                       <p className="font-black text-2xl tracking-tighter leading-none">0300 747524</p>
-                      <p className="text-[10px] font-black uppercase tracking-widest mt-2 opacity-70">Send total to this JazzCash number.</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest mt-2 text-slate-500">Send total to this JazzCash number.</p>
                     </div>
                   </>
                 ) : (
@@ -146,7 +160,7 @@ const Checkout: React.FC = () => {
                     <span className="text-5xl shrink-0">🏠</span>
                     <div>
                       <p className="font-black text-2xl tracking-tighter leading-none">Pay at Door</p>
-                      <p className="text-[10px] font-black uppercase tracking-widest mt-2 opacity-70">Pay cash upon delivery. Includes Rs. 300 Fee.</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest mt-2 text-slate-500">Pay cash upon delivery. Includes Rs. 300 Fee.</p>
                     </div>
                   </>
                 )}
@@ -155,52 +169,71 @@ const Checkout: React.FC = () => {
             
             <button 
               disabled={loading} 
-              className="w-full py-8 bg-blue-600 text-white font-black text-3xl rounded-[2.5rem] shadow-2xl border-b-[12px] border-blue-800 active:border-b-0 active:translate-y-2 transition-all uppercase tracking-tighter leading-none disabled:opacity-50"
+              className="w-full py-8 bg-blue-600 text-white font-black text-3xl rounded-2xl shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 active:shadow-none active:translate-y-2 active:translate-x-2 transition-all uppercase tracking-tighter leading-none disabled:opacity-50"
             >
-              {loading ? 'Vaulting...' : 'Place Order 🔥'}
+              {loading ? 'Processing...' : 'Place Order 🚀'}
             </button>
           </form>
         </div>
 
         {/* Order Summary Column */}
         <div className="space-y-12">
-          <div className="bg-white p-8 md:p-12 rounded-[3.5rem] border-[8px] border-slate-50 shadow-sm sticky top-32">
+          <div className="bg-white p-8 md:p-12 rounded-3xl border-4 border-slate-900 shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] sticky top-32">
             <h3 className="text-4xl font-black text-slate-900 mb-10 tracking-tighter uppercase">Your Haul</h3>
             <div className="space-y-6 mb-10">
-              {data.cart.map((item) => (
-                <div key={item.id} className="flex justify-between items-center group bg-slate-50 p-5 rounded-[1.5rem] border-2 border-white">
-                  <div>
-                    <span className="font-black text-slate-800 block text-lg leading-none">{item.name} <span className="text-blue-600">x{item.quantity}</span></span>
-                    <span className="text-slate-400 font-black text-[9px] uppercase tracking-widest mt-1 block">{item.category}</span>
+              {data.cart.map((item, idx) => (
+                <div key={`${item.id}-${idx}`} className="flex flex-col gap-2 group bg-slate-50 p-5 rounded-2xl border-2 border-slate-200">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <span className="font-black text-slate-800 block text-lg leading-none">{item.name} <span className="text-blue-600">x{item.quantity}</span></span>
+                      <span className="text-slate-500 font-bold text-[10px] uppercase tracking-widest mt-1 block">
+                        {item.category} {item.selectedTier && `• ${item.selectedTier}`}
+                      </span>
+                    </div>
+                    <span className="text-slate-900 font-black text-lg">Rs. {(item.price * item.quantity).toLocaleString()}</span>
                   </div>
-                  <span className="text-slate-900 font-black text-lg">Rs. {(item.price * item.quantity).toLocaleString()}</span>
+                  
+                  {item.isGift && (
+                    <div className="mt-2 p-3 bg-white rounded-xl border-2 border-slate-100">
+                      <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">🎁 Gift Options</p>
+                      {item.giftName && <p className="text-xs font-bold text-slate-700"><span className="text-slate-400">To:</span> {item.giftName}</p>}
+                      {item.giftMessage && <p className="text-xs font-bold text-slate-700"><span className="text-slate-400">Message:</span> {item.giftMessage}</p>}
+                      {item.addDairyMilk && <p className="text-xs font-bold text-slate-700"><span className="text-slate-400">Extras:</span> Dairy Milk x{item.dairyMilkQuantity}</p>}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
 
-            <div className="space-y-4 pt-8 border-t-4 border-slate-50">
-              <div className="flex justify-between text-slate-400 font-black uppercase text-[10px] tracking-widest">
+            <div className="space-y-4 pt-8 border-t-4 border-slate-900">
+              <div className="flex justify-between text-slate-500 font-black uppercase text-xs tracking-widest">
                 <span>Subtotal</span>
                 <span>Rs. {subtotal.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-slate-400 font-black uppercase text-[10px] tracking-widest">
+              {discountAmount > 0 && (
+                <div className="flex justify-between text-blue-600 font-black uppercase text-xs tracking-widest">
+                  <span>Bundle Discount ({(discountPercentage * 100).toFixed(0)}%)</span>
+                  <span>- Rs. {discountAmount.toLocaleString()}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-slate-500 font-black uppercase text-xs tracking-widest">
                 <span>Shipping</span>
                 <span className="text-green-600">FREE 🚚</span>
               </div>
               {paymentMethod === 'Cash on Delivery' && (
-                <div className="flex justify-between text-slate-400 font-black uppercase text-[10px] tracking-widest">
+                <div className="flex justify-between text-slate-500 font-black uppercase text-xs tracking-widest">
                   <span>COD Handling Fee</span>
                   <span>Rs. 300</span>
                 </div>
               )}
-              <div className="pt-6 mt-4 border-t-4 border-slate-50 flex justify-between items-end">
+              <div className="pt-6 mt-4 border-t-4 border-slate-900 flex justify-between items-end">
                 <span className="text-xl font-black text-slate-900 uppercase tracking-tighter">Total Amount</span>
                 <span className="text-4xl font-black text-blue-600 tracking-tighter leading-none">Rs. {finalTotal.toLocaleString()}</span>
               </div>
             </div>
 
-            <div className="mt-10 p-6 bg-slate-50 rounded-[2rem] text-center border-2 border-white">
-              <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-relaxed">
+            <div className="mt-10 p-6 bg-slate-50 rounded-2xl text-center border-2 border-slate-200">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-relaxed">
                 By placing this order, you agree to our terms of service. All orders are subject to stock availability.
               </p>
             </div>
