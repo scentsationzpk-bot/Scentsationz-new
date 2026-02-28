@@ -298,7 +298,12 @@ export const seedIfEmpty = async () => {
     const productsCol = collection(db, 'products');
     const snapshot = await getDocs(productsCol);
     
-    // Always update/seed to ensure latest descriptions are applied
+    if (!snapshot.empty) {
+      console.log('Registry already synced. Skipping seed.');
+      return;
+    }
+
+    // Only seed if empty
     console.log('Syncing luxury registry...');
     const batch = writeBatch(db);
     const mockProducts: Product[] = [
