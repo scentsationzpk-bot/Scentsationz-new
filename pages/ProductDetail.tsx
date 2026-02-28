@@ -218,6 +218,22 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
           <div className="space-y-4 pt-8 w-full">
+            {/* Scarcity & Bundle Incentive */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 justify-center bg-red-50 p-2 rounded-xl border-2 border-red-100 animate-pulse">
+                <span className="text-xl">🔥</span>
+                <p className="text-xs font-black text-red-600 uppercase tracking-widest">
+                  Only {Math.floor(Math.random() * 3) + 1} bottles left in stock!
+                </p>
+              </div>
+              <div className="flex items-center gap-2 justify-center bg-blue-50 p-2 rounded-xl border-2 border-blue-100">
+                <span className="text-xl">🎁</span>
+                <p className="text-xs font-black text-blue-600 uppercase tracking-widest">
+                  Buy 2 get 10% OFF • Buy 3+ get 15% OFF
+                </p>
+              </div>
+            </div>
+
             <button 
               onClick={handleAddAction} 
               className="w-full py-6 border-4 border-slate-900 text-slate-900 font-black text-xl rounded-2xl hover:bg-slate-100 transition-all uppercase tracking-widest shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-1 active:translate-y-1"
