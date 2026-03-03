@@ -38,8 +38,10 @@ const Checkout: React.FC = () => {
   const discountAmount = subtotal * discountPercentage;
   const subtotalAfterDiscount = subtotal - discountAmount;
   
-  const codSurcharge = paymentMethod === 'Cash on Delivery' ? 300 : 0;
-  const finalTotal = subtotalAfterDiscount + codSurcharge;
+  const jazzCashDiscount = paymentMethod === 'JazzCash' ? 200 : 0;
+  const codSurcharge = 0; // No extra COD charges as per request
+  
+  const finalTotal = subtotalAfterDiscount - jazzCashDiscount + codSurcharge;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,7 +63,7 @@ const Checkout: React.FC = () => {
         },
         items: data.cart,
         total: finalTotal,
-        discountAmount: discountAmount,
+        discountAmount: discountAmount + jazzCashDiscount, // Combine discounts for record
         discountPercentage: discountPercentage,
         status: 'Pending' as const
       };
@@ -118,15 +120,20 @@ const Checkout: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('JazzCash')}
-                    className={`p-6 rounded-2xl border-4 transition-all flex flex-col items-center gap-2 ${
+                    className={`p-6 rounded-2xl border-4 transition-all flex flex-col items-center gap-2 relative overflow-hidden ${
                       paymentMethod === 'JazzCash' 
                         ? 'border-slate-900 bg-slate-900 text-white shadow-[8px_8px_0px_0px_rgba(37,99,235,1)]' 
                         : 'border-slate-100 bg-slate-50 text-slate-400 hover:border-slate-300'
                     }`}
                   >
+                    {paymentMethod === 'JazzCash' && (
+                      <div className="absolute top-2 right-2 bg-green-500 text-white text-[8px] font-black px-2 py-1 rounded-full uppercase tracking-widest animate-pulse">
+                        Save Rs. 200
+                      </div>
+                    )}
                     <span className="text-4xl">📱</span>
                     <p className="font-black text-lg uppercase tracking-tight">JazzCash</p>
-                    <p className={`text-[9px] font-bold uppercase tracking-widest ${paymentMethod === 'JazzCash' ? 'text-blue-300' : 'text-slate-400'}`}>Best Value • Free Ship</p>
+                    <p className={`text-[9px] font-bold uppercase tracking-widest ${paymentMethod === 'JazzCash' ? 'text-blue-300' : 'text-slate-400'}`}>Get Rs. 200 OFF</p>
                   </button>
 
                   <button
@@ -140,7 +147,7 @@ const Checkout: React.FC = () => {
                   >
                     <span className="text-4xl">🚚</span>
                     <p className="font-black text-lg uppercase tracking-tight">COD</p>
-                    <p className={`text-[9px] font-bold uppercase tracking-widest ${paymentMethod === 'Cash on Delivery' ? 'text-blue-300' : 'text-slate-400'}`}>+Rs. 300 Service Fee</p>
+                    <p className={`text-[9px] font-bold uppercase tracking-widest ${paymentMethod === 'Cash on Delivery' ? 'text-blue-300' : 'text-slate-400'}`}>No Extra Charges</p>
                   </button>
                 </div>
               </div>
@@ -160,7 +167,7 @@ const Checkout: React.FC = () => {
                     <span className="text-5xl shrink-0">🏠</span>
                     <div>
                       <p className="font-black text-2xl tracking-tighter leading-none">Pay at Door</p>
-                      <p className="text-[10px] font-black uppercase tracking-widest mt-2 text-slate-500">Pay cash upon delivery. Includes Rs. 300 Fee.</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest mt-2 text-slate-500">Pay cash upon delivery.</p>
                     </div>
                   </>
                 )}
@@ -216,16 +223,16 @@ const Checkout: React.FC = () => {
                   <span>- Rs. {discountAmount.toLocaleString()}</span>
                 </div>
               )}
+              {jazzCashDiscount > 0 && (
+                <div className="flex justify-between text-green-600 font-black uppercase text-xs tracking-widest animate-pulse">
+                  <span>JazzCash Discount</span>
+                  <span>- Rs. {jazzCashDiscount.toLocaleString()}</span>
+                </div>
+              )}
               <div className="flex justify-between text-slate-500 font-black uppercase text-xs tracking-widest">
                 <span>Shipping</span>
                 <span className="text-green-600">FREE 🚚</span>
               </div>
-              {paymentMethod === 'Cash on Delivery' && (
-                <div className="flex justify-between text-slate-500 font-black uppercase text-xs tracking-widest">
-                  <span>COD Handling Fee</span>
-                  <span>Rs. 300</span>
-                </div>
-              )}
               <div className="pt-6 mt-4 border-t-4 border-slate-900 flex justify-between items-end">
                 <span className="text-xl font-black text-slate-900 uppercase tracking-tighter">Total Amount</span>
                 <span className="text-4xl font-black text-blue-600 tracking-tighter leading-none">Rs. {finalTotal.toLocaleString()}</span>

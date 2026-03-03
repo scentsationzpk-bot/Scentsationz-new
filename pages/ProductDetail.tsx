@@ -197,9 +197,18 @@ const ProductDetail: React.FC = () => {
             </div>
 
             <div className="py-8 border-y-4 border-slate-900 flex flex-col items-center justify-center w-full gap-6">
-              <span className="text-4xl font-black text-slate-900">
-                Rs. {(product.price + (addDairyMilk ? 50 * dairyMilkQuantity : 0)).toLocaleString()}
-              </span>
+              <div className="flex flex-col items-center">
+                <span className="text-lg font-bold text-slate-400 line-through decoration-red-500 decoration-2">
+                  Rs. {Math.floor(7200).toLocaleString()}
+                </span>
+                <span className="text-5xl font-black text-slate-900 tracking-tighter">
+                  Rs. {(product.price + (addDairyMilk ? 50 * dairyMilkQuantity : 0)).toLocaleString()}
+                </span>
+                <span className="text-xs font-black text-white bg-red-500 px-3 py-1 rounded-full uppercase tracking-widest mt-2 animate-pulse">
+                  Save Rs. {(7200 - product.price).toLocaleString()}
+                </span>
+              </div>
+              
               <div className="flex items-center gap-6 bg-slate-50 p-2 rounded-2xl border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
                 <button 
                   onClick={() => setQuantity(q => Math.max(1, q-1))} 
@@ -232,6 +241,33 @@ const ProductDetail: React.FC = () => {
                   Buy 2 get 10% OFF • Buy 3+ get 15% OFF
                 </p>
               </div>
+            </div>
+
+            {/* Delivery Timeline */}
+            <div className="w-full bg-slate-50 rounded-2xl p-6 border-4 border-slate-100 mt-4 space-y-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-blue-100 rounded-full blur-2xl opacity-50 pointer-events-none"></div>
+                <h4 className="font-black text-slate-900 uppercase tracking-widest text-xs flex items-center gap-2 relative z-10">
+                  <span className="text-xl">🚀</span> Express Logistics
+                </h4>
+                <div className="relative pl-4 border-l-4 border-slate-200 space-y-6 z-10">
+                  <div className="relative">
+                    <div className="absolute -left-[22px] top-1 w-5 h-5 rounded-full bg-blue-600 border-4 border-white shadow-sm animate-pulse"></div>
+                    <p className="font-black text-slate-900 text-sm uppercase tracking-tight">Rawalpindi & Islamabad</p>
+                    <p className="text-[10px] font-bold text-blue-600 mt-1 uppercase tracking-widest bg-blue-100 px-2 py-1 rounded w-fit">⚡ 1-Hour Delivery</p>
+                  </div>
+                  <div className="relative">
+                    <div className="absolute -left-[22px] top-1 w-5 h-5 rounded-full bg-slate-300 border-4 border-white shadow-sm"></div>
+                    <p className="font-black text-slate-900 text-sm uppercase tracking-tight">Nationwide</p>
+                    <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-widest">📦 3-5 Working Days</p>
+                  </div>
+                </div>
+                <div className="bg-green-50 p-3 rounded-xl flex items-center gap-3 border-2 border-green-100 relative z-10">
+                   <span className="text-xl">💳</span>
+                   <div>
+                     <p className="font-black text-green-800 text-[10px] uppercase tracking-widest">JazzCash Exclusive</p>
+                     <p className="text-[10px] font-bold text-green-600">Get Rs. 200 OFF instantly at checkout!</p>
+                   </div>
+                </div>
             </div>
 
             <button 
