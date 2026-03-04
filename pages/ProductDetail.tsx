@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProductById, addToCart } from '../storage';
 import { Product } from '../types';
 import { useToast } from '../App';
+import FastButton from '../components/FastButton';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();

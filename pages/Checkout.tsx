@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { getStoreDataSync, addOrder } from '../storage';
 import { useToast } from '../App';
+import FastButton from '../components/FastButton';
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
