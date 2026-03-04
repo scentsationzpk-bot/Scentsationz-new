@@ -293,10 +293,16 @@ export const MOCK_BUNDLES: Bundle[] = [
   }
 ];
 
+import { limit } from 'firebase/firestore';
+
+// ... existing imports ...
+
 export const seedIfEmpty = async () => {
   try {
     const productsCol = collection(db, 'products');
-    const snapshot = await getDocs(productsCol);
+    // Optimize: Check only 1 document to see if collection is empty
+    const q = query(productsCol, limit(1));
+    const snapshot = await getDocs(q);
     
     if (!snapshot.empty) {
       console.log('Registry already synced. Skipping seed.');
@@ -306,6 +312,7 @@ export const seedIfEmpty = async () => {
     // Only seed if empty
     console.log('Syncing luxury registry...');
     const batch = writeBatch(db);
+    // ... rest of the function ...
     const mockProducts: Product[] = [
         {
           id: 'starborn',

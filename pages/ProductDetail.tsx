@@ -393,16 +393,16 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
         
-        <div className="absolute bottom-0 left-0 right-0 p-6 bg-white/95 backdrop-blur-xl border-t-4 border-slate-100 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] space-y-3">
+        <div className="absolute bottom-0 left-0 right-0 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] bg-white/95 border-t-4 border-slate-100 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] space-y-3">
           <button 
             onClick={handleAddAction} 
-            className="w-full py-4 border-4 border-slate-900 text-slate-900 font-black text-lg rounded-2xl hover:bg-slate-100 transition-all uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-1 active:translate-y-1"
+            className="w-full py-4 border-4 border-slate-900 text-slate-900 font-black text-lg rounded-2xl hover:bg-slate-100 transition-all uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-1 active:translate-y-1 touch-manipulation cursor-pointer"
           >
             Add to Bag 🛍️
           </button>
           <button 
             onClick={() => { handleAddAction(); navigate('/checkout'); }} 
-            className="w-full py-4 bg-blue-600 text-white font-black text-lg rounded-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:bg-blue-700 transition-all uppercase tracking-widest border-4 border-slate-900"
+            className="w-full py-4 bg-blue-600 text-white font-black text-lg rounded-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:bg-blue-700 transition-all uppercase tracking-widest border-4 border-slate-900 touch-manipulation cursor-pointer"
           >
             Checkout Now 🚀
           </button>

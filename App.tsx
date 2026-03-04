@@ -61,9 +61,11 @@ const App: React.FC = () => {
     init();
   }, []);
 
-  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+  const showToast = React.useCallback((message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
-  };
+  }, []);
+
+  const toastContextValue = React.useMemo(() => ({ showToast }), [showToast]);
 
   if (!ready) {
     return (
@@ -75,7 +77,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={toastContextValue}>
       <HashRouter>
         <ScrollToTop />
         <div className="flex flex-col min-h-screen">
