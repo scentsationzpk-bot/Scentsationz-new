@@ -50,8 +50,11 @@ const ProductDetail: React.FC = () => {
     }
   };
 
+  const [isAdding, setIsAdding] = useState(false);
+
   const handleAddAction = () => {
     if (!product) return;
+    setIsAdding(true);
     addToCart(
       product, 
       quantity, 
@@ -67,6 +70,7 @@ const ProductDetail: React.FC = () => {
       } : undefined
     );
     showToast(`${product.name} added to your bag.`, 'success');
+    setTimeout(() => setIsAdding(false), 500);
   };
 
   if (loading) {
@@ -396,13 +400,18 @@ const ProductDetail: React.FC = () => {
         <div className="absolute bottom-0 left-0 right-0 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] bg-white border-t-4 border-slate-100 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] space-y-3">
           <button 
             onClick={handleAddAction} 
-            className="w-full py-4 border-4 border-slate-900 text-slate-900 font-black text-lg rounded-2xl md:hover:bg-slate-100 uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:bg-slate-100 touch-manipulation cursor-pointer select-none"
+            disabled={isAdding}
+            className={`w-full py-4 border-4 border-slate-900 font-black text-lg rounded-2xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] touch-manipulation cursor-pointer select-none transition-all duration-100 ${
+              isAdding 
+                ? 'bg-green-500 text-white scale-95 border-green-600' 
+                : 'text-slate-900 bg-white md:hover:bg-slate-100 active:scale-[0.98] active:bg-slate-100'
+            }`}
           >
-            Add to Bag 🛍️
+            {isAdding ? 'Added! ✅' : 'Add to Bag 🛍️'}
           </button>
           <button 
             onClick={() => { handleAddAction(); navigate('/checkout'); }} 
-            className="w-full py-4 bg-blue-600 text-white font-black text-lg rounded-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] md:hover:bg-blue-700 uppercase tracking-widest border-4 border-slate-900 active:shadow-none active:bg-blue-700 touch-manipulation cursor-pointer select-none"
+            className="w-full py-4 bg-blue-600 text-white font-black text-lg rounded-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] md:hover:bg-blue-700 uppercase tracking-widest border-4 border-slate-900 active:scale-[0.98] active:bg-blue-700 touch-manipulation cursor-pointer select-none transition-transform duration-75"
           >
             Checkout Now 🚀
           </button>
