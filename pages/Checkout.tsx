@@ -176,7 +176,7 @@ const Checkout: React.FC = () => {
             
             <button 
               disabled={loading} 
-              className="w-full py-8 bg-blue-600 text-white font-black text-3xl rounded-2xl shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 active:shadow-none active:translate-y-2 active:translate-x-2 transition-all uppercase tracking-tighter leading-none disabled:opacity-50"
+              className="w-full py-8 bg-blue-600 text-white font-black text-3xl rounded-2xl shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 active:shadow-none active:bg-blue-700 md:hover:bg-blue-700 uppercase tracking-tighter leading-none disabled:opacity-50 touch-manipulation cursor-pointer select-none"
             >
               {loading ? 'Processing...' : 'Place Order 🚀'}
             </button>
