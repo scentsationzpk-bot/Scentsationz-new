@@ -3,7 +3,6 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProductById, addToCart } from '../storage';
 import { Product } from '../types';
 import { useToast } from '../App';
-import FastButton from '../components/FastButton';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -91,7 +90,7 @@ const ProductDetail: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
       <div className="bg-white w-full max-w-5xl rounded-2xl shadow-[20px_20px_0px_0px_rgba(15,23,42,1)] overflow-hidden flex flex-col animate-in zoom-in duration-300 border-4 border-slate-900 max-h-[90vh] relative">
         
         {/* Close Button - Always Visible */}
@@ -106,7 +105,7 @@ const ProductDetail: React.FC = () => {
         </button>
 
         {/* Scrollable Content Area */}
-        <div className="overflow-y-auto flex-grow">
+        <div className="overflow-y-auto flex-1 w-full relative z-0">
           <div className="flex flex-col md:flex-row">
             {/* Left Column - Image */}
             <div className="w-full md:w-1/2 bg-slate-50 flex flex-col items-center justify-start border-b-4 md:border-b-0 md:border-r-4 border-slate-900 p-8">
@@ -118,7 +117,8 @@ const ProductDetail: React.FC = () => {
             </div>
 
             {/* Right Column - Details */}
-            <div className="w-full md:w-1/2 p-8 md:p-12 pb-48 flex flex-col items-center text-center bg-white">
+            <div className="w-full md:w-1/2 p-8 md:p-12 pb-12 flex flex-col items-center text-center bg-white">
+              {/* ... content ... */}
               <div className="space-y-6 flex flex-col items-center w-full">
             <span className="text-blue-600 font-black text-[12px] uppercase tracking-widest bg-blue-50 px-6 py-2 rounded-xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
               {product.category} Series
@@ -241,7 +241,7 @@ const ProductDetail: React.FC = () => {
             </div>
             </div>
           </div>
-          <div className="space-y-4 pt-8 w-full">
+          <div className="space-y-4 pt-8 w-full px-8 md:px-12">
             {/* Scarcity & Bundle Incentive */}
             <div className="space-y-2">
               <div className="flex items-center gap-2 justify-center bg-red-50 p-2 rounded-xl border-2 border-red-100 animate-pulse">
@@ -288,7 +288,7 @@ const ProductDetail: React.FC = () => {
 
           </div>
 
-          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6">
+          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12">
             <h3 className="text-2xl font-black uppercase tracking-widest text-slate-900">The Scentsationz Promise</h3>
             <div className="bg-slate-50 rounded-[2rem] p-8 border-4 border-slate-100 space-y-8">
               
@@ -347,7 +347,7 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
 
-          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6">
+          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12">
             <h3 className="text-2xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2">Composition</h3>
             <div className="relative pl-6 space-y-8 before:absolute before:inset-y-0 before:left-[11px] before:w-1 before:bg-slate-200">
               <div className="relative">
@@ -377,7 +377,7 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
 
-          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6">
+          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12 pb-12">
             <h3 className="text-2xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2">A Note from the Founder</h3>
             <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 relative overflow-hidden">
                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
@@ -398,24 +398,28 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] bg-white border-t-4 border-slate-100 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] space-y-3">
-          <FastButton 
+        {/* Footer - Standard Flex Item */}
+        <div className="w-full bg-white border-t-8 border-slate-900 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] space-y-4 shrink-0 z-[100] relative pointer-events-auto">
+          <button 
             onClick={() => { handleAddAction(); navigate('/checkout'); }} 
-            className="w-full py-4 bg-blue-600 text-white font-black text-lg rounded-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] md:hover:bg-blue-700 uppercase tracking-widest border-4 border-slate-900 active:scale-[0.98] active:bg-blue-700 touch-manipulation cursor-pointer select-none transition-transform duration-75"
+            className="w-full h-20 bg-blue-600 text-white font-black text-2xl rounded-2xl border-4 border-slate-900 uppercase tracking-widest cursor-pointer touch-manipulation hover:bg-blue-700 active:bg-blue-800 transition-colors shadow-none transform-none"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             Checkout Now 🚀
-          </FastButton>
-          <FastButton 
+          </button>
+
+          <button 
             onClick={handleAddAction} 
             disabled={isAdding}
-            className={`w-full py-4 border-4 border-slate-900 font-black text-lg rounded-2xl uppercase tracking-widest shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] touch-manipulation cursor-pointer select-none transition-all duration-100 ${
+            className={`w-full h-20 font-black text-2xl rounded-2xl border-4 border-slate-900 uppercase tracking-widest cursor-pointer touch-manipulation transition-colors shadow-none transform-none ${
               isAdding 
-                ? 'bg-green-500 text-white scale-95 border-green-600' 
-                : 'text-slate-900 bg-white md:hover:bg-slate-100 active:scale-[0.98] active:bg-slate-100'
+                ? 'bg-green-500 text-white border-green-900' 
+                : 'bg-white text-slate-900 hover:bg-slate-100 active:bg-slate-200'
             }`}
+            style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             {isAdding ? 'Added! ✅' : 'Add to Bag 🛍️'}
-          </FastButton>
+          </button>
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { getStoreDataSync, addOrder } from '../storage';
 import { useToast } from '../App';
-import FastButton from '../components/FastButton';
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
@@ -175,12 +174,14 @@ const Checkout: React.FC = () => {
               </div>
             </div>
             
-            <FastButton 
+            <button 
+              type="submit"
               disabled={loading} 
-              className="w-full py-8 bg-blue-600 text-white font-black text-3xl rounded-2xl shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 active:scale-[0.98] active:bg-blue-700 md:hover:bg-blue-700 uppercase tracking-tighter leading-none disabled:opacity-50 touch-manipulation cursor-pointer select-none transition-transform duration-75"
+              className="w-full h-24 bg-blue-600 text-white font-black text-3xl rounded-2xl border-4 border-slate-900 uppercase tracking-tighter leading-none disabled:opacity-50 cursor-pointer touch-manipulation hover:bg-blue-700 active:bg-blue-800 transition-colors shadow-none transform-none"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
             >
               {loading ? 'Processing...' : 'Place Order 🚀'}
-            </FastButton>
+            </button>
           </form>
         </div>
 

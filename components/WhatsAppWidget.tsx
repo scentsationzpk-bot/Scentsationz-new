@@ -33,8 +33,8 @@ const WhatsAppWidget: React.FC = () => {
   const url = `https://wa.me/${number.replace('+', '')}?text=${encodeURIComponent(message)}`;
 
   return (
-    <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-3 group">
-      <div className={`bg-white px-6 py-4 rounded-[1.5rem] shadow-2xl border border-slate-100 transition-all duration-300 transform ${showTooltip ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90 pointer-events-none'}`}>
+    <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-3 group pointer-events-none">
+      <div className={`bg-white px-6 py-4 rounded-[1.5rem] shadow-2xl border border-slate-100 transition-all duration-300 transform pointer-events-auto ${showTooltip ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-90 pointer-events-none'}`}>
          <div className="flex flex-col gap-1">
            <p className="text-sm font-black text-slate-800 flex items-center gap-2 whitespace-nowrap">
              Chat with us! 💬
@@ -50,7 +50,7 @@ const WhatsAppWidget: React.FC = () => {
         rel="noopener noreferrer"
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
-        className="w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 relative overflow-hidden group/btn"
+        className="w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 relative overflow-hidden group/btn pointer-events-auto"
         aria-label="Chat on WhatsApp"
       >
         <div className="absolute inset-0 bg-white opacity-0 group-hover/btn:opacity-10 transition-opacity"></div>

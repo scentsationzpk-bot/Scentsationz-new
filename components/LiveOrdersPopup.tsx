@@ -41,10 +41,10 @@ const LiveOrdersPopup: React.FC = () => {
   if (!currentOrder) return null;
 
   return (
-    <div className={`fixed bottom-24 left-4 sm:left-10 z-[100] transition-all duration-1000 transform ${
-      visible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-90 pointer-events-none'
+    <div className={`fixed bottom-24 left-4 sm:left-10 z-[100] transition-all duration-1000 transform pointer-events-none ${
+      visible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-90'
     }`}>
-      <div className="bg-white/95 backdrop-blur-2xl p-6 rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] flex items-center gap-5 max-w-xs sm:max-w-sm border-2 border-slate-50 animate-in fade-in slide-in-from-left duration-500">
+      <div className="bg-white/95 backdrop-blur-2xl p-6 rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] flex items-center gap-5 max-w-xs sm:max-w-sm border-2 border-slate-50 animate-in fade-in slide-in-from-left duration-500 pointer-events-auto">
         <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 border-2 border-white shadow-inner">
           📦
         </div>

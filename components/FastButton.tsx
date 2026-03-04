@@ -9,23 +9,18 @@ const FastButton: React.FC<FastButtonProps> = ({ onClick, className, children, s
     <button
       {...props}
       onClick={onClick}
-      className={`${className} relative overflow-visible`}
+      className={`${className} relative isolate`}
       style={{ 
         ...style, 
         WebkitTapHighlightColor: 'transparent',
-        touchAction: 'manipulation' // Removes 300ms delay on mobile
+        touchAction: 'manipulation'
       }}
     >
-      {/* Massive Hit Area Expansion - Invisible but clickable */}
-      <span 
-        className="absolute -top-6 -bottom-6 -left-6 -right-6 z-0 bg-transparent" 
-        aria-hidden="true" 
-      />
-      
-      {/* Content Wrapper - Ensures text/icons stay on top */}
-      <span className="relative z-10 pointer-events-none flex items-center justify-center gap-2 w-full h-full">
-        {children}
-      </span>
+      {/* Hit area expansion using pseudo-element via standard CSS if needed, 
+          but here we rely on the button itself. 
+          We add a transparent overlay for the shadow area. */}
+      <span className="absolute -inset-4 z-[-1] bg-transparent content-['']" aria-hidden="true" />
+      {children}
     </button>
   );
 };

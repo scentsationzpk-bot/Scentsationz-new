@@ -43,10 +43,10 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+      <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 pointer-events-none ${
         isScrolled ? 'py-3 translate-y-0' : 'py-6'
       }`}>
-        <div className="max-w-[1400px] mx-auto px-4">
+        <div className="max-w-[1400px] mx-auto px-4 pointer-events-auto">
           <div className={`bg-white/90 backdrop-blur-xl border-4 border-slate-900 rounded-[2rem] px-6 py-4 flex justify-between items-center transition-all duration-500 shadow-[10px_10px_0px_0px_rgba(15,23,42,1)]`}>
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
