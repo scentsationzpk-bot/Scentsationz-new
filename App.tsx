@@ -69,9 +69,14 @@ const App: React.FC = () => {
 
   if (!ready) {
     return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center bg-white space-y-6">
-        <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-blue-600 font-black tracking-widest uppercase text-xs">Accessing Secure Vault...</p>
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-white">
+        <div className="relative">
+          <div className="w-20 h-20 border-4 border-blue-600/10 rounded-full"></div>
+          <div className="absolute top-0 left-0 w-20 h-20 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        <div className="mt-8 text-center">
+          <p className="text-blue-600 font-black tracking-[0.3em] uppercase text-[10px] animate-pulse">Syncing Vault</p>
+        </div>
       </div>
     );
   }

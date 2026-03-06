@@ -16,6 +16,9 @@ import {
 } from 'firebase/firestore';
 
 const STORAGE_KEY = 'scentsationz_universal_v4';
+const SEED_FLAG_KEY = 'scentsationz_seeded_v1';
+
+let productsCache: Product[] | null = null;
 
 const sanitizeForStorage = <T>(obj: T): T => {
   if (!obj) return obj;
@@ -100,10 +103,32 @@ const mapDocToProduct = (d: any): Product => ({
 });
 
 export const getProducts = async (): Promise<Product[]> => {
+  if (productsCache) return productsCache;
+
+  // Try local cache first for instant extraction
+  try {
+    const cached = localStorage.getItem('scentsationz_products_cache');
+    if (cached) {
+      productsCache = JSON.parse(cached);
+      // Background refresh
+      getDocs(collection(db, 'products')).then(snapshot => {
+        const fresh = snapshot.docs.map(mapDocToProduct);
+        productsCache = fresh;
+        localStorage.setItem('scentsationz_products_cache', JSON.stringify(fresh));
+      });
+      return productsCache!;
+    }
+  } catch (e) {
+    console.warn("Cache read failed", e);
+  }
+
   try {
     const productsCol = collection(db, 'products');
     const snapshot = await getDocs(productsCol);
-    return snapshot.docs.map(mapDocToProduct);
+    const products = snapshot.docs.map(mapDocToProduct);
+    productsCache = products;
+    localStorage.setItem('scentsationz_products_cache', JSON.stringify(products));
+    return products;
   } catch (error) {
     console.error("Fetch Products Error:", error);
     return [];
@@ -111,10 +136,26 @@ export const getProducts = async (): Promise<Product[]> => {
 };
 
 export const getProductById = async (id: string): Promise<Product | null> => {
+  // Check cache first for lightning fast extraction
+  if (productsCache) {
+    const cached = productsCache.find(p => p.id === id);
+    if (cached) return cached;
+  }
+
   try {
     const docRef = doc(db, 'products', id);
     const docSnap = await getDoc(docRef);
-    return docSnap.exists() ? mapDocToProduct(docSnap) : null;
+    if (docSnap.exists()) {
+      const p = mapDocToProduct(docSnap);
+      // Update cache if it exists
+      if (productsCache) {
+        const idx = productsCache.findIndex(item => item.id === id);
+        if (idx > -1) productsCache[idx] = p;
+        else productsCache.push(p);
+      }
+      return p;
+    }
+    return null;
   } catch (error) {
     console.error("Get Product Error:", error);
     return null;
@@ -298,19 +339,19 @@ import { limit } from 'firebase/firestore';
 // ... existing imports ...
 
 export const seedIfEmpty = async () => {
+  // Lightning fast check: skip if we already seeded in this browser
+  if (localStorage.getItem(SEED_FLAG_KEY)) return;
+
   try {
     const productsCol = collection(db, 'products');
-    // Optimize: Check only 1 document to see if collection is empty
     const q = query(productsCol, limit(1));
     const snapshot = await getDocs(q);
     
     if (!snapshot.empty) {
-      console.log('Registry already synced. Skipping seed.');
+      localStorage.setItem(SEED_FLAG_KEY, 'true');
       return;
     }
 
-    // Only seed if empty
-    console.log('Syncing luxury registry...');
     const batch = writeBatch(db);
     // ... rest of the function ...
     const mockProducts: Product[] = [
@@ -416,7 +457,7 @@ export const seedIfEmpty = async () => {
         batch.set(docRef, sanitizeForStorage(p));
       }
       await batch.commit();
-      console.log('Seeding Complete.');
+      localStorage.setItem(SEED_FLAG_KEY, 'true');
   } catch (e) {
     console.error('Seeding error:', e);
   }

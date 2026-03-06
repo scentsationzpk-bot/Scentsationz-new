@@ -70,14 +70,14 @@ const ProductDetail: React.FC = () => {
       } : undefined
     );
     showToast(`${product.name} added to your bag.`, 'success');
-    setTimeout(() => setIsAdding(false), 500);
+    setTimeout(() => setIsAdding(false), 200);
   };
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4 bg-white">
-        <div className="w-12 h-12 border-4 border-slate-900 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-slate-400 font-black uppercase text-xs tracking-widest">Authenticating Assets...</p>
+      <div className="fixed inset-0 z-[300] flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-blue-600 font-black uppercase text-[10px] tracking-[0.3em] mt-4">Extracting...</p>
       </div>
     );
   }
