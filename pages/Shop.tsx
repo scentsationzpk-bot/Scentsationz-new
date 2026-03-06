@@ -1,20 +1,20 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts } from '../storage';
+import { getProducts, getStoreDataSync } from '../storage';
 import { Product } from '../types';
 
 const Shop: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const initialProducts = getStoreDataSync().products;
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(initialProducts);
   const [activeCategory, setActiveCategory] = useState('All');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(initialProducts.length === 0);
 
   const categories = ['All', 'Bold', 'Fresh', 'Warm', 'Woody', 'Floral'];
 
   useEffect(() => {
     const fetch = async () => {
-      setLoading(true);
       const p = await getProducts();
       setProducts(p);
       setFilteredProducts(p);
@@ -59,9 +59,11 @@ const Shop: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {filteredProducts.map((product) => (
           <Link key={product.id} to={`/product/${product.id}`} className="group bg-white rounded-[3rem] border-4 border-slate-50 overflow-hidden hover:border-blue-600 transition-all duration-700 h-full flex flex-col shadow-sm relative">
-            <div className="absolute top-6 right-6 z-10 bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg animate-pulse">
-              Only {Math.floor(Math.random() * 3) + 1} Left
-            </div>
+            {product.stock <= 5 && product.stock > 0 && (
+              <div className="absolute top-6 right-6 z-10 bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg animate-pulse">
+                Only {product.stock} Left
+              </div>
+            )}
             <div className="aspect-[3/4] bg-slate-50 relative flex items-center justify-center border-b-2 border-slate-50">
               <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-1000" />
             </div>

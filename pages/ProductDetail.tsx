@@ -247,7 +247,7 @@ const ProductDetail: React.FC = () => {
               <div className="flex items-center gap-2 justify-center bg-red-50 p-2 rounded-xl border-2 border-red-100 animate-pulse">
                 <span className="text-xl">🔥</span>
                 <p className="text-xs font-black text-red-600 uppercase tracking-widest">
-                  Only {Math.floor(Math.random() * 3) + 1} bottles left in stock!
+                  Only {product.stock > 0 ? product.stock : 'a few'} bottles left in stock!
                 </p>
               </div>
               <div className="flex items-center gap-2 justify-center bg-blue-50 p-2 rounded-xl border-2 border-blue-100">

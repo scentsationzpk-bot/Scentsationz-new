@@ -12,13 +12,15 @@ import {
   orderBy, 
   setDoc,
   getDoc,
-  writeBatch
+  writeBatch,
+  limit
 } from 'firebase/firestore';
 
 const STORAGE_KEY = 'scentsationz_universal_v4';
 const SEED_FLAG_KEY = 'scentsationz_seeded_v1';
 
 let productsCache: Product[] | null = null;
+let bundlesCache: Bundle[] | null = null;
 
 const sanitizeForStorage = <T>(obj: T): T => {
   if (!obj) return obj;
@@ -85,8 +87,8 @@ export const getStoreDataSync = (): StoreData => {
   const cart = getLocalCart();
   const admin = getAdminState();
   return {
-    products: [], 
-    bundles: MOCK_BUNDLES,
+    products: productsCache || [], 
+    bundles: bundlesCache || [],
     upsells: [],
     cart,
     orders: [],
@@ -95,22 +97,55 @@ export const getStoreDataSync = (): StoreData => {
   };
 };
 
-const mapDocToProduct = (d: any): Product => ({
+const mapDocToProduct = (d: any): Product => {
+  const data = d.data();
+  return {
+    ...data,
+    id: d.id,
+    price: Number(data.price),
+    stock: Number(data.stock)
+  };
+};
+
+const mapDocToBundle = (d: any): Bundle => ({
   ...d.data(),
-  id: d.id,
-  price: Number(d.data().price) || 2800,
-  stock: Number(d.data().stock) || 0
+  id: d.id
 });
+
+export const getBundles = async (): Promise<Bundle[]> => {
+  if (bundlesCache) return bundlesCache;
+
+  try {
+    const cached = localStorage.getItem('scentsationz_bundles_cache');
+    if (cached) {
+      bundlesCache = JSON.parse(cached);
+      getDocs(collection(db, 'bundles')).then(snapshot => {
+        const fresh = snapshot.docs.map(mapDocToBundle);
+        bundlesCache = fresh;
+        localStorage.setItem('scentsationz_bundles_cache', JSON.stringify(fresh));
+      });
+      return bundlesCache!;
+    }
+  } catch (e) {}
+
+  try {
+    const snapshot = await getDocs(collection(db, 'bundles'));
+    const bundles = snapshot.docs.map(mapDocToBundle);
+    bundlesCache = bundles;
+    localStorage.setItem('scentsationz_bundles_cache', JSON.stringify(bundles));
+    return bundles;
+  } catch (error) {
+    return [];
+  }
+};
 
 export const getProducts = async (): Promise<Product[]> => {
   if (productsCache) return productsCache;
 
-  // Try local cache first for instant extraction
   try {
     const cached = localStorage.getItem('scentsationz_products_cache');
     if (cached) {
       productsCache = JSON.parse(cached);
-      // Background refresh
       getDocs(collection(db, 'products')).then(snapshot => {
         const fresh = snapshot.docs.map(mapDocToProduct);
         productsCache = fresh;
@@ -118,25 +153,20 @@ export const getProducts = async (): Promise<Product[]> => {
       });
       return productsCache!;
     }
-  } catch (e) {
-    console.warn("Cache read failed", e);
-  }
+  } catch (e) {}
 
   try {
-    const productsCol = collection(db, 'products');
-    const snapshot = await getDocs(productsCol);
+    const snapshot = await getDocs(collection(db, 'products'));
     const products = snapshot.docs.map(mapDocToProduct);
     productsCache = products;
     localStorage.setItem('scentsationz_products_cache', JSON.stringify(products));
     return products;
   } catch (error) {
-    console.error("Fetch Products Error:", error);
     return [];
   }
 };
 
 export const getProductById = async (id: string): Promise<Product | null> => {
-  // Check cache first for lightning fast extraction
   if (productsCache) {
     const cached = productsCache.find(p => p.id === id);
     if (cached) return cached;
@@ -147,7 +177,6 @@ export const getProductById = async (id: string): Promise<Product | null> => {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const p = mapDocToProduct(docSnap);
-      // Update cache if it exists
       if (productsCache) {
         const idx = productsCache.findIndex(item => item.id === id);
         if (idx > -1) productsCache[idx] = p;
@@ -157,7 +186,6 @@ export const getProductById = async (id: string): Promise<Product | null> => {
     }
     return null;
   } catch (error) {
-    console.error("Get Product Error:", error);
     return null;
   }
 };
@@ -186,7 +214,6 @@ export const getOrders = async (): Promise<Order[]> => {
       date: d.data().createdAt?.toDate()?.toISOString() || new Date().toISOString()
     } as Order));
   } catch (error) {
-    console.error("Fetch Orders Error:", error);
     return [];
   }
 };
@@ -225,7 +252,6 @@ export const addToCart = (
 ) => {
   const cart = getLocalCart();
   
-  // Luxury pricing logic
   let finalPrice = product.price;
   if (tier === 'Collector’s Edition') finalPrice += 1000;
   if (tier === 'Signature Edition') finalPrice += 2000;
@@ -320,32 +346,14 @@ export const updateCartQuantity = (
   }
 };
 
-export const MOCK_BUNDLES: Bundle[] = [
-  {
-    id: 'vault-duo',
-    title: 'The Vault Duo',
-    productIds: ['starborn', 'cool-current'],
-    bundlePrice: 4500,
-    originalPrice: 5600,
-    discountText: 'Reserved Pairing • Free Concierge Shipping',
-    type: 'duo',
-    badge: 'Popular',
-    description: 'Select the ultimate day/night rotation from our Reserved collections.'
-  }
-];
-
-import { limit } from 'firebase/firestore';
-
-// ... existing imports ...
+export const MOCK_BUNDLES: Bundle[] = [];
 
 export const seedIfEmpty = async () => {
-  // Lightning fast check: skip if we already seeded in this browser
   if (localStorage.getItem(SEED_FLAG_KEY)) return;
 
   try {
     const productsCol = collection(db, 'products');
-    const q = query(productsCol, limit(1));
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocs(query(productsCol, limit(1)));
     
     if (!snapshot.empty) {
       localStorage.setItem(SEED_FLAG_KEY, 'true');
@@ -353,111 +361,73 @@ export const seedIfEmpty = async () => {
     }
 
     const batch = writeBatch(db);
-    // ... rest of the function ...
+    
     const mockProducts: Product[] = [
-        {
-          id: 'starborn',
-          name: 'STARBORN',
-          price: 2250,
-          stock: 50,
-          description: 'A bold, charismatic scent crafted for leaders and dreamers. Starborn blends smooth elegance with magnetic depth — the kind of fragrance that turns presence into power and moments into memories.',
-          category: 'Bold',
-          imageUrl: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800',
-          luxuryStory: 'Starborn is the scent of destiny. Crafted for those who leave an indelible mark on the world, it weaves the ancient depth of oud with the warm, glowing embrace of amber. A fragrance that doesn\'t just linger—it commands.',
-          packagingDetails: ['Weighted Obsidian Glass', 'Gold-Embossed Monogram', 'Magnetic Precision Cap'],
-          badge: 'Signature',
-          specifications: {
-            topNotes: ['Saffron', 'Bergamot', 'Spiced Cardamom'],
-            middleNotes: ['Black Rose', 'Aged Oud', 'Leather'],
-            baseNotes: ['Amber', 'Vanilla', 'Smoked Patchouli'],
-            longevity: 98,
-            sillage: 'Strong',
-            occasions: ['Gala Evenings', 'Power Meetings', 'Night Out']
-          }
-        },
-        {
-          id: 'cool-current',
-          name: 'COOL CURRENT',
-          price: 2250,
-          stock: 50,
-          description: 'Fresh, modern, and effortlessly confident. Cool Current delivers a crisp wave of energy that feels clean, uplifting, and sharp — perfect for daily wear that still makes a lasting impression.',
-          category: 'Fresh',
-          imageUrl: 'https://images.unsplash.com/photo-1590156546946-ce55a12a6a5d?auto=format&fit=crop&q=80&w=800',
-          luxuryStory: 'Cool Current is a breath of absolute clarity. Like a sudden plunge into arctic waters, it awakens the senses with sharp citrus and marine notes, settling into a clean, sophisticated musk. The ultimate companion for the modern visionary.',
-          packagingDetails: ['Matte Teal Finish', 'Silver Engraving', 'Soft-Touch Presentation Box'],
-          specifications: {
-            topNotes: ['Sea Salt', 'Iced Lemon', 'Grapefruit'],
-            middleNotes: ['Mint', 'Neroli', 'Lavender'],
-            baseNotes: ['Amberwood', 'White Musk', 'Cedar'],
-            longevity: 85,
-            sillage: 'Moderate',
-            occasions: ['Daily Wear', 'Summer Days', 'Office']
-          }
-        },
-        {
-          id: 'forever-dawn',
-          name: 'FOREVER DAWN',
-          price: 2250,
-          stock: 50,
-          description: 'Soft, clean, and emotionally timeless. Forever Dawn captures the feeling of fresh beginnings — a gentle yet memorable fragrance that stays close but leaves a beautiful trail.',
-          category: 'Floral',
-          imageUrl: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800',
-          luxuryStory: 'Forever Dawn captures the fleeting magic of morning light. Delicate jasmine and tuberose dance over a base of creamy sandalwood, creating a scent that is both intimately soft and enduringly beautiful. A promise of endless possibilities.',
-          packagingDetails: ['Frosted Glass', 'Rose Gold Accents', 'Velvet Interior'],
-          specifications: {
-            topNotes: ['Pear', 'Mandarin', 'Pink Pepper'],
-            middleNotes: ['Jasmine', 'Tuberose', 'Orange Blossom'],
-            baseNotes: ['Sandalwood', 'Vanilla', 'White Musk'],
-            longevity: 90,
-            sillage: 'Moderate',
-            occasions: ['Weddings', 'Spring Afternoons', 'Romantic Dinners']
-          }
-        },
-        {
-          id: 'golden-pulse',
-          name: 'GOLDEN PULSE',
-          price: 2250,
-          stock: 50,
-          description: 'Rich, playful, and undeniably attention-grabbing. Golden Pulse is a warm, luxurious scent made for celebrations, compliments, and standing out wherever you go.',
-          category: 'Warm',
-          imageUrl: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800',
-          luxuryStory: 'Golden Pulse is the rhythm of a night that never ends. It opens with a burst of sweet, spicy energy before melting into a luxurious, honeyed warmth. It is a fragrance for the bold, the charismatic, and the unforgettable.',
-          packagingDetails: ['Amber Tinted Glass', 'Gold Leaf Detailing', 'Premium Box'],
-          specifications: {
-            topNotes: ['Cinnamon', 'Honey', 'Blood Orange'],
-            middleNotes: ['Nutmeg', 'Orchid', 'Clove'],
-            baseNotes: ['Tonka Bean', 'Amber', 'Mahogany'],
-            longevity: 95,
-            sillage: 'Strong',
-            occasions: ['Parties', 'Winter Nights', 'Celebrations']
-          }
-        },
-        {
-          id: 'tobacco-trail',
-          name: 'TOBACCO TRAIL',
-          price: 2250,
-          stock: 50,
-          description: 'Deep, mature, and timeless. Tobacco Trail wraps smoky richness with refined warmth, creating a bold signature scent for those who appreciate classic masculinity with modern edge.',
-          category: 'Woody',
-          imageUrl: 'https://images.unsplash.com/photo-1615397323758-0e1069c9b451?auto=format&fit=crop&q=80&w=800',
-          luxuryStory: 'Tobacco Trail is an homage to classic masculinity and refined taste. The raw, earthy richness of tobacco is perfectly balanced by the smooth sweetness of vanilla and tonka bean. A scent that speaks of old libraries, leather armchairs, and quiet confidence.',
-          packagingDetails: ['Smoked Glass', 'Copper Engraving', 'Leather-Bound Box'],
-          specifications: {
-            topNotes: ['Tobacco Leaf', 'Spicy Notes', 'Bergamot'],
-            middleNotes: ['Vanilla', 'Cacao', 'Tonka Bean'],
-            baseNotes: ['Dried Fruits', 'Woody Notes', 'Sweet Sap'],
-            longevity: 92,
-            sillage: 'Strong',
-            occasions: ['Evening Events', 'Autumn Days', 'Formal Gatherings']
-          }
+      {
+        id: 'starborn',
+        name: 'STARBORN',
+        price: 2250,
+        stock: 50,
+        description: 'A bold, charismatic scent crafted for leaders and dreamers.',
+        category: 'Bold',
+        imageUrl: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800',
+        luxuryStory: 'Starborn is the scent of destiny.',
+        packagingDetails: ['Weighted Obsidian Glass', 'Gold-Embossed Monogram', 'Magnetic Precision Cap'],
+        badge: 'Limited Edition',
+        specifications: {
+          topNotes: ['Saffron', 'Bergamot', 'Spiced Cardamom'],
+          middleNotes: ['Black Rose', 'Aged Oud', 'Leather'],
+          baseNotes: ['Amber', 'Vanilla', 'Smoked Patchouli'],
+          longevity: 98,
+          sillage: 'Strong',
+          occasions: ['Gala Evenings', 'Power Meetings', 'Night Out']
         }
-      ];
-      for (const p of mockProducts) {
-        const docRef = doc(db, 'products', p.id);
-        batch.set(docRef, sanitizeForStorage(p));
+      },
+      {
+        id: 'cool-current',
+        name: 'COOL CURRENT',
+        price: 2250,
+        stock: 50,
+        description: 'Fresh, modern, and effortlessly confident.',
+        category: 'Fresh',
+        imageUrl: 'https://images.unsplash.com/photo-1590156546946-ce55a12a6a5d?auto=format&fit=crop&q=80&w=800',
+        luxuryStory: 'Cool Current is a breath of absolute clarity.',
+        packagingDetails: ['Matte Teal Finish', 'Silver Engraving', 'Soft-Touch Presentation Box'],
+        specifications: {
+          topNotes: ['Sea Salt', 'Iced Lemon', 'Grapefruit'],
+          middleNotes: ['Mint', 'Neroli', 'Lavender'],
+          baseNotes: ['Amberwood', 'White Musk', 'Cedar'],
+          longevity: 85,
+          sillage: 'Moderate',
+          occasions: ['Daily Wear', 'Summer Days', 'Office']
+        }
       }
-      await batch.commit();
-      localStorage.setItem(SEED_FLAG_KEY, 'true');
+    ];
+
+    for (const p of mockProducts) {
+      batch.set(doc(db, 'products', p.id), sanitizeForStorage(p));
+    }
+
+    const mockBundles: Bundle[] = [
+      {
+        id: 'vault-duo',
+        title: 'The Vault Duo',
+        productIds: ['starborn', 'cool-current'],
+        bundlePrice: 4500,
+        originalPrice: 5600,
+        discountText: 'Reserved Pairing • Free Concierge Shipping',
+        type: 'duo',
+        badge: 'Popular',
+        description: 'Select the ultimate day/night rotation from our Reserved collections.'
+      }
+    ];
+
+    for (const b of mockBundles) {
+      batch.set(doc(db, 'bundles', b.id), sanitizeForStorage(b));
+    }
+
+    await batch.commit();
+    localStorage.setItem(SEED_FLAG_KEY, 'true');
   } catch (e) {
     console.error('Seeding error:', e);
   }

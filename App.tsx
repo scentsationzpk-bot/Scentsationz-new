@@ -21,7 +21,7 @@ import About from './pages/About';
 import Toast from './components/Toast';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import LiveOrdersPopup from './components/LiveOrdersPopup';
-import { getStoreDataSync, seedIfEmpty, getProducts, getOrders } from './storage';
+import { getStoreDataSync, seedIfEmpty, getProducts, getBundles, getOrders } from './storage';
 
 interface ToastContextType {
   showToast: (message: string, type?: 'success' | 'error') => void;
@@ -55,7 +55,15 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const init = async () => {
-      await seedIfEmpty();
+      // Lightning fast: don't even wait for seedIfEmpty if already seeded
+      if (!localStorage.getItem('scentsationz_seeded_v1')) {
+        await seedIfEmpty();
+      }
+      
+      // Pre-fetch data in background
+      getProducts();
+      getBundles();
+      
       setReady(true);
     };
     init();

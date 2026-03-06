@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getProducts } from '../storage';
+import { getProducts, getStoreDataSync } from '../storage';
 import { Product } from '../types';
 
 const Home: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(getStoreDataSync().products);
 
   useEffect(() => {
     const fetch = async () => {

@@ -14,13 +14,12 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 /**
  * Enhanced stability for Firestore connection.
- * experimentalForceLongPolling and useFetchStreams: false are critical for 
+ * experimentalForceLongPolling is critical for 
  * reliability in environments with aggressive proxies or network timeouts.
  */
 export const db = initializeFirestore(app, {
   localCache: persistentLocalCache({ 
     tabManager: persistentMultipleTabManager() 
   }),
-  experimentalForceLongPolling: true,
-  useFetchStreams: false
+  experimentalForceLongPolling: true
 });
