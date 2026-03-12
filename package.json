@@ -11,13 +11,10 @@
   },
   "dependencies": {
     "@google/genai": "^1.44.0",
-    "@tailwindcss/postcss": "^4.2.1",
     "@tailwindcss/vite": "^4.2.1",
-    "autoprefixer": "^10.4.27",
     "express": "^5.2.1",
     "firebase": "^12.7.0",
     "nodemailer": "^8.0.2",
-    "postcss": "^8.5.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-router-dom": "^7.11.0",

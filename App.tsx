@@ -1,36 +1,46 @@
 
-import React, { useEffect, useState, createContext, useContext } from 'react';
+import React, { useEffect, useState, createContext, useContext, Suspense } from 'react';
 import { HashRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './pages/Home';
-import Shop from './pages/Shop';
-import ProductDetail from './pages/ProductDetail';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
-import OrderSuccess from './pages/OrderSuccess';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminProducts from './pages/AdminProducts';
-import AdminOrders from './pages/AdminOrders';
-import AdminSpecs from './pages/AdminSpecs';
-import AdminBundles from './pages/AdminBundles';
-import AdminPromoters from './pages/AdminPromoters';
-import AdminSettings from './pages/AdminSettings';
-import AdminEmails from './pages/AdminEmails';
-import SpecsList from './pages/SpecsList';
-import PerfumeSpecs from './pages/PerfumeSpecs';
-import About from './pages/About';
-import PromoterLogin from './pages/PromoterLogin';
-import PromoterSignup from './pages/PromoterSignup';
-import PromoterDashboard from './pages/PromoterDashboard';
-import AdminPayouts from './pages/AdminPayouts';
 import Toast from './components/Toast';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import WhatsAppButton from './components/WhatsAppButton';
 import LiveOrdersPopup from './components/LiveOrdersPopup';
-import BrandBuilder from './pages/BrandBuilder';
-import { getStoreDataSync, seedIfEmpty, getProducts, getBundles, getOrders, incrementReferralClicks, initRealTimeSync } from './storage';
+import { getStoreDataSync, seedIfEmpty, getProducts, getBundles, getOrders, initRealTimeSync } from './storage';
+
+// Lazy load pages
+const Home = React.lazy(() => import('./pages/Home'));
+const Shop = React.lazy(() => import('./pages/Shop'));
+const ProductDetail = React.lazy(() => import('./pages/ProductDetail'));
+const Cart = React.lazy(() => import('./pages/Cart'));
+const Checkout = React.lazy(() => import('./pages/Checkout'));
+const OrderSuccess = React.lazy(() => import('./pages/OrderSuccess'));
+const AdminLogin = React.lazy(() => import('./pages/AdminLogin'));
+const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'));
+const AdminProducts = React.lazy(() => import('./pages/AdminProducts'));
+const AdminOrders = React.lazy(() => import('./pages/AdminOrders'));
+const AdminSpecs = React.lazy(() => import('./pages/AdminSpecs'));
+const AdminBundles = React.lazy(() => import('./pages/AdminBundles'));
+const AdminPromoters = React.lazy(() => import('./pages/AdminPromoters'));
+const AdminSettings = React.lazy(() => import('./pages/AdminSettings'));
+const AdminEmails = React.lazy(() => import('./pages/AdminEmails'));
+const SpecsList = React.lazy(() => import('./pages/SpecsList'));
+const PerfumeSpecs = React.lazy(() => import('./pages/PerfumeSpecs'));
+const About = React.lazy(() => import('./pages/About'));
+const PromoterLogin = React.lazy(() => import('./pages/PromoterLogin'));
+const PromoterSignup = React.lazy(() => import('./pages/PromoterSignup'));
+const PromoterDashboard = React.lazy(() => import('./pages/PromoterDashboard'));
+const AdminPayouts = React.lazy(() => import('./pages/AdminPayouts'));
+const BrandBuilder = React.lazy(() => import('./pages/BrandBuilder'));
+const AdminPromotions = React.lazy(() => import('./pages/AdminPromotions'));
+const Promotions = React.lazy(() => import('./pages/Promotions'));
+
+const LoadingFallback = () => (
+  <div className="h-screen w-full flex items-center justify-center bg-white">
+    <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 interface ToastContextType {
   showToast: (message: string, type?: 'success' | 'error') => void;
@@ -52,9 +62,6 @@ const ScrollToTop = () => {
   
   return null;
 };
-
-import AdminPromotions from './pages/AdminPromotions';
-import Promotions from './pages/Promotions';
 
 const ProtectedRoute: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const state = getStoreDataSync();
@@ -110,38 +117,40 @@ const App: React.FC = () => {
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/order-success/:orderId" element={<OrderSuccess />} />
-              <Route path="/specs" element={<SpecsList />} />
-              <Route path="/specs/:id" element={<PerfumeSpecs />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/promoter/login" element={<PromoterLogin />} />
-              <Route path="/promoter/signup" element={<PromoterSignup />} />
-              <Route path="/promoter/dashboard" element={<PromoterDashboard />} />
-              <Route path="/promotions" element={<Promotions />} />
-              <Route path="/brand-builder" element={<BrandBuilder />} />
-              <Route path="/admin-login" element={<AdminLogin />} />
-              <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}>
-                <Route index element={<Navigate to="dashboard" replace />} />
-                <Route path="dashboard" element={<DashboardOverview />} />
-                <Route path="products" element={<AdminProducts />} />
-                <Route path="orders" element={<AdminOrders />} />
-                <Route path="bundles" element={<AdminBundles />} />
-                <Route path="promoters" element={<AdminPromoters />} />
-                <Route path="payouts" element={<AdminPayouts />} />
-                <Route path="promotions" element={<AdminPromotions />} />
-                <Route path="emails" element={<AdminEmails />} />
-                <Route path="settings" element={<AdminSettings />} />
-                <Route path="specs/:id" element={<AdminSpecs />} />
-              </Route>
-              {/* Catch-all route to handle path-based routing issues */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <Suspense fallback={<LoadingFallback />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/product/:id" element={<ProductDetail />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/order-success/:orderId" element={<OrderSuccess />} />
+                <Route path="/specs" element={<SpecsList />} />
+                <Route path="/specs/:id" element={<PerfumeSpecs />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/promoter/login" element={<PromoterLogin />} />
+                <Route path="/promoter/signup" element={<PromoterSignup />} />
+                <Route path="/promoter/dashboard" element={<PromoterDashboard />} />
+                <Route path="/promotions" element={<Promotions />} />
+                <Route path="/brand-builder" element={<BrandBuilder />} />
+                <Route path="/admin-login" element={<AdminLogin />} />
+                <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}>
+                  <Route index element={<Navigate to="dashboard" replace />} />
+                  <Route path="dashboard" element={<DashboardOverview />} />
+                  <Route path="products" element={<AdminProducts />} />
+                  <Route path="orders" element={<AdminOrders />} />
+                  <Route path="bundles" element={<AdminBundles />} />
+                  <Route path="promoters" element={<AdminPromoters />} />
+                  <Route path="payouts" element={<AdminPayouts />} />
+                  <Route path="promotions" element={<AdminPromotions />} />
+                  <Route path="emails" element={<AdminEmails />} />
+                  <Route path="settings" element={<AdminSettings />} />
+                  <Route path="specs/:id" element={<AdminSpecs />} />
+                </Route>
+                {/* Catch-all route to handle path-based routing issues */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
           </main>
           <Footer />
           <WhatsAppButton />
