@@ -1,5 +1,5 @@
-import { Product, CartItem, Order, Bundle, StoreData } from './types';
-import { db } from './firebase';
+import { Product, CartItem, Order, Bundle, StoreData, Promoter, WithdrawalRequest, Promotion } from './types';
+import { db, auth } from './firebase';
 import { 
   collection, 
   addDoc, 
@@ -13,7 +13,10 @@ import {
   setDoc,
   getDoc,
   writeBatch,
-  limit
+  limit,
+  where,
+  increment,
+  onSnapshot
 } from 'firebase/firestore';
 
 const STORAGE_KEY = 'scentsationz_universal_v4';
@@ -21,6 +24,23 @@ const SEED_FLAG_KEY = 'scentsationz_seeded_v1';
 
 let productsCache: Product[] | null = null;
 let bundlesCache: Bundle[] | null = null;
+
+// Initialize real-time listeners for automatic updates
+export const initRealTimeSync = () => {
+  onSnapshot(collection(db, 'products'), (snapshot) => {
+    const fresh = snapshot.docs.map(mapDocToProduct);
+    productsCache = fresh;
+    localStorage.setItem('scentsationz_products_cache', JSON.stringify(fresh));
+    window.dispatchEvent(new Event('products_updated'));
+  });
+
+  onSnapshot(collection(db, 'bundles'), (snapshot) => {
+    const fresh = snapshot.docs.map(mapDocToBundle);
+    bundlesCache = fresh;
+    localStorage.setItem('scentsationz_bundles_cache', JSON.stringify(fresh));
+    window.dispatchEvent(new Event('bundles_updated'));
+  });
+};
 
 const sanitizeForStorage = <T>(obj: T): T => {
   if (!obj) return obj;
@@ -119,11 +139,6 @@ export const getBundles = async (): Promise<Bundle[]> => {
     const cached = localStorage.getItem('scentsationz_bundles_cache');
     if (cached) {
       bundlesCache = JSON.parse(cached);
-      getDocs(collection(db, 'bundles')).then(snapshot => {
-        const fresh = snapshot.docs.map(mapDocToBundle);
-        bundlesCache = fresh;
-        localStorage.setItem('scentsationz_bundles_cache', JSON.stringify(fresh));
-      });
       return bundlesCache!;
     }
   } catch (e) {}
@@ -146,11 +161,6 @@ export const getProducts = async (): Promise<Product[]> => {
     const cached = localStorage.getItem('scentsationz_products_cache');
     if (cached) {
       productsCache = JSON.parse(cached);
-      getDocs(collection(db, 'products')).then(snapshot => {
-        const fresh = snapshot.docs.map(mapDocToProduct);
-        productsCache = fresh;
-        localStorage.setItem('scentsationz_products_cache', JSON.stringify(fresh));
-      });
       return productsCache!;
     }
   } catch (e) {}
@@ -191,16 +201,35 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 };
 
 export const addProduct = async (data: Product) => {
-  await setDoc(doc(db, 'products', data.id), sanitizeForStorage(data));
+  const sanitized = sanitizeForStorage(data);
+  await setDoc(doc(db, 'products', data.id), sanitized);
+  if (productsCache) {
+    const idx = productsCache.findIndex(p => p.id === data.id);
+    if (idx > -1) productsCache[idx] = sanitized;
+    else productsCache.push(sanitized);
+    window.dispatchEvent(new Event('products_updated'));
+  }
 };
 
 export const updateProduct = async (product: Product) => {
   const { id, ...data } = product;
-  await updateDoc(doc(db, 'products', id), sanitizeForStorage(data));
+  const sanitized = sanitizeForStorage(data);
+  await updateDoc(doc(db, 'products', id), sanitized);
+  if (productsCache) {
+    const idx = productsCache.findIndex(p => p.id === id);
+    if (idx > -1) {
+      productsCache[idx] = { ...productsCache[idx], ...sanitized };
+      window.dispatchEvent(new Event('products_updated'));
+    }
+  }
 };
 
 export const deleteProduct = async (id: string) => {
   await deleteDoc(doc(db, 'products', id));
+  if (productsCache) {
+    productsCache = productsCache.filter(p => p.id !== id);
+    window.dispatchEvent(new Event('products_updated'));
+  }
 };
 
 export const getOrders = async (): Promise<Order[]> => {
@@ -219,17 +248,106 @@ export const getOrders = async (): Promise<Order[]> => {
 };
 
 export const addOrder = async (order: Omit<Order, 'orderId' | 'date'>) => {
-  const docRef = await addDoc(collection(db, 'orders'), {
+  let commissionAmount = 0;
+  let commissionStatus: 'Pending' | 'Paid' | 'Cancelled' | undefined = undefined;
+  
+  if (order.referralCode) {
+    let commissionRate = 0.10; // default 10%
+    try {
+      const settingsSnap = await getDoc(doc(db, 'settings', 'referral'));
+      if (settingsSnap.exists()) {
+        const rate = settingsSnap.data().commissionRate;
+        if (typeof rate === 'number') {
+          commissionRate = rate / 100;
+        }
+      }
+    } catch (e) {
+      console.error("Failed to fetch commission rate", e);
+    }
+    
+    commissionAmount = Math.floor(order.total * commissionRate);
+    commissionStatus = 'Pending';
+  }
+
+  const orderData = {
     ...sanitizeForStorage(order),
+    commissionAmount,
+    commissionStatus,
     createdAt: serverTimestamp()
-  });
+  };
+
+  const docRef = await addDoc(collection(db, 'orders'), orderData);
+  
+  // Decrement stock for each item
+  try {
+    const batch = writeBatch(db);
+    for (const item of order.items) {
+      const productRef = doc(db, 'products', item.id);
+      batch.update(productRef, {
+        stock: increment(-item.quantity)
+      });
+    }
+    await batch.commit();
+  } catch (e) {
+    console.error("Failed to update inventory", e);
+  }
+  
+  if (order.referralCode) {
+    // Increment totalOrders for the promoter
+    try {
+      const promotersRef = collection(db, 'promoters');
+      const q = query(promotersRef, where('referralCode', '==', order.referralCode));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const promoterDoc = querySnapshot.docs[0];
+        await updateDoc(doc(db, 'promoters', promoterDoc.id), {
+          totalOrders: increment(1)
+        });
+      }
+    } catch (e) {
+      console.error("Failed to update promoter totalOrders", e);
+    }
+  }
+
   setLocalCart([]);
   window.dispatchEvent(new Event('storage'));
   return docRef.id;
 };
 
 export const updateOrderStatus = async (orderId: string, status: Order['status']) => {
-  await updateDoc(doc(db, 'orders', orderId), { status });
+  const orderRef = doc(db, 'orders', orderId);
+  const orderSnap = await getDoc(orderRef);
+  
+  if (orderSnap.exists()) {
+    const orderData = orderSnap.data() as Order;
+    
+    // If order is completed and has a pending commission, finalize it
+    if (status === 'Completed' && orderData.status !== 'Completed' && orderData.referralCode && orderData.commissionStatus === 'Pending') {
+      try {
+        const promotersRef = collection(db, 'promoters');
+        const q = query(promotersRef, where('referralCode', '==', orderData.referralCode));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          const promoterDoc = querySnapshot.docs[0];
+          await updateDoc(doc(db, 'promoters', promoterDoc.id), {
+            totalEarned: increment(orderData.commissionAmount || 0),
+            currentBalance: increment(orderData.commissionAmount || 0)
+          });
+          
+          await updateDoc(orderRef, { status, commissionStatus: 'Paid' });
+          return;
+        }
+      } catch (e) {
+        console.error("Failed to finalize commission", e);
+      }
+    } else if (status === 'Cancelled' && orderData.commissionStatus === 'Pending') {
+      await updateDoc(orderRef, { status, commissionStatus: 'Cancelled' });
+      return;
+    }
+  }
+
+  await updateDoc(orderRef, { status });
 };
 
 export const deleteOrder = async (orderId: string) => {
@@ -346,7 +464,185 @@ export const updateCartQuantity = (
   }
 };
 
+// --- Promoter Functions ---
+
+export const createPromoter = async (uid: string, email: string, name: string) => {
+  const referralCode = name.toLowerCase().replace(/[^a-z0-9]/g, '') + Math.floor(Math.random() * 1000);
+  const promoter: Promoter = {
+    id: uid,
+    email,
+    name,
+    referralCode,
+    totalReferrals: 0,
+    totalOrders: 0,
+    totalEarned: 0,
+    currentBalance: 0,
+    createdAt: new Date().toISOString()
+  };
+  await setDoc(doc(db, 'promoters', uid), sanitizeForStorage(promoter));
+  return promoter;
+};
+
+export const getPromoter = async (uid: string): Promise<Promoter | null> => {
+  try {
+    const docSnap = await getDoc(doc(db, 'promoters', uid));
+    if (docSnap.exists()) {
+      return docSnap.data() as Promoter;
+    }
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getPromoterByReferralCode = async (code: string): Promise<Promoter | null> => {
+  try {
+    const q = query(collection(db, 'promoters'), where('referralCode', '==', code));
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      return snapshot.docs[0].data() as Promoter;
+    }
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const incrementReferralClicks = async (code: string) => {
+  try {
+    const q = query(collection(db, 'promoters'), where('referralCode', '==', code));
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      const docId = snapshot.docs[0].id;
+      await updateDoc(doc(db, 'promoters', docId), {
+        totalReferrals: increment(1)
+      });
+    }
+  } catch (e) {
+    console.error("Failed to increment referral clicks", e);
+  }
+};
+
+export const requestWithdrawal = async (promoterId: string, amount: number, method: 'Easypaisa' | 'JazzCash', accountName: string, accountNumber: string) => {
+  const promoterRef = doc(db, 'promoters', promoterId);
+  const promoterSnap = await getDoc(promoterRef);
+  
+  if (!promoterSnap.exists()) throw new Error("Promoter not found");
+  const promoterData = promoterSnap.data() as Promoter;
+  
+  if (promoterData.currentBalance < amount) throw new Error("Insufficient balance");
+  
+  // Deduct balance immediately
+  await updateDoc(promoterRef, {
+    currentBalance: increment(-amount)
+  });
+
+  const request: Omit<WithdrawalRequest, 'id'> = {
+    promoterId,
+    amount,
+    method,
+    accountName,
+    accountNumber,
+    status: 'Pending',
+    date: new Date().toISOString()
+  };
+
+  await addDoc(collection(db, 'withdrawals'), sanitizeForStorage(request));
+};
+
+export const getWithdrawalRequests = async (promoterId?: string): Promise<WithdrawalRequest[]> => {
+  try {
+    let q = query(collection(db, 'withdrawals'), orderBy('date', 'desc'));
+    if (promoterId) {
+      q = query(collection(db, 'withdrawals'), where('promoterId', '==', promoterId), orderBy('date', 'desc'));
+    }
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(d => ({ ...d.data(), id: d.id } as WithdrawalRequest));
+  } catch (error) {
+    return [];
+  }
+};
+
+export const updateWithdrawalStatus = async (requestId: string, status: 'Approved' | 'Rejected', promoterId: string, amount: number) => {
+  await updateDoc(doc(db, 'withdrawals', requestId), { status });
+  
+  if (status === 'Rejected') {
+    // Refund balance
+    await updateDoc(doc(db, 'promoters', promoterId), {
+      currentBalance: increment(amount)
+    });
+  }
+};
+
+export const getAllPromoters = async (): Promise<Promoter[]> => {
+  try {
+    const snapshot = await getDocs(collection(db, 'promoters'));
+    return snapshot.docs.map(d => d.data() as Promoter);
+  } catch (error) {
+    return [];
+  }
+};
+
 export const MOCK_BUNDLES: Bundle[] = [];
+
+// --- Promotions Functions ---
+
+export const getPromotions = async (): Promise<Promotion[]> => {
+  try {
+    const q = query(collection(db, 'promotions'));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Promotion));
+  } catch (e) {
+    console.error("Failed to fetch promotions", e);
+    return [];
+  }
+};
+
+export const addPromotion = async (promotion: Omit<Promotion, 'id'>) => {
+  const docRef = await addDoc(collection(db, 'promotions'), sanitizeForStorage(promotion));
+  return { id: docRef.id, ...promotion };
+};
+
+export const updatePromotion = async (id: string, promotion: Partial<Promotion>) => {
+  await updateDoc(doc(db, 'promotions', id), sanitizeForStorage(promotion));
+};
+
+export const deletePromotion = async (id: string) => {
+  await deleteDoc(doc(db, 'promotions', id));
+};
+
+export const captureEmail = async (email: string, source: string = 'newsletter') => {
+  try {
+    const data = {
+      email,
+      source,
+      createdAt: serverTimestamp()
+    };
+    await addDoc(collection(db, 'captured_emails'), data);
+    
+    // Trigger server-side email if possible
+    try {
+      await fetch('/api/capture-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (e) {
+      console.warn("Server notification failed, but email was saved to database.");
+    }
+    
+    return true;
+  } catch (e) {
+    console.error("Failed to capture email", e);
+    return false;
+  }
+};
+
+export const getCapturedEmails = async () => {
+  const q = query(collection(db, 'captured_emails'), orderBy('createdAt', 'desc'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
 
 export const seedIfEmpty = async () => {
   if (localStorage.getItem(SEED_FLAG_KEY)) return;
@@ -390,7 +686,7 @@ export const seedIfEmpty = async () => {
         stock: 50,
         description: 'Fresh, modern, and effortlessly confident.',
         category: 'Fresh',
-        imageUrl: 'https://images.unsplash.com/photo-1590156546946-ce55a12a6a5d?auto=format&fit=crop&q=80&w=800',
+        imageUrl: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800',
         luxuryStory: 'Cool Current is a breath of absolute clarity.',
         packagingDetails: ['Matte Teal Finish', 'Silver Engraving', 'Soft-Touch Presentation Box'],
         specifications: {
@@ -400,6 +696,45 @@ export const seedIfEmpty = async () => {
           longevity: 85,
           sillage: 'Moderate',
           occasions: ['Daily Wear', 'Summer Days', 'Office']
+        }
+      },
+      {
+        id: 'velvet-night',
+        name: 'VELVET NIGHT',
+        price: 2450,
+        stock: 30,
+        description: 'Deep, mysterious, and intensely seductive.',
+        category: 'Warm',
+        imageUrl: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800',
+        luxuryStory: 'Velvet Night captures the essence of midnight elegance.',
+        packagingDetails: ['Deep Purple Crystal', 'Silver Filigree', 'Velvet-Lined Case'],
+        badge: 'Bestseller',
+        specifications: {
+          topNotes: ['Pink Pepper', 'Mandarin'],
+          middleNotes: ['Jasmine', 'Coffee', 'Bitter Almond'],
+          baseNotes: ['Vanilla', 'Patchouli', 'Cedarwood'],
+          longevity: 92,
+          sillage: 'Strong',
+          occasions: ['Date Nights', 'Evening Events']
+        }
+      },
+      {
+        id: 'urban-edge',
+        name: 'URBAN EDGE',
+        price: 2150,
+        stock: 45,
+        description: 'Sharp, metallic, and distinctly metropolitan.',
+        category: 'Woody',
+        imageUrl: 'https://images.unsplash.com/photo-1615484477778-ca3b77940c25?auto=format&fit=crop&q=80&w=800',
+        luxuryStory: 'Urban Edge is for the modern pioneer.',
+        packagingDetails: ['Brushed Aluminum', 'Industrial Design', 'Minimalist Box'],
+        specifications: {
+          topNotes: ['Gin', 'Juniper', 'Aldehydes'],
+          middleNotes: ['Iris', 'Violet', 'Leather'],
+          baseNotes: ['Sandalwood', 'Vetiver', 'Oakmoss'],
+          longevity: 88,
+          sillage: 'Moderate',
+          occasions: ['Urban Exploration', 'Creative Work']
         }
       }
     ];
@@ -426,9 +761,39 @@ export const seedIfEmpty = async () => {
       batch.set(doc(db, 'bundles', b.id), sanitizeForStorage(b));
     }
 
+    const mockPromotions: Promotion[] = [
+      {
+        id: 'SCENT101',
+        title: 'Free Delivery',
+        code: 'SCENT101',
+        discountAmount: 300,
+        description: 'Free Delivery for 1 Month',
+        type: 'fixed',
+        isActive: true,
+        validUntil: '2026-04-12',
+        colorClass: 'bg-blue-600'
+      },
+      {
+        id: 'welcome-10',
+        title: 'Welcome Offer',
+        description: 'Get 10% off your first order with us.',
+        code: 'WELCOME10',
+        discountPercentage: 10,
+        type: 'percentage',
+        validUntil: '2026-12-31',
+        isActive: true,
+        colorClass: 'bg-slate-900'
+      }
+    ];
+
+    for (const p of mockPromotions) {
+      batch.set(doc(db, 'promotions', p.id), sanitizeForStorage(p));
+    }
+
     await batch.commit();
     localStorage.setItem(SEED_FLAG_KEY, 'true');
   } catch (e) {
     console.error('Seeding error:', e);
   }
 };
+

@@ -32,7 +32,7 @@ const OrderSuccess: React.FC = () => {
         <p className="text-slate-900 font-black text-3xl italic leading-tight uppercase">“A masterpiece is headed your way. 🏛️”</p>
       </div>
       
-      <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
+      <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-16">
         <button 
           onClick={handleConfirmWhatsApp}
           className="px-16 py-8 bg-slate-900 text-white font-black rounded-3xl hover:bg-black transition-all shadow-2xl active:scale-95 text-xl uppercase tracking-widest border-4 border-slate-900"
@@ -41,6 +41,18 @@ const OrderSuccess: React.FC = () => {
         </button>
         <Link to="/shop" className="text-xl font-black text-slate-400 uppercase tracking-widest hover:text-slate-900 transition-colors underline underline-offset-8">
           Back to Collection
+        </Link>
+      </div>
+
+      {/* Viral Loop: Join Referral Program */}
+      <div className="bg-blue-50 p-10 rounded-[3rem] border-4 border-blue-600 max-w-3xl mx-auto shadow-[10px_10px_0px_0px_rgba(37,99,235,1)]">
+        <h2 className="text-3xl font-black text-blue-900 uppercase tracking-tighter mb-4">Love Scentsationz? Earn with us! 💸</h2>
+        <p className="text-blue-700 font-bold mb-8">Join our Promoter Program and earn 10% commission on every sale you refer. Get paid directly to your Easypaisa or JazzCash account.</p>
+        <Link 
+          to="/promoter/signup"
+          className="inline-block px-12 py-6 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 transition-all shadow-xl active:scale-95 text-lg uppercase tracking-widest border-4 border-blue-900"
+        >
+          Become a Promoter 🚀
         </Link>
       </div>
 

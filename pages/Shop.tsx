@@ -21,6 +21,13 @@ const Shop: React.FC = () => {
       setLoading(false);
     };
     fetch();
+
+    const handleUpdate = () => {
+      fetch();
+    };
+
+    window.addEventListener('products_updated', handleUpdate);
+    return () => window.removeEventListener('products_updated', handleUpdate);
   }, []);
 
   useEffect(() => {

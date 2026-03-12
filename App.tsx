@@ -15,13 +15,20 @@ import AdminProducts from './pages/AdminProducts';
 import AdminOrders from './pages/AdminOrders';
 import AdminSpecs from './pages/AdminSpecs';
 import AdminBundles from './pages/AdminBundles';
+import AdminPromoters from './pages/AdminPromoters';
+import AdminSettings from './pages/AdminSettings';
+import AdminEmails from './pages/AdminEmails';
 import SpecsList from './pages/SpecsList';
 import PerfumeSpecs from './pages/PerfumeSpecs';
 import About from './pages/About';
+import PromoterLogin from './pages/PromoterLogin';
+import PromoterSignup from './pages/PromoterSignup';
+import PromoterDashboard from './pages/PromoterDashboard';
+import AdminPayouts from './pages/AdminPayouts';
 import Toast from './components/Toast';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import LiveOrdersPopup from './components/LiveOrdersPopup';
-import { getStoreDataSync, seedIfEmpty, getProducts, getBundles, getOrders } from './storage';
+import { getStoreDataSync, seedIfEmpty, getProducts, getBundles, getOrders, incrementReferralClicks, initRealTimeSync } from './storage';
 
 interface ToastContextType {
   showToast: (message: string, type?: 'success' | 'error') => void;
@@ -40,8 +47,12 @@ const ScrollToTop = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  
   return null;
 };
+
+import AdminPromotions from './pages/AdminPromotions';
+import Promotions from './pages/Promotions';
 
 const ProtectedRoute: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   const state = getStoreDataSync();
@@ -55,6 +66,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const init = async () => {
+      initRealTimeSync();
       // Lightning fast: don't even wait for seedIfEmpty if already seeded
       if (!localStorage.getItem('scentsationz_seeded_v1')) {
         await seedIfEmpty();
@@ -106,6 +118,10 @@ const App: React.FC = () => {
               <Route path="/specs" element={<SpecsList />} />
               <Route path="/specs/:id" element={<PerfumeSpecs />} />
               <Route path="/about" element={<About />} />
+              <Route path="/promoter/login" element={<PromoterLogin />} />
+              <Route path="/promoter/signup" element={<PromoterSignup />} />
+              <Route path="/promoter/dashboard" element={<PromoterDashboard />} />
+              <Route path="/promotions" element={<Promotions />} />
               <Route path="/admin-login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}>
                 <Route index element={<Navigate to="dashboard" replace />} />
@@ -113,6 +129,11 @@ const App: React.FC = () => {
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="orders" element={<AdminOrders />} />
                 <Route path="bundles" element={<AdminBundles />} />
+                <Route path="promoters" element={<AdminPromoters />} />
+                <Route path="payouts" element={<AdminPayouts />} />
+                <Route path="promotions" element={<AdminPromotions />} />
+                <Route path="emails" element={<AdminEmails />} />
+                <Route path="settings" element={<AdminSettings />} />
                 <Route path="specs/:id" element={<AdminSpecs />} />
               </Route>
               {/* Catch-all route to handle path-based routing issues */}

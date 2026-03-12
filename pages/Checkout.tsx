@@ -13,9 +13,12 @@ const Checkout: React.FC = () => {
     phone: '',
     city: '',
     address: '',
+    referralCode: localStorage.getItem('scentsationz_referral_code') || '',
   });
   const [paymentMethod, setPaymentMethod] = useState<'JazzCash' | 'Cash on Delivery'>('JazzCash');
   const [loading, setLoading] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [isCouponApplied, setIsCouponApplied] = useState(false);
 
   useEffect(() => {
     setData(getStoreDataSync());
@@ -41,7 +44,19 @@ const Checkout: React.FC = () => {
   const jazzCashDiscount = paymentMethod === 'JazzCash' ? 200 : 0;
   const codSurcharge = 0; // No extra COD charges as per request
   
-  const finalTotal = subtotalAfterDiscount - jazzCashDiscount + codSurcharge;
+  const deliveryCharge = 300;
+  const deliveryDiscount = isCouponApplied ? 300 : 0;
+  
+  const finalTotal = subtotalAfterDiscount - jazzCashDiscount + codSurcharge + deliveryCharge - deliveryDiscount;
+
+  const handleApplyCoupon = () => {
+    if (couponCode.toUpperCase() === 'SCENT101') {
+      setIsCouponApplied(true);
+      showToast('Coupon Applied! Free Delivery Activated 🚚', 'success');
+    } else {
+      showToast('Invalid Coupon Code ❌', 'error');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,10 +80,12 @@ const Checkout: React.FC = () => {
         total: finalTotal,
         discountAmount: discountAmount + jazzCashDiscount, // Combine discounts for record
         discountPercentage: discountPercentage,
-        status: 'Pending' as const
+        status: 'Pending' as const,
+        referralCode: formData.referralCode || undefined
       };
 
       const orderId = await addOrder(orderPayload);
+      localStorage.removeItem('scentsationz_referral_code');
       showToast('Order Vaulted! 🎉', 'success');
       navigate(`/order-success/${orderId}`);
     } catch (error) {
@@ -109,8 +126,35 @@ const Checkout: React.FC = () => {
               </div>
 
               <div className="space-y-3">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Apply Coupon</label>
+                <div className="flex gap-4">
+                  <input 
+                    type="text" 
+                    value={couponCode} 
+                    onChange={e => setCouponCode(e.target.value)} 
+                    disabled={isCouponApplied}
+                    className="flex-grow px-8 py-5 rounded-2xl border-4 border-slate-100 bg-slate-50 focus:bg-white focus:border-slate-900 transition-all font-black text-xl outline-none shadow-[4px_4px_0px_0px_rgba(15,23,42,0.05)] focus:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]" 
+                    placeholder="Enter Coupon Code" 
+                  />
+                  <button 
+                    type="button" 
+                    onClick={handleApplyCoupon}
+                    disabled={isCouponApplied || !couponCode}
+                    className="px-8 bg-slate-900 text-white font-black rounded-2xl border-4 border-slate-900 uppercase tracking-widest text-xs disabled:opacity-50"
+                  >
+                    {isCouponApplied ? 'Applied' : 'Apply'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-3">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Delivery Address</label>
                 <textarea required value={formData.address} onChange={e => setFormData(prev => ({ ...prev, address: e.target.value }))} className="w-full px-8 py-5 rounded-2xl border-4 border-slate-100 bg-slate-50 focus:bg-white focus:border-slate-900 transition-all font-black text-xl outline-none h-40 resize-none shadow-[4px_4px_0px_0px_rgba(15,23,42,0.05)] focus:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]" placeholder="Street, House No, Area..."></textarea>
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-4">Referral Code (Optional)</label>
+                <input type="text" value={formData.referralCode} onChange={e => setFormData(prev => ({ ...prev, referralCode: e.target.value }))} className="w-full px-8 py-5 rounded-2xl border-4 border-slate-100 bg-slate-50 focus:bg-white focus:border-slate-900 transition-all font-black text-xl outline-none shadow-[4px_4px_0px_0px_rgba(15,23,42,0.05)] focus:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]" placeholder="Enter code if you have one" />
               </div>
 
               {/* Payment Method Selector */}
@@ -233,8 +277,14 @@ const Checkout: React.FC = () => {
               )}
               <div className="flex justify-between text-slate-500 font-black uppercase text-xs tracking-widest">
                 <span>Shipping</span>
-                <span className="text-green-600">FREE 🚚</span>
+                <span>Rs. {deliveryCharge.toLocaleString()}</span>
               </div>
+              {deliveryDiscount > 0 && (
+                <div className="flex justify-between text-green-600 font-black uppercase text-xs tracking-widest">
+                  <span>Coupon (SCENT101)</span>
+                  <span>- Rs. {deliveryDiscount.toLocaleString()}</span>
+                </div>
+              )}
               <div className="pt-6 mt-4 border-t-4 border-slate-900 flex justify-between items-end">
                 <span className="text-xl font-black text-slate-900 uppercase tracking-tighter">Total Amount</span>
                 <span className="text-4xl font-black text-blue-600 tracking-tighter leading-none">Rs. {finalTotal.toLocaleString()}</span>

@@ -26,6 +26,13 @@ const AdminProducts: React.FC = () => {
 
   useEffect(() => {
     refreshProducts();
+
+    const handleUpdate = () => {
+      refreshProducts();
+    };
+
+    window.addEventListener('products_updated', handleUpdate);
+    return () => window.removeEventListener('products_updated', handleUpdate);
   }, []);
 
   const refreshProducts = async () => {
@@ -218,14 +225,27 @@ const AdminProducts: React.FC = () => {
 
               <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Cloud Visual Asset</label>
-                  <div className="flex items-center gap-8 bg-slate-50 p-6 rounded-[2.5rem] border-4 border-white">
-                    <div className="w-32 h-32 bg-white rounded-3xl border-4 border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
-                      {formData.imageUrl ? <img src={formData.imageUrl} className="w-full h-full object-contain p-2" /> : <span className="text-4xl">📸</span>}
+                  <div className="bg-slate-50 p-8 rounded-[2.5rem] border-4 border-white space-y-6">
+                    <div className="flex items-center gap-8">
+                      <div className="w-32 h-32 bg-white rounded-3xl border-4 border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
+                        {formData.imageUrl ? <img src={formData.imageUrl} className="w-full h-full object-contain p-2" /> : <span className="text-4xl">📸</span>}
+                      </div>
+                      <div className="flex-grow space-y-4">
+                        <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+                        <button type="button" onClick={() => fileInputRef.current?.click()} className="w-full py-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-blue-600 transition-all shadow-lg">Upload Local File</button>
+                        <p className="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] text-center">Max size: 800KB (Base64)</p>
+                      </div>
                     </div>
-                    <div className="flex-grow space-y-4">
-                      <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
-                      <button type="button" onClick={() => fileInputRef.current?.click()} className="w-full py-5 bg-slate-900 text-white font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-blue-600 transition-all shadow-xl">Replace Visual</button>
-                      <p className="text-[9px] text-slate-400 font-black uppercase tracking-[0.2em] text-center">Cloud stability limit: 800KB</p>
+                    
+                    <div className="space-y-2">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Or Paste Image URL (Recommended for Cloud Stability)</p>
+                      <input 
+                        type="text" 
+                        placeholder="https://example.com/image.jpg"
+                        value={formData.imageUrl.startsWith('data:') ? '' : formData.imageUrl} 
+                        onChange={e => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
+                        className="w-full px-6 py-4 rounded-xl border-2 border-slate-200 bg-white focus:border-blue-600 transition-all font-medium text-sm outline-none"
+                      />
                     </div>
                   </div>
               </div>

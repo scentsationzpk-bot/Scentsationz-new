@@ -78,6 +78,45 @@ export interface Order {
   discountPercentage?: number;
   status: 'Pending' | 'Completed' | 'Cancelled';
   date: string;
+  referralCode?: string;
+  commissionAmount?: number;
+  commissionStatus?: 'Pending' | 'Paid' | 'Cancelled';
+}
+
+export interface Promoter {
+  id: string; // Firebase Auth UID
+  email: string;
+  name: string;
+  referralCode: string;
+  totalReferrals: number;
+  totalOrders: number;
+  totalEarned: number;
+  currentBalance: number;
+  createdAt: string;
+}
+
+export interface WithdrawalRequest {
+  id: string;
+  promoterId: string;
+  amount: number;
+  method: 'Easypaisa' | 'JazzCash';
+  accountName: string;
+  accountNumber: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  date: string;
+}
+
+export interface Promotion {
+  id: string;
+  title: string;
+  description: string;
+  code: string;
+  discountPercentage?: number;
+  discountAmount?: number;
+  type: 'percentage' | 'fixed';
+  validUntil: string;
+  isActive: boolean;
+  colorClass: string;
 }
 
 export interface AdminState {

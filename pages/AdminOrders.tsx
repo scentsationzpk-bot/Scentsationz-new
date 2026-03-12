@@ -106,6 +106,11 @@ const AdminOrders: React.FC = () => {
                     </td>
                     <td className="px-8 py-6">
                       <span className="font-black text-slate-900">Rs. {Number(order.total).toLocaleString()}</span>
+                      {order.referralCode && (
+                        <div className="text-[10px] text-blue-600 font-black mt-1 uppercase tracking-widest">
+                          Ref: {order.referralCode}
+                        </div>
+                      )}
                     </td>
                     <td className="px-8 py-6">
                       <span className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border-2 ${
@@ -161,6 +166,14 @@ const AdminOrders: React.FC = () => {
                       <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mt-2">
                         Includes {(selectedOrder.discountPercentage! * 100).toFixed(0)}% Bundle Discount (-Rs. {selectedOrder.discountAmount.toLocaleString()})
                       </p>
+                    )}
+                    {selectedOrder.referralCode && (
+                      <div className="mt-4 p-4 bg-blue-50 rounded-xl border-2 border-blue-100 text-left inline-block">
+                        <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">Promoter Referral</p>
+                        <p className="text-sm font-bold text-slate-900">Code: {selectedOrder.referralCode}</p>
+                        <p className="text-sm font-bold text-slate-900">Commission: Rs. {selectedOrder.commissionAmount?.toLocaleString()}</p>
+                        <p className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-widest">Status: {selectedOrder.commissionStatus}</p>
+                      </div>
                     )}
                   </div>
                </div>

@@ -31,10 +31,10 @@ const Header: React.FC = () => {
   const NavLink = ({ to, label }: { to: string; label: string }) => (
     <Link 
       to={to} 
-      className={`text-[12px] font-black uppercase tracking-[0.25em] transition-all px-6 py-2 rounded-full border-2 ${
+      className={`text-[11px] font-black uppercase tracking-[0.2em] transition-all px-5 py-2 rounded-xl border-2 ${
         location.pathname === to 
-          ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100' 
-          : 'text-slate-500 border-transparent hover:text-blue-600 hover:bg-blue-50/50'
+          ? 'bg-blue-600 text-white border-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]' 
+          : 'text-slate-500 border-transparent hover:text-slate-900 hover:bg-slate-50'
       }`}
     >
       {label}
@@ -44,33 +44,40 @@ const Header: React.FC = () => {
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 pointer-events-none ${
-        isScrolled ? 'py-3 translate-y-0' : 'py-6'
+        isScrolled ? 'py-2' : 'py-4'
       }`}>
         <div className="max-w-[1400px] mx-auto px-4 pointer-events-auto">
-          <div className={`bg-white/90 backdrop-blur-xl border-4 border-slate-900 rounded-[2rem] px-6 py-4 flex justify-between items-center transition-all duration-500 shadow-[10px_10px_0px_0px_rgba(15,23,42,1)]`}>
+          <div className={`bg-white/95 backdrop-blur-md border-4 border-slate-900 rounded-2xl px-5 py-3 flex justify-between items-center transition-all duration-500 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]`}>
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] border-2 border-slate-900 group-hover:rotate-6 transition-transform">S</div>
-              <span className="text-xl font-black text-slate-900 tracking-tighter uppercase leading-none">SCENTSATIONZ</span>
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="hidden sm:flex w-9 h-9 bg-blue-600 rounded-lg items-center justify-center text-white font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] border-2 border-slate-900 group-hover:rotate-6 transition-transform">S</div>
+              <span className="text-lg font-black text-slate-900 tracking-tighter uppercase leading-none">SCENTSATIONZ</span>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-8">
+            <nav className="hidden lg:flex items-center gap-4">
               <NavLink to="/" label="Vault" />
               <NavLink to="/shop" label="Collection" />
+              <NavLink to="/promotions" label="Promotions" />
               <NavLink to="/specs" label="Specs" />
               <NavLink to="/about" label="Identity" />
+              <Link to="/promoter/dashboard" className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1 ml-2">
+                Earn
+              </Link>
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center gap-4 sm:gap-6">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <Link to="/promoter/dashboard" className="lg:hidden flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-xl border-2 border-slate-900 font-black text-[9px] uppercase tracking-widest shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all">
+                Earn
+              </Link>
               <Link to="/cart" className="relative group p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-slate-900 group-hover:text-blue-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-slate-900 group-hover:text-blue-600 transition-colors">
                   <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
                   <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
                 </svg>
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-600 text-[9px] font-black text-white flex items-center justify-center rounded-full border-2 border-slate-900 shadow-sm">
+                  <span className="absolute top-0 right-0 w-4 h-4 bg-blue-600 text-[9px] font-black text-white flex items-center justify-center rounded-full border-2 border-white shadow-sm">
                     {cartCount}
                   </span>
                 )}
@@ -79,9 +86,9 @@ const Header: React.FC = () => {
               {/* Mobile Menu Button */}
               <button 
                 onClick={() => setMobileMenuOpen(true)}
-                className="lg:hidden w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center hover:bg-blue-600 transition-colors shadow-[4px_4px_0px_0px_rgba(37,99,235,0.3)]"
+                className="lg:hidden w-9 h-9 bg-slate-900 text-white rounded-lg flex items-center justify-center hover:bg-blue-600 transition-all active:scale-95 shadow-md"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 12h16M4 6h16M4 18h16"/>
                 </svg>
               </button>
@@ -113,8 +120,10 @@ const Header: React.FC = () => {
                {[
                  { to: '/', label: 'The Vault', icon: '🏛️' },
                  { to: '/shop', label: 'Full Collection', icon: '🛍️' },
+                 { to: '/promotions', label: 'Promotions', icon: '🎫' },
                  { to: '/specs', label: 'Olfactory Specs', icon: '🧬' },
                  { to: '/about', label: 'Brand Identity', icon: '✨' },
+                 { to: '/promoter/dashboard', label: 'Earn Rewards', icon: '💰' },
                  { to: '/cart', label: 'Your Bag', icon: '👜', badge: cartCount }
                ].map((item) => (
                  <Link 
@@ -154,7 +163,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="h-28 lg:h-32"></div>
+      <div className="h-24 lg:h-28"></div>
     </>
   );
 };

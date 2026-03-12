@@ -12,6 +12,13 @@ const Home: React.FC = () => {
       setProducts(p);
     };
     fetch();
+
+    const handleUpdate = () => {
+      fetch();
+    };
+
+    window.addEventListener('products_updated', handleUpdate);
+    return () => window.removeEventListener('products_updated', handleUpdate);
   }, []);
 
   return (
