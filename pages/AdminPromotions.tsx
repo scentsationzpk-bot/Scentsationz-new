@@ -16,6 +16,8 @@ const AdminPromotions: React.FC = () => {
     description: '',
     code: '',
     discountPercentage: 0,
+    discountAmount: 0,
+    type: 'percentage' as 'percentage' | 'fixed' | 'free_delivery',
     validUntil: '',
     isActive: true,
     colorClass: 'bg-blue-600'
@@ -39,7 +41,7 @@ const AdminPromotions: React.FC = () => {
 
   const handleOpenAdd = () => {
     setEditingPromotion(null);
-    setFormData({ title: '', description: '', code: '', discountPercentage: 10, validUntil: '', isActive: true, colorClass: 'bg-blue-600' });
+    setFormData({ title: '', description: '', code: '', discountPercentage: 10, discountAmount: 0, type: 'percentage', validUntil: '', isActive: true, colorClass: 'bg-blue-600' });
     setIsModalOpen(true);
   };
 
@@ -49,7 +51,9 @@ const AdminPromotions: React.FC = () => {
       title: p.title,
       description: p.description,
       code: p.code,
-      discountPercentage: p.discountPercentage,
+      discountPercentage: p.discountPercentage || 0,
+      discountAmount: p.discountAmount || 0,
+      type: p.type,
       validUntil: p.validUntil,
       isActive: p.isActive,
       colorClass: p.colorClass
@@ -124,7 +128,9 @@ const AdminPromotions: React.FC = () => {
                 <span className="font-black tracking-widest uppercase">{p.code}</span>
               </div>
               <div className="text-5xl font-black tracking-tighter pt-4">
-                {p.discountPercentage}% OFF
+                {p.type === 'percentage' && `${p.discountPercentage}% OFF`}
+                {p.type === 'fixed' && `Rs. ${p.discountAmount} OFF`}
+                {p.type === 'free_delivery' && 'FREE DELIVERY'}
               </div>
             </div>
             
@@ -214,19 +220,46 @@ const AdminPromotions: React.FC = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-3">
-                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Discount Percentage (%)</label>
-                    <input 
-                      required
-                      type="number" 
-                      min="1"
-                      max="100"
-                      value={formData.discountPercentage}
-                      onChange={e => setFormData({...formData, discountPercentage: Number(e.target.value)})}
+                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Type</label>
+                    <select 
+                      value={formData.type}
+                      onChange={e => setFormData({...formData, type: e.target.value as any})}
                       className="w-full bg-slate-50 border-4 border-slate-100 rounded-2xl px-6 py-4 font-bold text-slate-900 focus:border-blue-600 outline-none transition-colors"
-                    />
+                    >
+                      <option value="percentage">Percentage</option>
+                      <option value="fixed">Fixed Amount</option>
+                      <option value="free_delivery">Free Delivery</option>
+                    </select>
                   </div>
+                  {formData.type === 'percentage' && (
+                    <div className="space-y-3">
+                      <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Discount (%)</label>
+                      <input 
+                        required
+                        type="number" 
+                        min="1"
+                        max="100"
+                        value={formData.discountPercentage}
+                        onChange={e => setFormData({...formData, discountPercentage: Number(e.target.value)})}
+                        className="w-full bg-slate-50 border-4 border-slate-100 rounded-2xl px-6 py-4 font-bold text-slate-900 focus:border-blue-600 outline-none transition-colors"
+                      />
+                    </div>
+                  )}
+                  {formData.type === 'fixed' && (
+                    <div className="space-y-3">
+                      <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Discount (Rs)</label>
+                      <input 
+                        required
+                        type="number" 
+                        min="1"
+                        value={formData.discountAmount}
+                        onChange={e => setFormData({...formData, discountAmount: Number(e.target.value)})}
+                        className="w-full bg-slate-50 border-4 border-slate-100 rounded-2xl px-6 py-4 font-bold text-slate-900 focus:border-blue-600 outline-none transition-colors"
+                      />
+                    </div>
+                  )}
                   <div className="space-y-3">
                     <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Valid Until (Optional)</label>
                     <input 

@@ -138,12 +138,12 @@ const PromoterDashboard: React.FC = () => {
           <p className="text-4xl font-black text-green-600">Rs. {promoter.currentBalance.toLocaleString()}</p>
         </div>
         <div className="bg-white p-6 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Total Orders</p>
-          <p className="text-4xl font-black text-slate-900">{promoter.totalOrders}</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Pending Balance</p>
+          <p className="text-4xl font-black text-orange-600">Rs. {promoter.pendingBalance.toLocaleString()}</p>
         </div>
         <div className="bg-white p-6 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Commission Rate</p>
-          <p className="text-4xl font-black text-slate-900">10%</p>
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Total Orders</p>
+          <p className="text-4xl font-black text-slate-900">{promoter.totalOrders}</p>
         </div>
       </div>
 

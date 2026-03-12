@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { getStoreDataSync, addOrder } from '../storage';
+import { getStoreDataSync, addOrder, getPromotions } from '../storage';
 import { useToast } from '../App';
+import { Promotion } from '../types';
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Checkout: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [couponCode, setCouponCode] = useState('');
   const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const [appliedPromotion, setAppliedPromotion] = useState<Promotion | null>(null);
 
   useEffect(() => {
     setData(getStoreDataSync());
@@ -42,17 +44,31 @@ const Checkout: React.FC = () => {
   const subtotalAfterDiscount = subtotal - discountAmount;
   
   const jazzCashDiscount = paymentMethod === 'JazzCash' ? 200 : 0;
-  const codSurcharge = 0; // No extra COD charges as per request
   
   const deliveryCharge = 300;
-  const deliveryDiscount = isCouponApplied ? 300 : 0;
-  
-  const finalTotal = subtotalAfterDiscount - jazzCashDiscount + codSurcharge + deliveryCharge - deliveryDiscount;
+  let deliveryDiscount = 0;
+  let cartDiscount = 0;
 
-  const handleApplyCoupon = () => {
-    if (couponCode.toUpperCase() === 'SCENT101') {
+  if (appliedPromotion) {
+    if (appliedPromotion.type === 'free_delivery') {
+      deliveryDiscount = deliveryCharge;
+    } else if (appliedPromotion.type === 'fixed') {
+      cartDiscount = appliedPromotion.discountAmount || 0;
+    } else if (appliedPromotion.type === 'percentage') {
+      cartDiscount = subtotal * ((appliedPromotion.discountPercentage || 0) / 100);
+    }
+  }
+  
+  const finalTotal = subtotalAfterDiscount - jazzCashDiscount + deliveryCharge - deliveryDiscount - cartDiscount;
+
+  const handleApplyCoupon = async () => {
+    const allPromotions = await getPromotions();
+    const promo = allPromotions.find(p => p.code.toUpperCase() === couponCode.toUpperCase() && p.isActive);
+    
+    if (promo) {
+      setAppliedPromotion(promo);
       setIsCouponApplied(true);
-      showToast('Coupon Applied! Free Delivery Activated 🚚', 'success');
+      showToast(`Coupon Applied! ${promo.title} Activated 🚚`, 'success');
     } else {
       showToast('Invalid Coupon Code ❌', 'error');
     }
@@ -263,10 +279,10 @@ const Checkout: React.FC = () => {
                 <span>Subtotal</span>
                 <span>Rs. {subtotal.toLocaleString()}</span>
               </div>
-              {discountAmount > 0 && (
+              {cartDiscount > 0 && (
                 <div className="flex justify-between text-blue-600 font-black uppercase text-xs tracking-widest">
-                  <span>Bundle Discount ({(discountPercentage * 100).toFixed(0)}%)</span>
-                  <span>- Rs. {discountAmount.toLocaleString()}</span>
+                  <span>Promo Discount</span>
+                  <span>- Rs. {cartDiscount.toLocaleString()}</span>
                 </div>
               )}
               {jazzCashDiscount > 0 && (
@@ -281,7 +297,7 @@ const Checkout: React.FC = () => {
               </div>
               {deliveryDiscount > 0 && (
                 <div className="flex justify-between text-green-600 font-black uppercase text-xs tracking-widest">
-                  <span>Coupon (SCENT101)</span>
+                  <span>Free Delivery Applied</span>
                   <span>- Rs. {deliveryDiscount.toLocaleString()}</span>
                 </div>
               )}

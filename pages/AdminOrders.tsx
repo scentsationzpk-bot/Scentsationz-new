@@ -161,7 +161,7 @@ const AdminOrders: React.FC = () => {
                   <div className="space-y-2 text-right">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Payment Method</p>
                     <p className="text-lg font-black text-blue-600">{selectedOrder.customer.paymentMethod}</p>
-                    <p className="text-4xl font-black text-slate-900 mt-4">Rs. {selectedOrder.total.toLocaleString()}</p>
+                    <p className="text-4xl font-black text-slate-900 mt-4">Rs. {Number(selectedOrder.total || 0).toLocaleString()}</p>
                     {selectedOrder.discountAmount && selectedOrder.discountAmount > 0 && (
                       <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mt-2">
                         Includes {(selectedOrder.discountPercentage! * 100).toFixed(0)}% Bundle Discount (-Rs. {selectedOrder.discountAmount.toLocaleString()})

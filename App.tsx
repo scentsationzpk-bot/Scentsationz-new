@@ -27,7 +27,9 @@ import PromoterDashboard from './pages/PromoterDashboard';
 import AdminPayouts from './pages/AdminPayouts';
 import Toast from './components/Toast';
 import WhatsAppWidget from './components/WhatsAppWidget';
+import WhatsAppButton from './components/WhatsAppButton';
 import LiveOrdersPopup from './components/LiveOrdersPopup';
+import BrandBuilder from './pages/BrandBuilder';
 import { getStoreDataSync, seedIfEmpty, getProducts, getBundles, getOrders, incrementReferralClicks, initRealTimeSync } from './storage';
 
 interface ToastContextType {
@@ -122,6 +124,7 @@ const App: React.FC = () => {
               <Route path="/promoter/signup" element={<PromoterSignup />} />
               <Route path="/promoter/dashboard" element={<PromoterDashboard />} />
               <Route path="/promotions" element={<Promotions />} />
+              <Route path="/brand-builder" element={<BrandBuilder />} />
               <Route path="/admin-login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}>
                 <Route index element={<Navigate to="dashboard" replace />} />
@@ -141,6 +144,7 @@ const App: React.FC = () => {
             </Routes>
           </main>
           <Footer />
+          <WhatsAppButton />
           <WhatsAppWidget />
           <LiveOrdersPopup />
           {toast && (

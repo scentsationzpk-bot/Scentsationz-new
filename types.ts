@@ -92,6 +92,7 @@ export interface Promoter {
   totalOrders: number;
   totalEarned: number;
   currentBalance: number;
+  pendingBalance: number;
   createdAt: string;
 }
 
@@ -113,7 +114,7 @@ export interface Promotion {
   code: string;
   discountPercentage?: number;
   discountAmount?: number;
-  type: 'percentage' | 'fixed';
+  type: 'percentage' | 'fixed' | 'free_delivery';
   validUntil: string;
   isActive: boolean;
   colorClass: string;

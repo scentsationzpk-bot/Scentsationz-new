@@ -59,6 +59,7 @@ const Header: React.FC = () => {
               <NavLink to="/" label="Vault" />
               <NavLink to="/shop" label="Collection" />
               <NavLink to="/promotions" label="Promotions" />
+              <NavLink to="/brand-builder" label="Brand Builder" />
               <NavLink to="/specs" label="Specs" />
               <NavLink to="/about" label="Identity" />
               <Link to="/promoter/dashboard" className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1 ml-2">
@@ -107,7 +108,7 @@ const Header: React.FC = () => {
         
         {/* Menu Content */}
         <div className={`absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white border-l-8 border-slate-900 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-          <div className="flex flex-col h-full p-8 pt-20">
+          <div className="flex flex-col h-full p-8 pt-20 overflow-y-auto">
             <button 
               onClick={() => setMobileMenuOpen(false)}
               className="absolute top-6 right-6 w-12 h-12 bg-white rounded-2xl flex items-center justify-center border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]"
@@ -121,6 +122,7 @@ const Header: React.FC = () => {
                  { to: '/', label: 'The Vault', icon: '🏛️' },
                  { to: '/shop', label: 'Full Collection', icon: '🛍️' },
                  { to: '/promotions', label: 'Promotions', icon: '🎫' },
+                 { to: '/brand-builder', label: 'Brand Builder', icon: '🏗️' },
                  { to: '/specs', label: 'Olfactory Specs', icon: '🧬' },
                  { to: '/about', label: 'Brand Identity', icon: '✨' },
                  { to: '/promoter/dashboard', label: 'Earn Rewards', icon: '💰' },

@@ -301,11 +301,12 @@ export const addOrder = async (order: Omit<Order, 'orderId' | 'date'>) => {
       if (!querySnapshot.empty) {
         const promoterDoc = querySnapshot.docs[0];
         await updateDoc(doc(db, 'promoters', promoterDoc.id), {
-          totalOrders: increment(1)
+          totalOrders: increment(1),
+          pendingBalance: increment(commissionAmount)
         });
       }
     } catch (e) {
-      console.error("Failed to update promoter totalOrders", e);
+      console.error("Failed to update promoter totalOrders/pendingBalance", e);
     }
   }
 
@@ -332,7 +333,8 @@ export const updateOrderStatus = async (orderId: string, status: Order['status']
           const promoterDoc = querySnapshot.docs[0];
           await updateDoc(doc(db, 'promoters', promoterDoc.id), {
             totalEarned: increment(orderData.commissionAmount || 0),
-            currentBalance: increment(orderData.commissionAmount || 0)
+            currentBalance: increment(orderData.commissionAmount || 0),
+            pendingBalance: increment(-(orderData.commissionAmount || 0))
           });
           
           await updateDoc(orderRef, { status, commissionStatus: 'Paid' });
@@ -342,6 +344,21 @@ export const updateOrderStatus = async (orderId: string, status: Order['status']
         console.error("Failed to finalize commission", e);
       }
     } else if (status === 'Cancelled' && orderData.commissionStatus === 'Pending') {
+      if (orderData.referralCode) {
+        try {
+          const promotersRef = collection(db, 'promoters');
+          const q = query(promotersRef, where('referralCode', '==', orderData.referralCode));
+          const querySnapshot = await getDocs(q);
+          if (!querySnapshot.empty) {
+            const promoterDoc = querySnapshot.docs[0];
+            await updateDoc(doc(db, 'promoters', promoterDoc.id), {
+              pendingBalance: increment(-(orderData.commissionAmount || 0))
+            });
+          }
+        } catch (e) {
+          console.error("Failed to cancel pending commission", e);
+        }
+      }
       await updateDoc(orderRef, { status, commissionStatus: 'Cancelled' });
       return;
     }
@@ -477,6 +494,7 @@ export const createPromoter = async (uid: string, email: string, name: string) =
     totalOrders: 0,
     totalEarned: 0,
     currentBalance: 0,
+    pendingBalance: 0,
     createdAt: new Date().toISOString()
   };
   await setDoc(doc(db, 'promoters', uid), sanitizeForStorage(promoter));
