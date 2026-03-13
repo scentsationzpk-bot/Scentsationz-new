@@ -69,6 +69,8 @@ const ProtectedRoute: React.FC<React.PropsWithChildren<{}>> = ({ children }) => 
   return <>{children}</>;
 };
 
+import ErrorBoundary from './components/ErrorBoundary';
+
 const App: React.FC = () => {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [ready, setReady] = useState(false);
@@ -77,7 +79,7 @@ const App: React.FC = () => {
     const init = async () => {
       initRealTimeSync();
       // Lightning fast: don't even wait for seedIfEmpty if already seeded
-      if (!localStorage.getItem('scentsationz_seeded_v1')) {
+      if (!localStorage.getItem('scentsationz_seeded_v2')) {
         await seedIfEmpty();
       }
       
@@ -111,7 +113,8 @@ const App: React.FC = () => {
   }
 
   return (
-    <ToastContext.Provider value={toastContextValue}>
+    <ErrorBoundary>
+      <ToastContext.Provider value={toastContextValue}>
       <HashRouter>
         <ScrollToTop />
         <div className="flex flex-col min-h-screen">
@@ -153,7 +156,6 @@ const App: React.FC = () => {
             </Suspense>
           </main>
           <Footer />
-          <WhatsAppButton />
           <WhatsAppWidget />
           <LiveOrdersPopup />
           {toast && (
@@ -166,6 +168,7 @@ const App: React.FC = () => {
         </div>
       </HashRouter>
     </ToastContext.Provider>
+    </ErrorBoundary>
   );
 };
 

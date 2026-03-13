@@ -111,39 +111,39 @@ const PromoterDashboard: React.FC = () => {
   if (!promoter) return null;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16 animate-in fade-in duration-700 bg-slate-50 min-h-screen">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-8">
-        <div>
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-none uppercase">
+    <div className="max-w-7xl mx-auto px-4 py-10 sm:py-16 animate-in fade-in duration-700 bg-slate-50 min-h-screen">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 sm:mb-12 gap-6 sm:gap-8">
+        <div className="text-center md:text-left">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-slate-900 tracking-tighter leading-none uppercase">
             Promoter <span className="text-blue-600 italic">Dashboard</span>
           </h1>
-          <p className="text-slate-500 mt-2 font-bold">Welcome back, {promoter.name}! 🚀</p>
+          <p className="text-slate-500 mt-2 font-bold text-sm sm:text-base">Welcome back, {promoter.name}! 🚀</p>
         </div>
         <button 
           onClick={handleLogout}
-          className="w-full md:w-auto px-8 py-4 bg-white text-slate-900 font-black rounded-2xl border-4 border-slate-900 uppercase tracking-widest hover:bg-slate-100 transition-all shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
+          className="w-full md:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-slate-900 font-black rounded-xl sm:rounded-2xl border-4 border-slate-900 uppercase tracking-widest hover:bg-slate-100 transition-all shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] active:translate-x-1 active:translate-y-1 active:shadow-none text-xs sm:text-sm"
         >
           Logout
         </button>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <div className="bg-white p-6 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Total Earnings</p>
-          <p className="text-4xl font-black text-blue-600">Rs. {promoter.totalEarned.toLocaleString()}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+          <p className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1 sm:mb-2">Total Earnings</p>
+          <p className="text-2xl sm:text-4xl font-black text-blue-600">Rs. {promoter.totalEarned.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Current Balance</p>
-          <p className="text-4xl font-black text-green-600">Rs. {promoter.currentBalance.toLocaleString()}</p>
+        <div className="bg-white p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+          <p className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1 sm:mb-2">Current Balance</p>
+          <p className="text-2xl sm:text-4xl font-black text-green-600">Rs. {promoter.currentBalance.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Pending Balance</p>
-          <p className="text-4xl font-black text-orange-600">Rs. {promoter.pendingBalance.toLocaleString()}</p>
+        <div className="bg-white p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+          <p className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1 sm:mb-2">Pending Balance</p>
+          <p className="text-2xl sm:text-4xl font-black text-orange-600">Rs. {promoter.pendingBalance.toLocaleString()}</p>
         </div>
-        <div className="bg-white p-6 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
-          <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Total Orders</p>
-          <p className="text-4xl font-black text-slate-900">{promoter.totalOrders}</p>
+        <div className="bg-white p-5 sm:p-6 rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+          <p className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1 sm:mb-2">Total Orders</p>
+          <p className="text-2xl sm:text-4xl font-black text-slate-900">{promoter.totalOrders}</p>
         </div>
       </div>
 
@@ -198,7 +198,12 @@ const PromoterDashboard: React.FC = () => {
               {products.map(product => (
                 <div key={product.id} className="group relative">
                   <div className="aspect-square rounded-2xl border-4 border-slate-100 overflow-hidden bg-slate-50">
-                    <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <img 
+                      src={product.imageUrl ? product.imageUrl.replace('w=800', 'w=200') : 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=60&w=200'} 
+                      alt={product.name} 
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                    />
                   </div>
                   <div className="mt-3">
                     <p className="font-black text-slate-900 text-[10px] md:text-xs truncate uppercase">{product.name}</p>

@@ -157,7 +157,12 @@ const AdminProducts: React.FC = () => {
           <div key={p.id} className="bg-white rounded-[3rem] border-[4px] border-slate-50 overflow-hidden hover:border-blue-600 transition-all duration-700 group flex flex-col shadow-sm">
              <div className="aspect-square bg-slate-50 relative overflow-hidden flex items-center justify-center border-b-4 border-slate-50">
                 {p.imageUrl ? (
-                  <img src={p.imageUrl} alt={p.name} className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-1000" />
+                  <img 
+                    src={p.imageUrl.replace('w=800', 'w=200')} 
+                    alt={p.name} 
+                    loading="lazy"
+                    className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-1000" 
+                  />
                 ) : (
                   <div className="text-6xl grayscale opacity-20">🛍️</div>
                 )}

@@ -19,8 +19,40 @@ import {
   onSnapshot
 } from 'firebase/firestore';
 
+enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+      tenantId: auth.currentUser?.tenantId,
+      providerInfo: auth.currentUser?.providerData.map(provider => ({
+        providerId: provider.providerId,
+        displayName: provider.displayName,
+        email: provider.email,
+        photoUrl: provider.photoURL
+      })) || []
+    },
+    operationType,
+    path
+  }
+  console.error('Firestore Error: ', JSON.stringify(errInfo));
+  throw new Error(JSON.stringify(errInfo));
+}
+
 const STORAGE_KEY = 'scentsationz_universal_v4';
-const SEED_FLAG_KEY = 'scentsationz_seeded_v1';
+const SEED_FLAG_KEY = 'scentsationz_seeded_v3';
 
 let productsCache: Product[] | null = null;
 let bundlesCache: Bundle[] | null = null;
@@ -32,6 +64,8 @@ export const initRealTimeSync = () => {
     productsCache = fresh;
     localStorage.setItem('scentsationz_products_cache', JSON.stringify(fresh));
     window.dispatchEvent(new Event('products_updated'));
+  }, (error) => {
+    console.error("Firestore products sync error:", error);
   });
 
   onSnapshot(collection(db, 'bundles'), (snapshot) => {
@@ -39,6 +73,8 @@ export const initRealTimeSync = () => {
     bundlesCache = fresh;
     localStorage.setItem('scentsationz_bundles_cache', JSON.stringify(fresh));
     window.dispatchEvent(new Event('bundles_updated'));
+  }, (error) => {
+    console.error("Firestore bundles sync error:", error);
   });
 };
 
@@ -172,6 +208,7 @@ export const getProducts = async (): Promise<Product[]> => {
     localStorage.setItem('scentsationz_products_cache', JSON.stringify(products));
     return products;
   } catch (error) {
+    handleFirestoreError(error, OperationType.LIST, 'products');
     return [];
   }
 };
@@ -666,23 +703,15 @@ export const seedIfEmpty = async () => {
   if (localStorage.getItem(SEED_FLAG_KEY)) return;
 
   try {
-    const productsCol = collection(db, 'products');
-    const snapshot = await getDocs(query(productsCol, limit(1)));
-    
-    if (!snapshot.empty) {
-      localStorage.setItem(SEED_FLAG_KEY, 'true');
-      return;
-    }
-
     const batch = writeBatch(db);
     
     const mockProducts: Product[] = [
       {
         id: 'starborn',
         name: 'STARBORN',
-        price: 2250,
+        price: 3550,
         stock: 50,
-        description: 'A bold, charismatic scent crafted for leaders and dreamers.',
+        description: 'Ek aisi khushboo jo aapki personality ko bold banaye. Har mehfil mein sabki nazrein sirf aap par hongi. ✨🔥',
         category: 'Bold',
         imageUrl: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800',
         luxuryStory: 'Starborn is the scent of destiny.',
@@ -698,11 +727,31 @@ export const seedIfEmpty = async () => {
         }
       },
       {
+        id: 'tobacco-trail',
+        name: 'TOBACCO TRAIL',
+        price: 3550,
+        stock: 30,
+        description: 'Premium tobacco aur vanilla ka rich blend jo boss vibes deta hai. Sardi ki raaton ke liye behtareen. 🍂👑',
+        category: 'Woody',
+        imageUrl: 'https://images.unsplash.com/photo-1583467875263-d50dec37a88c?auto=format&fit=crop&q=80&w=800',
+        luxuryStory: 'Tobacco Trail is an olfactory journey through a private cigar lounge.',
+        packagingDetails: ['Dark Walnut Finish Box', 'Copper-Engraved Plate', 'Heavy Crystal Vessel'],
+        badge: 'Bestseller',
+        specifications: {
+          topNotes: ['Tobacco Leaf', 'Spicy Notes'],
+          middleNotes: ['Tonka Bean', 'Tobacco Blossom', 'Vanilla', 'Cacao'],
+          baseNotes: ['Dried Fruits', 'Woody Notes'],
+          longevity: 95,
+          sillage: 'Strong',
+          occasions: ['Winter Nights', 'Formal Events', 'Private Lounges']
+        }
+      },
+      {
         id: 'cool-current',
         name: 'COOL CURRENT',
-        price: 2250,
+        price: 3550,
         stock: 50,
-        description: 'Fresh, modern, and effortlessly confident.',
+        description: 'Fresh aur energetic scent jo poora din aapko active rakhe. Daily wear ke liye perfect aur refreshing. 🌊🧊',
         category: 'Fresh',
         imageUrl: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800',
         luxuryStory: 'Cool Current is a breath of absolute clarity.',
@@ -714,45 +763,6 @@ export const seedIfEmpty = async () => {
           longevity: 85,
           sillage: 'Moderate',
           occasions: ['Daily Wear', 'Summer Days', 'Office']
-        }
-      },
-      {
-        id: 'velvet-night',
-        name: 'VELVET NIGHT',
-        price: 2450,
-        stock: 30,
-        description: 'Deep, mysterious, and intensely seductive.',
-        category: 'Warm',
-        imageUrl: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=800',
-        luxuryStory: 'Velvet Night captures the essence of midnight elegance.',
-        packagingDetails: ['Deep Purple Crystal', 'Silver Filigree', 'Velvet-Lined Case'],
-        badge: 'Bestseller',
-        specifications: {
-          topNotes: ['Pink Pepper', 'Mandarin'],
-          middleNotes: ['Jasmine', 'Coffee', 'Bitter Almond'],
-          baseNotes: ['Vanilla', 'Patchouli', 'Cedarwood'],
-          longevity: 92,
-          sillage: 'Strong',
-          occasions: ['Date Nights', 'Evening Events']
-        }
-      },
-      {
-        id: 'urban-edge',
-        name: 'URBAN EDGE',
-        price: 2150,
-        stock: 45,
-        description: 'Sharp, metallic, and distinctly metropolitan.',
-        category: 'Woody',
-        imageUrl: 'https://images.unsplash.com/photo-1615484477778-ca3b77940c25?auto=format&fit=crop&q=80&w=800',
-        luxuryStory: 'Urban Edge is for the modern pioneer.',
-        packagingDetails: ['Brushed Aluminum', 'Industrial Design', 'Minimalist Box'],
-        specifications: {
-          topNotes: ['Gin', 'Juniper', 'Aldehydes'],
-          middleNotes: ['Iris', 'Violet', 'Leather'],
-          baseNotes: ['Sandalwood', 'Vetiver', 'Oakmoss'],
-          longevity: 88,
-          sillage: 'Moderate',
-          occasions: ['Urban Exploration', 'Creative Work']
         }
       }
     ];
@@ -766,8 +776,8 @@ export const seedIfEmpty = async () => {
         id: 'vault-duo',
         title: 'The Vault Duo',
         productIds: ['starborn', 'cool-current'],
-        bundlePrice: 4500,
-        originalPrice: 5600,
+        bundlePrice: 6500,
+        originalPrice: 7100,
         discountText: 'Reserved Pairing • Free Concierge Shipping',
         type: 'duo',
         badge: 'Popular',

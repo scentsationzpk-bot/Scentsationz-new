@@ -21,7 +21,22 @@ export const auth = getAuth(app);
  * reliability in environments with aggressive proxies or network timeouts.
  */
 export const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({ 
-    tabManager: persistentMultipleTabManager() 
-  })
+  experimentalForceLongPolling: true,
 });
+
+import { getDocFromServer, doc } from "firebase/firestore";
+
+async function testConnection() {
+  try {
+    await getDocFromServer(doc(db, 'test', 'connection'));
+    console.log("Firestore connection successful.");
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('the client is offline')) {
+      console.error("Firestore connection failed: The client is offline. Please check your Firebase configuration or project provisioning.");
+    } else {
+      console.error("Firestore connection test error:", error);
+    }
+  }
+}
+
+testConnection();

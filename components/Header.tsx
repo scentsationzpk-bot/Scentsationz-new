@@ -44,23 +44,20 @@ const Header: React.FC = () => {
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 pointer-events-none ${
-        isScrolled ? 'py-2' : 'py-4'
+        isScrolled ? 'py-1 sm:py-2' : 'py-2 sm:py-4'
       }`}>
-        <div className="max-w-[1400px] mx-auto px-4 pointer-events-auto">
-          <div className={`bg-white/95 backdrop-blur-md border-4 border-slate-900 rounded-2xl px-5 py-3 flex justify-between items-center transition-all duration-500 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]`}>
+        <div className="max-w-[1400px] mx-auto px-3 sm:px-4 pointer-events-auto">
+          <div className={`bg-white/95 backdrop-blur-md border-2 sm:border-4 border-slate-900 rounded-xl sm:rounded-2xl px-3 sm:px-5 py-2 sm:py-3 flex justify-between items-center transition-all duration-500 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]`}>
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="hidden sm:flex w-9 h-9 bg-blue-600 rounded-lg items-center justify-center text-white font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] border-2 border-slate-900 group-hover:rotate-6 transition-transform">S</div>
-              <span className="text-lg font-black text-slate-900 tracking-tighter uppercase leading-none">SCENTSATIONZ</span>
+              <div className="hidden sm:flex w-8 h-8 sm:w-9 sm:h-9 bg-blue-600 rounded-lg items-center justify-center text-white font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] border-2 border-slate-900 group-hover:rotate-6 transition-transform text-sm sm:text-base">S</div>
+              <span className="text-sm sm:text-lg font-black text-slate-900 tracking-tighter uppercase leading-none">SCENTSATIONZ</span>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-4">
               <NavLink to="/" label="Vault" />
               <NavLink to="/shop" label="Collection" />
-              <NavLink to="/promotions" label="Promotions" />
-              <NavLink to="/brand-builder" label="Brand Builder" />
-              <NavLink to="/specs" label="Specs" />
               <NavLink to="/about" label="Identity" />
               <Link to="/promoter/dashboard" className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-600 hover:text-blue-700 transition-colors flex items-center gap-1 ml-2">
                 Earn
@@ -87,9 +84,9 @@ const Header: React.FC = () => {
               {/* Mobile Menu Button */}
               <button 
                 onClick={() => setMobileMenuOpen(true)}
-                className="lg:hidden w-9 h-9 bg-slate-900 text-white rounded-lg flex items-center justify-center hover:bg-blue-600 transition-all active:scale-95 shadow-md"
+                className="lg:hidden w-10 h-10 bg-slate-900 text-white rounded-lg flex items-center justify-center hover:bg-blue-600 transition-all active:scale-95 shadow-md"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 12h16M4 6h16M4 18h16"/>
                 </svg>
               </button>
@@ -102,28 +99,25 @@ const Header: React.FC = () => {
       <div className={`fixed inset-0 z-[200] lg:hidden transition-all duration-500 ${mobileMenuOpen ? 'visible' : 'invisible'}`}>
         {/* Backdrop */}
         <div 
-          className={`absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity duration-500 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`} 
+          className={`absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-500 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`} 
           onClick={() => setMobileMenuOpen(false)}
         />
         
         {/* Menu Content */}
-        <div className={`absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white border-l-8 border-slate-900 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-          <div className="flex flex-col h-full p-8 pt-20 overflow-y-auto">
+        <div className={`absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white border-l-4 sm:border-l-8 border-slate-900 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="flex flex-col h-full p-6 sm:p-8 pt-16 sm:pt-20 overflow-y-auto">
             <button 
               onClick={() => setMobileMenuOpen(false)}
-              className="absolute top-6 right-6 w-12 h-12 bg-white rounded-2xl flex items-center justify-center border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center border-2 sm:border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
 
-            <div className="space-y-4 mb-12">
-               <span className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600 block mb-4">Navigation Directory</span>
+            <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12">
+               <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.5em] text-blue-600 block mb-2 sm:mb-4">Navigation Directory</span>
                {[
                  { to: '/', label: 'The Vault', icon: '🏛️' },
                  { to: '/shop', label: 'Full Collection', icon: '🛍️' },
-                 { to: '/promotions', label: 'Promotions', icon: '🎫' },
-                 { to: '/brand-builder', label: 'Brand Builder', icon: '🏗️' },
-                 { to: '/specs', label: 'Olfactory Specs', icon: '🧬' },
                  { to: '/about', label: 'Brand Identity', icon: '✨' },
                  { to: '/promoter/dashboard', label: 'Earn Rewards', icon: '💰' },
                  { to: '/cart', label: 'Your Bag', icon: '👜', badge: cartCount }
@@ -132,18 +126,18 @@ const Header: React.FC = () => {
                    key={item.to}
                    to={item.to}
                    onClick={() => setMobileMenuOpen(false)}
-                   className={`flex items-center justify-between p-6 rounded-2xl border-4 transition-all group ${
+                   className={`flex items-center justify-between p-4 sm:p-6 rounded-xl sm:rounded-2xl border-2 sm:border-4 transition-all group ${
                      location.pathname === item.to 
-                     ? 'bg-blue-600 border-slate-900 text-white shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] translate-x-1 -translate-y-1' 
+                     ? 'bg-blue-600 border-slate-900 text-white shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] translate-x-1 -translate-y-1' 
                      : 'bg-white border-slate-100 text-slate-900 hover:border-blue-600'
                    }`}
                  >
-                   <div className="flex items-center gap-4">
-                     <span className="text-2xl">{item.icon}</span>
-                     <span className="text-xl font-black uppercase tracking-tighter">{item.label}</span>
+                   <div className="flex items-center gap-3 sm:gap-4">
+                     <span className="text-xl sm:text-2xl">{item.icon}</span>
+                     <span className="text-lg sm:text-xl font-black uppercase tracking-tighter">{item.label}</span>
                    </div>
                    {item.badge !== undefined && item.badge > 0 && (
-                     <span className="bg-slate-900 text-white text-[10px] font-black px-3 py-1 rounded-full">{item.badge}</span>
+                     <span className="bg-slate-900 text-white text-[8px] sm:text-[10px] font-black px-2 py-1 sm:px-3 sm:py-1 rounded-full">{item.badge}</span>
                    )}
                  </Link>
                ))}
@@ -157,7 +151,7 @@ const Header: React.FC = () => {
                </div>
                
                <div className="flex items-center justify-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white text-xl">📸</div>
+                  <a href="https://instagram.com/scentsationz.pk" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white text-xl">📸</a>
                   <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white text-xl">🐦</div>
                   <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white text-xl">📘</div>
                </div>
@@ -165,7 +159,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="h-24 lg:h-28"></div>
+      <div className="h-16 sm:h-24 lg:h-28"></div>
     </>
   );
 };

@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 const mockOrders = [
   { name: 'Ali', city: 'Lahore', product: 'Starborn 💫' },
   { name: 'Hassan', city: 'Karachi', product: 'Cool Current 🌊' },
-  { name: 'Usman', city: 'Islamabad', product: 'Tobacco Trail 🚬' },
-  { name: 'Ahmed', city: 'Faisalabad', product: 'Golden Pulse 💰' },
-  { name: 'Hamza', city: 'Sialkot', product: 'Starborn 💫' },
-  { name: 'Zain', city: 'Rawalpindi', product: 'Cool Current 🌊' },
-  { name: 'Irfan', city: 'Multan', product: 'Golden Pulse 💰' },
+  { name: 'Usman', city: 'Islamabad', product: 'Golden Pulse ✨' },
+  { name: 'Ahmed', city: 'Faisalabad', product: 'Tobacco Trail 🍂' },
+  { name: 'Hamza', city: 'Sialkot', product: 'Forever Dawn 🌅' },
+  { name: 'Zain', city: 'Rawalpindi', product: 'Starborn 💫' },
+  { name: 'Irfan', city: 'Multan', product: 'Cool Current 🌊' },
 ];
 
 const LiveOrdersPopup: React.FC = () => {

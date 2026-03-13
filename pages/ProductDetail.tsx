@@ -90,48 +90,74 @@ const ProductDetail: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
-      <div className="bg-white w-full max-w-5xl rounded-2xl shadow-[20px_20px_0px_0px_rgba(15,23,42,1)] overflow-hidden flex flex-col animate-in zoom-in duration-300 border-4 border-slate-900 max-h-[90vh] relative">
+    <div className="fixed inset-0 z-[300] flex items-center justify-center p-0 sm:p-4 bg-slate-900/80 backdrop-blur-sm">
+      <div className="bg-white w-full h-full sm:h-auto sm:max-w-5xl sm:rounded-2xl shadow-none sm:shadow-[20px_20px_0px_0px_rgba(15,23,42,1)] overflow-hidden flex flex-col animate-in zoom-in duration-300 border-0 sm:border-4 border-slate-900 max-h-screen sm:max-h-[90vh] relative">
         
         {/* Close Button - Always Visible */}
         <button 
           onClick={() => navigate('/shop')} 
-          className="absolute top-4 right-4 z-50 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-slate-900 hover:scale-110 transition-transform"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 w-10 h-10 sm:w-14 sm:h-14 bg-white rounded-xl sm:rounded-2xl flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] border-2 sm:border-4 border-slate-900 hover:scale-110 active:scale-95 transition-all group"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="group-hover:rotate-90 transition-transform sm:w-6 sm:h-6">
             <path d="M18 6 6 18"/>
             <path d="m6 6 12 12"/>
           </svg>
         </button>
 
         {/* Scrollable Content Area */}
-        <div className="overflow-y-auto flex-1 w-full relative z-0">
+        <div className="overflow-y-auto flex-1 w-full relative z-0 pb-36 sm:pb-48">
           <div className="flex flex-col md:flex-row">
             {/* Left Column - Image */}
-            <div className="w-full md:w-1/2 bg-slate-50 flex flex-col items-center justify-start border-b-4 md:border-b-0 md:border-r-4 border-slate-900 p-8">
+            <div className="w-full md:w-1/2 bg-slate-50 flex flex-col items-center justify-center border-b-2 sm:border-b-4 md:border-b-0 md:border-r-4 border-slate-900 p-6 sm:p-8">
               <img 
-                src={product.imageUrl || 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800'} 
+                src={product.imageUrl ? product.imageUrl.replace('w=800', 'w=600') : 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=600'} 
                 alt={product.name} 
-                className="w-full h-auto object-contain mb-8" 
+                loading="lazy"
+                className="w-full h-auto max-h-[35vh] md:max-h-none object-contain" 
               />
             </div>
 
             {/* Right Column - Details */}
-            <div className="w-full md:w-1/2 p-8 md:p-12 pb-12 flex flex-col items-center text-center bg-white">
-              {/* ... content ... */}
-              <div className="space-y-6 flex flex-col items-center w-full">
-            <span className="text-blue-600 font-black text-[12px] uppercase tracking-widest bg-blue-50 px-6 py-2 rounded-xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
-              {product.category} Series
-            </span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-tight uppercase">
-              {product.name}
-            </h2>
-            <p className="text-slate-500 text-lg font-black max-w-xs leading-relaxed">
-              {product.description}
-            </p>
-            </div>
+            <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 pb-12 flex flex-col items-center text-center bg-white">
+              <div className="space-y-3 sm:space-y-6 flex flex-col items-center w-full">
+                <span className="text-blue-600 font-black text-[8px] sm:text-[12px] uppercase tracking-widest bg-blue-50 px-3 py-1 sm:px-6 sm:py-2 rounded-lg sm:rounded-xl border-2 sm:border-4 border-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] sm:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
+                  {product.category} Series
+                </span>
+                <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-tight uppercase">
+                  {product.name}
+                </h2>
+                <div className="flex items-center gap-3">
+                  <span className="text-lg sm:text-xl font-bold text-slate-400 line-through decoration-red-500 decoration-2">Rs. 7,200</span>
+                  <span className="text-2xl sm:text-3xl font-black text-slate-900">Rs. {product.price.toLocaleString()}</span>
+                </div>
+                <p className="text-slate-500 text-sm sm:text-base font-black max-w-md leading-relaxed">
+                  {product.description}
+                </p>
+
+                {/* The Story / Vibe */}
+                <div className="bg-slate-50 border-l-4 border-blue-600 p-4 sm:p-6 text-left w-full mt-4">
+                  <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2">The Experience</p>
+                  <p className="text-slate-700 font-bold text-sm sm:text-base leading-relaxed italic">
+                    "{product.luxuryStory || product.description}"
+                  </p>
+                </div>
+
+                {/* Practical Scenarios */}
+                <div className="grid grid-cols-2 gap-4 w-full mt-6 text-left">
+                  <div className="bg-slate-50 p-4 rounded-xl border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                    <span className="text-2xl block mb-2">👔</span>
+                    <p className="font-black text-[10px] text-slate-400 uppercase tracking-widest">Best Worn</p>
+                    <p className="text-sm font-bold text-slate-900 mt-1">{specs.occasions?.join(', ') || 'Evening & Date Nights'}</p>
+                  </div>
+                  <div className="bg-slate-50 p-4 rounded-xl border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+                    <span className="text-2xl block mb-2">🗣️</span>
+                    <p className="font-black text-[10px] text-slate-400 uppercase tracking-widest">Compliment Factor</p>
+                    <p className="text-sm font-bold text-slate-900 mt-1">Extremely High (Room Filler)</p>
+                  </div>
+                </div>
+              </div>
             
-            <div className="w-full text-left space-y-4 pt-6 border-t-4 border-slate-900">
+              <div className="w-full text-left space-y-4 pt-6 border-t-2 sm:border-t-4 border-slate-900 mt-6">
               <label className="flex items-center gap-3 cursor-pointer group">
                 <div className="relative flex items-center justify-center w-8 h-8">
                   <input 
@@ -148,35 +174,35 @@ const ProductDetail: React.FC = () => {
               </label>
 
               {isGift && (
-                <div className="space-y-4 animate-in slide-in-from-top-4 p-6 bg-slate-50 rounded-2xl border-4 border-slate-900">
+                <div className="space-y-4 animate-in slide-in-from-top-4 p-4 sm:p-6 bg-slate-50 rounded-2xl border-4 border-slate-900">
                   <div className="space-y-2">
-                    <label className="font-black text-sm uppercase tracking-widest text-slate-900">Recipient Name</label>
+                    <label className="font-black text-xs sm:text-sm uppercase tracking-widest text-slate-900">Recipient Name</label>
                     <input 
                       type="text" 
                       value={giftName}
                       onChange={(e) => setGiftName(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border-4 border-slate-900 font-bold outline-none focus:border-blue-600"
+                      className="w-full px-4 py-2 sm:py-3 rounded-xl border-4 border-slate-900 font-bold outline-none focus:border-blue-600"
                       placeholder="e.g. Sarah"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="font-black text-sm uppercase tracking-widest text-slate-900">Gift Message</label>
+                    <label className="font-black text-xs sm:text-sm uppercase tracking-widest text-slate-900">Gift Message</label>
                     <textarea 
                       value={giftMessage}
                       onChange={(e) => setGiftMessage(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border-4 border-slate-900 font-bold outline-none focus:border-blue-600 resize-none h-24"
+                      className="w-full px-4 py-2 sm:py-3 rounded-xl border-4 border-slate-900 font-bold outline-none focus:border-blue-600 resize-none h-20 sm:h-24"
                       placeholder="Write your message here..."
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="font-black text-sm uppercase tracking-widest text-slate-900">Add Image (Optional)</label>
+                    <label className="font-black text-xs sm:text-sm uppercase tracking-widest text-slate-900">Add Image (Optional)</label>
                     <input 
                       type="file" 
                       accept="image/*"
                       onChange={handleImageUpload}
-                      className="w-full file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer"
+                      className="w-full text-xs file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer"
                     />
-                    {giftImage && <img src={giftImage} alt="Gift" className="w-24 h-24 object-cover rounded-xl border-4 border-slate-900 mt-2" />}
+                    {giftImage && <img src={giftImage} alt="Gift" className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl border-4 border-slate-900 mt-2" />}
                   </div>
                   
                   <div className="pt-4 border-t-4 border-slate-900">
@@ -210,30 +236,30 @@ const ProductDetail: React.FC = () => {
               )}
             </div>
 
-            <div className="py-8 border-y-4 border-slate-900 flex flex-col items-center justify-center w-full gap-6">
+            <div className="py-5 sm:py-8 border-y-2 sm:border-y-4 border-slate-900 flex flex-col items-center justify-center w-full gap-4 sm:gap-6 mt-6">
               <div className="flex flex-col items-center">
-                <span className="text-lg font-bold text-slate-400 line-through decoration-red-500 decoration-2">
+                <span className="text-sm sm:text-lg font-bold text-slate-400 line-through decoration-red-500 decoration-2">
                   Rs. {Math.floor(7200).toLocaleString()}
                 </span>
-                <span className="text-5xl font-black text-slate-900 tracking-tighter">
+                <span className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter">
                   Rs. {(product.price + (addDairyMilk ? 50 * dairyMilkQuantity : 0)).toLocaleString()}
                 </span>
-                <span className="text-xs font-black text-white bg-red-500 px-3 py-1 rounded-full uppercase tracking-widest mt-2 animate-pulse">
+                <span className="text-[8px] sm:text-xs font-black text-white bg-red-500 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-widest mt-1 sm:mt-2 animate-pulse">
                   Save Rs. {(7200 - product.price).toLocaleString()}
                 </span>
               </div>
               
-              <div className="flex items-center gap-6 bg-slate-50 p-2 rounded-2xl border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+              <div className="flex items-center gap-4 sm:gap-6 bg-slate-50 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
                 <button 
                   onClick={() => setQuantity(q => Math.max(1, q-1))} 
-                  className="w-12 h-12 rounded-xl bg-white flex items-center justify-center font-black border-4 border-slate-900 hover:bg-slate-900 hover:text-white transition-all text-2xl"
+                  className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white flex items-center justify-center font-black border-2 sm:border-4 border-slate-900 hover:bg-slate-900 hover:text-white transition-all text-lg sm:text-2xl"
                 >
                   -
                 </button>
-                <span className="font-black text-2xl px-4">{quantity}</span>
+                <span className="font-black text-lg sm:text-2xl px-2 sm:px-4">{quantity}</span>
                 <button 
                   onClick={() => setQuantity(q => q+1)} 
-                  className="w-12 h-12 rounded-xl bg-white flex items-center justify-center font-black border-4 border-slate-900 hover:bg-slate-900 hover:text-white transition-all text-2xl"
+                  className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white flex items-center justify-center font-black border-2 sm:border-4 border-slate-900 hover:bg-slate-900 hover:text-white transition-all text-lg sm:text-2xl"
                 >
                   +
                 </button>
@@ -285,6 +311,21 @@ const ProductDetail: React.FC = () => {
                 </div>
             </div>
 
+            {/* Blind-Buy Confidence */}
+            <div className="w-full bg-slate-900 rounded-2xl p-6 border-4 border-slate-900 mt-6 space-y-4 relative overflow-hidden text-white">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-blue-600 rounded-full blur-2xl opacity-20 pointer-events-none"></div>
+                <h4 className="font-black text-white uppercase tracking-widest text-xs flex items-center gap-2 relative z-10">
+                  <span className="text-xl">🎯</span> Blind-Buy Confidence
+                </h4>
+                <div className="relative z-10 space-y-3">
+                  <p className="font-bold text-slate-300 text-sm leading-relaxed">
+                    Hesitant about buying without smelling? We engineer our scents to be universally magnetic compliment-pullers.
+                  </p>
+                  <p className="text-xs font-bold text-slate-400 leading-relaxed">
+                    Crafted at <span className="text-blue-400 font-black bg-blue-600/20 px-1 rounded">40% Extrait de Parfum</span> concentration. No harsh alcohol openings—just pure, smooth oils that project for 14+ hours. What you read in the notes is exactly what you will experience.
+                  </p>
+                </div>
+            </div>
 
           </div>
 
@@ -377,6 +418,53 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
 
+          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12 pb-8">
+            <h3 className="text-2xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2">No-Nonsense Guarantee</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-transform">
+                <span className="text-4xl block mb-4">💧</span>
+                <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">40% Extrait</h4>
+                <p className="text-sm font-bold text-slate-600">Maximum concentration. We don't water down our formulas. You get pure, dense perfume oil that lasts all day.</p>
+              </div>
+              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-transform">
+                <span className="text-4xl block mb-4">🕰️</span>
+                <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">60-Day Maceration</h4>
+                <p className="text-sm font-bold text-slate-600">Every batch is aged for two months before bottling. This smooths out the harsh alcohol notes and deepens the scent.</p>
+              </div>
+              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-transform">
+                <span className="text-4xl block mb-4">🛡️</span>
+                <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">Blind Buy Safe</h4>
+                <p className="text-sm font-bold text-slate-600">Engineered for mass appeal. These are compliment-pulling DNAs that work perfectly in Pakistani weather.</p>
+              </div>
+              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-transform">
+                <span className="text-4xl block mb-4">🚚</span>
+                <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">Cash on Delivery</h4>
+                <p className="text-sm font-bold text-slate-600">Order now, pay when it arrives at your doorstep. Zero risk, absolute convenience.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full mt-6 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12 pb-12">
+            <div className="bg-blue-600 text-white p-8 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] relative overflow-hidden">
+               <div className="absolute -right-10 -top-10 text-9xl opacity-20">🛡️</div>
+               <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 relative z-10">The Blind-Buy Promise</h3>
+               <ul className="space-y-4 relative z-10 font-bold text-sm sm:text-base">
+                 <li className="flex items-start gap-3">
+                   <span className="text-xl">✅</span>
+                   <span><strong className="text-slate-900 bg-white px-1 rounded">40% Extrait Concentration:</strong> No weak reformulations. Pure, dense oils.</span>
+                 </li>
+                 <li className="flex items-start gap-3">
+                   <span className="text-xl">✅</span>
+                   <span><strong className="text-slate-900 bg-white px-1 rounded">60-Day Maceration:</strong> Steeped to perfection before it ever reaches you.</span>
+                 </li>
+                 <li className="flex items-start gap-3">
+                   <span className="text-xl">✅</span>
+                   <span><strong className="text-slate-900 bg-white px-1 rounded">Universal Appeal:</strong> Engineered specifically to pull compliments in Pakistani weather.</span>
+                 </li>
+               </ul>
+            </div>
+          </div>
+
           <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12 pb-12">
             <h3 className="text-2xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2">A Note from the Founder</h3>
             <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 relative overflow-hidden">
@@ -398,28 +486,39 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Footer - Standard Flex Item */}
-        <div className="w-full bg-white border-t-8 border-slate-900 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] space-y-4 shrink-0 z-[100] relative pointer-events-auto">
-          <button 
-            onClick={() => { handleAddAction(); navigate('/checkout'); }} 
-            className="w-full h-20 bg-blue-600 text-white font-black text-2xl rounded-2xl border-4 border-slate-900 uppercase tracking-widest cursor-pointer touch-manipulation hover:bg-blue-700 active:bg-blue-800 transition-colors shadow-none transform-none"
-            style={{ WebkitTapHighlightColor: 'transparent' }}
-          >
-            Checkout Now 🚀
-          </button>
-
-          <button 
-            onClick={handleAddAction} 
-            disabled={isAdding}
-            className={`w-full h-20 font-black text-2xl rounded-2xl border-4 border-slate-900 uppercase tracking-widest cursor-pointer touch-manipulation transition-colors shadow-none transform-none ${
-              isAdding 
-                ? 'bg-green-500 text-white border-green-900' 
-                : 'bg-white text-slate-900 hover:bg-slate-100 active:bg-slate-200'
-            }`}
-            style={{ WebkitTapHighlightColor: 'transparent' }}
-          >
-            {isAdding ? 'Added! ✅' : 'Add to Bag 🛍️'}
-          </button>
+        {/* Footer - Sticky Action Bar */}
+        <div className="absolute bottom-0 left-0 right-0 w-full bg-white border-t-4 sm:border-t-8 border-slate-900 p-4 sm:p-6 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:pb-[calc(1.5rem+env(safe-area-inset-bottom))] z-[100] pointer-events-auto shadow-[0_-15px_40px_rgba(0,0,0,0.15)]">
+          <div className="max-w-5xl mx-auto flex flex-col gap-3 sm:gap-4">
+            <div className="flex items-center justify-center gap-3 sm:gap-6 text-[10px] sm:text-sm font-black text-slate-900 uppercase tracking-widest bg-slate-100 py-2 rounded-xl border-2 border-slate-900">
+              <span className="flex items-center gap-1">🛡️ Risk Free</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="flex items-center gap-1">⏳ 14+ Hrs</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="flex items-center gap-1">🚚 COD Available</span>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <button 
+                onClick={handleAddAction} 
+                disabled={isAdding}
+                className={`flex-1 py-5 sm:py-8 font-black text-xl sm:text-2xl rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 uppercase tracking-widest cursor-pointer touch-manipulation transition-all shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-2 active:translate-y-2 ${
+                  isAdding 
+                    ? 'bg-green-500 text-white border-green-900' 
+                    : 'bg-white text-slate-900 hover:bg-slate-50'
+                }`}
+                style={{ WebkitTapHighlightColor: 'transparent' }}
+              >
+                {isAdding ? 'Added! ✅' : 'Add to Bag 🛍️'}
+              </button>
+              
+              <button 
+                onClick={() => { handleAddAction(); navigate('/checkout'); }} 
+                className="flex-[1.5] py-5 sm:py-8 bg-blue-600 text-white font-black text-xl sm:text-2xl rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 uppercase tracking-widest cursor-pointer touch-manipulation hover:bg-blue-700 active:bg-blue-800 transition-all shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-2 active:translate-y-2 flex flex-col items-center justify-center leading-none animate-pulse"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
+              >
+                <span>Order Now - Risk Free</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
