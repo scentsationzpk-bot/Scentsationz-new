@@ -35,6 +35,7 @@ const AdminPayouts = React.lazy(() => import('./pages/AdminPayouts'));
 const BrandBuilder = React.lazy(() => import('./pages/BrandBuilder'));
 const AdminPromotions = React.lazy(() => import('./pages/AdminPromotions'));
 const Promotions = React.lazy(() => import('./pages/Promotions'));
+const ReturnPolicy = React.lazy(() => import('./pages/ReturnPolicy'));
 
 const LoadingFallback = () => (
   <div className="h-screen w-full flex items-center justify-center bg-white">
@@ -135,6 +136,7 @@ const App: React.FC = () => {
                 <Route path="/promoter/signup" element={<PromoterSignup />} />
                 <Route path="/promoter/dashboard" element={<PromoterDashboard />} />
                 <Route path="/promotions" element={<Promotions />} />
+                <Route path="/return-policy" element={<ReturnPolicy />} />
                 <Route path="/brand-builder" element={<BrandBuilder />} />
                 <Route path="/admin-login" element={<AdminLogin />} />
                 <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}>

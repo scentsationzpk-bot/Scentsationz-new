@@ -140,55 +140,126 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-      {/* Features Section */}
-      <section className="max-w-7xl mx-auto px-4 py-16 sm:py-24 border-b-4 border-slate-900">
-        <div className="grid grid-cols-1 md:grid-cols-3 divide-y-4 md:divide-y-0 md:divide-x-4 divide-slate-900 border-4 border-slate-900 rounded-[2rem] overflow-hidden shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] bg-white">
+
+      {/* Features Section - The Molecular Edge */}
+      <section className="max-w-7xl mx-auto px-4 py-20 sm:py-32 border-b-4 border-slate-900">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* Main Feature Highlight */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="p-8 sm:p-12 flex flex-col items-center text-center space-y-6 group hover:bg-slate-50 transition-colors"
+            className="lg:col-span-7 bg-blue-600 rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-16 border-4 border-slate-900 shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] text-white relative overflow-hidden group"
           >
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              <Zap className="w-8 h-8" />
-            </div>
-            <div>
-              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 mb-2">Pure Extrait</h3>
-              <p className="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] leading-relaxed">40% Oil Concentration</p>
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="p-8 sm:p-12 flex flex-col items-center text-center space-y-6 group hover:bg-slate-50 transition-colors"
-          >
-            <div className="w-16 h-16 bg-white text-blue-600 rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              <ShieldCheck className="w-8 h-8" />
-            </div>
-            <div>
-              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 mb-2">Eternal Sillage</h3>
-              <p className="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] leading-relaxed">14+ Hours Performance</p>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
+            <div className="relative z-10 space-y-6">
+              <div className="inline-flex items-center gap-2 bg-white/20 border-2 border-white/30 px-4 py-2 rounded-full">
+                <Zap className="w-4 h-4 text-white" />
+                <span className="text-white font-black tracking-[0.4em] uppercase text-[10px]">The Molecular Edge</span>
+              </div>
+              <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-none">
+                40% Pure <br/><span className="italic opacity-80">Extrait.</span>
+              </h2>
+              <p className="text-blue-50 font-bold text-lg leading-relaxed max-w-xl">
+                While most "luxury" brands dilute their scents to 15-20%, we engineer our artifacts at a massive 40% concentration. This isn't just perfume; it's a molecular statement that commands attention for 14+ hours.
+              </p>
+              <div className="pt-8 grid grid-cols-2 gap-8 border-t-2 border-white/20">
+                <div className="space-y-1">
+                  <span className="text-3xl font-black">14h+</span>
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-70">Active Projection</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-3xl font-black">Zero</span>
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-70">Synthetic Fillers</p>
+                </div>
+              </div>
             </div>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="p-8 sm:p-12 flex flex-col items-center text-center space-y-6 group hover:bg-slate-50 transition-colors"
-          >
-            <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(37,99,235,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              <Star className="w-8 h-8 text-blue-500" />
+          {/* Secondary Features Stack */}
+          <div className="lg:col-span-5 flex flex-col gap-8">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex-1 bg-white rounded-[2rem] p-8 sm:p-10 border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] flex flex-col justify-center space-y-4 group hover:bg-slate-50 transition-colors"
+            >
+              <div className="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(37,99,235,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900">Eternal Sillage</h3>
+              <p className="text-slate-500 font-bold text-sm leading-relaxed">
+                Our base notes are anchored with premium resins and molecular fixatives that grip the skin, ensuring your presence remains long after you've left the room.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="flex-1 bg-slate-50 rounded-[2rem] p-8 sm:p-10 border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(37,99,235,1)] flex flex-col justify-center space-y-4 group hover:bg-white transition-colors"
+            >
+              <div className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+                <Star className="w-6 h-6" />
+              </div>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900">Niche Sourcing</h3>
+              <p className="text-slate-500 font-bold text-sm leading-relaxed">
+                We source our raw materials from the same fields as the world's most expensive niche houses, ensuring every drop is an authentic luxury artifact.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Ritual - Experience Section */}
+      <section className="max-w-7xl mx-auto px-4 py-20 sm:py-32 border-b-4 border-slate-900">
+        <div className="flex flex-col lg:flex-row gap-16 items-center">
+          <div className="lg:w-1/2 space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tighter uppercase leading-none">
+                The <span className="text-blue-600 italic">Ritual</span>
+              </h2>
+              <p className="text-slate-500 font-black uppercase tracking-[0.4em] text-xs sm:text-sm">How to master the extrait</p>
             </div>
-            <div>
-              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 mb-2">Niche Quality</h3>
-              <p className="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] leading-relaxed">Hand-Selected Ingredients</p>
+            
+            <div className="space-y-12">
+              {[
+                { step: "01", title: "Pulse Points", desc: "Apply to the neck, wrists, and behind the ears. The heat from your body will activate the molecular bonds." },
+                { step: "02", title: "Do Not Rub", desc: "Rubbing breaks down the top notes prematurely. Let the extrait settle naturally into your skin's chemistry." },
+                { step: "03", title: "The Cloud", desc: "For a more subtle aura, spray into the air and walk through the mist. This ensures an even distribution." }
+              ].map((item, idx) => (
+                <motion.div 
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  key={idx} 
+                  className="flex gap-6 sm:gap-8"
+                >
+                  <span className="text-4xl sm:text-5xl font-black text-blue-600/20 italic leading-none">{item.step}</span>
+                  <div className="space-y-2">
+                    <h4 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">{item.title}</h4>
+                    <p className="text-slate-500 font-bold text-sm sm:text-base leading-relaxed">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
+          </div>
+          
+          <div className="lg:w-1/2 relative">
+            <div className="absolute inset-0 bg-blue-600 rounded-[3rem] rotate-3 border-4 border-slate-900 shadow-[20px_20px_0px_0px_rgba(15,23,42,1)]"></div>
+            <div className="relative bg-white rounded-[3rem] border-4 border-slate-900 overflow-hidden aspect-[4/5]">
+              <img 
+                src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800" 
+                alt="Luxury perfume application ritual" 
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex items-end p-8 sm:p-12">
+                <p className="text-white font-black uppercase tracking-[0.2em] text-xs sm:text-sm italic">"A ritual of power, performed daily."</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -265,30 +336,36 @@ const Home: React.FC = () => {
       </section>
 
       {/* Private Collection Grid */}
-      <section className="max-w-7xl mx-auto px-4 py-20 sm:py-32 space-y-16 sm:space-y-24">
+      <section className="max-w-7xl mx-auto px-4 py-20 sm:py-32 space-y-16 sm:space-y-24 border-b-4 border-slate-900">
         <div className="space-y-4 sm:space-y-8 text-center">
           <h2 className="text-4xl sm:text-6xl md:text-8xl font-black text-slate-900 tracking-tighter uppercase leading-none">The <span className="text-blue-600 italic">Signature</span> Collection</h2>
           <p className="text-slate-500 text-sm sm:text-xl font-black uppercase tracking-[0.4em]">Exclusivity in every drop. Limited batch releases.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y-4 lg:divide-y-0 lg:divide-x-4 divide-slate-900 border-4 border-slate-900 rounded-[2rem] overflow-hidden shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] bg-white">
           {products.map((product, index) => {
             // Generate a consistent rating between 4.2 and 4.98 based on product id or index
             const rating = (4.2 + (Math.abs(product.id.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % 78) / 100).toFixed(2);
             
             return (
               <motion.div 
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 key={product.id} 
-                className={`group bg-white rounded-[2rem] sm:rounded-[3rem] border-4 border-slate-900 shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] sm:shadow-[20px_20px_0px_0px_rgba(15,23,42,1)] overflow-hidden hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all flex flex-col relative ${
-                  index === 0 ? 'lg:col-span-2 lg:flex-row' : ''
+                className={`group flex flex-col relative hover:bg-slate-50 transition-colors ${
+                  index > 0 && index % 3 !== 0 ? 'lg:border-l-4 border-slate-900' : ''
+                } ${
+                  index >= 3 ? 'lg:border-t-4 border-slate-900' : ''
                 }`}
               >
-                <div className={`aspect-square bg-slate-50 relative flex items-center justify-center border-slate-900 overflow-hidden ${
-                  index === 0 ? 'lg:w-1/2 lg:border-r-4' : 'w-full border-b-4'
-                }`}>
+                <div className="aspect-square bg-slate-50 relative flex items-center justify-center border-b-4 border-slate-900 overflow-hidden">
+                  <div className="absolute top-4 right-4 z-10">
+                    <div className="bg-slate-900 text-white px-3 py-1 rounded-full border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(37,99,235,1)] flex items-center gap-2">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
+                      <span className="text-[10px] font-black uppercase tracking-widest">In Stock</span>
+                    </div>
+                  </div>
                   <img 
                     src={product.imageUrl ? product.imageUrl.replace('w=800', 'w=600') : 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=60&w=600'} 
                     alt={`Luxury perfume bottle: ${product.name}`} 
@@ -296,20 +373,21 @@ const Home: React.FC = () => {
                     className="w-full h-full object-contain p-8 sm:p-12 group-hover:scale-110 transition-transform duration-1000 grayscale group-hover:grayscale-0" 
                   />
                 </div>
-                <div className={`p-8 sm:p-12 space-y-4 sm:space-y-6 flex flex-col justify-center ${index === 0 ? 'lg:w-1/2' : 'w-full'} items-center text-center`}>
-                  <div className="flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] mb-2">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className={`w-3 h-3 sm:w-4 sm:h-4 ${i < Math.floor(Number(rating)) ? 'fill-blue-600 text-blue-600' : 'text-slate-300'}`} />
-                      ))}
+                <div className="p-8 sm:p-12 space-y-4 sm:space-y-6 flex flex-col justify-between flex-grow items-center text-center">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className={`w-3 h-3 sm:w-4 sm:h-4 ${i < Math.floor(Number(rating)) ? 'fill-blue-600 text-blue-600' : 'text-slate-300'}`} />
+                        ))}
+                      </div>
+                      <span className="text-[10px] sm:text-xs font-black text-slate-900">{rating} / 5.0</span>
                     </div>
-                    <span className="text-[10px] sm:text-xs font-black text-slate-900">{rating} / 5.0</span>
+                    <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter uppercase leading-none">{product.name}</h3>
+                    <p className="text-slate-500 font-bold text-sm sm:text-base leading-relaxed line-clamp-2">{product.description}</p>
                   </div>
-                  <h3 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter uppercase leading-none">{product.name}</h3>
-                  <p className="text-slate-500 font-bold text-base sm:text-lg leading-relaxed line-clamp-2">{product.description}</p>
-                  <div className="pt-6 sm:pt-8 border-t-4 border-slate-50 flex flex-col items-center w-full gap-6 sm:gap-8">
+                  <div className="pt-6 sm:pt-8 border-t-4 border-slate-100 flex flex-col items-center w-full gap-6 sm:gap-8 mt-auto">
                     <div className="flex flex-col items-center">
-                      <span className="text-[10px] sm:text-sm font-black text-slate-400 uppercase tracking-[0.3em] mb-1 sm:mb-2">Limited Availability</span>
                       <div className="flex items-center gap-2">
                         <span className="text-sm sm:text-lg font-bold text-slate-400 line-through decoration-red-500 decoration-2">Rs. 7,200</span>
                         <span className="text-2xl sm:text-3xl font-black text-slate-900">Rs. {product.price.toLocaleString()}</span>
@@ -317,7 +395,7 @@ const Home: React.FC = () => {
                     </div>
                     <Link 
                       to={`/product/${product.id}`}
-                      className="w-full py-5 sm:py-6 bg-blue-600 text-white font-black rounded-xl sm:rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,0.1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,0.1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all uppercase tracking-widest text-xs sm:text-sm"
+                      className="w-full py-4 sm:py-5 bg-blue-600 text-white font-black rounded-xl sm:rounded-2xl border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:shadow-none group-hover:translate-x-1 group-hover:translate-y-1 transition-all uppercase tracking-widest text-xs sm:text-sm"
                     >
                       Enter The Vault
                     </Link>
