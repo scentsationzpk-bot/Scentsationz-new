@@ -141,51 +141,52 @@ const Home: React.FC = () => {
         </div>
       </section>
       {/* Features Section */}
-      <section className="relative max-w-7xl mx-auto px-4 py-20 sm:py-32 border-b-4 border-slate-900 overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl opacity-50 -z-10"></div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16 text-center">
+      <section className="max-w-7xl mx-auto px-4 py-16 sm:py-24 border-b-4 border-slate-900">
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y-4 md:divide-y-0 md:divide-x-4 divide-slate-900 border-4 border-slate-900 rounded-[2rem] overflow-hidden shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] bg-white">
           <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col items-center space-y-4 sm:space-y-6 group"
+            className="p-8 sm:p-12 flex flex-col items-center text-center space-y-6 group hover:bg-slate-50 transition-colors"
           >
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600 text-white rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              <Zap className="w-8 h-8 sm:w-10 sm:h-10" />
+            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+              <Zap className="w-8 h-8" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight">Pure Extrait</h3>
-              <p className="text-slate-500 font-bold text-[10px] sm:text-xs uppercase tracking-[0.3em]">40% Oil Concentration</p>
+            <div>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 mb-2">Pure Extrait</h3>
+              <p className="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] leading-relaxed">40% Oil Concentration</p>
             </div>
           </motion.div>
+          
           <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="flex flex-col items-center space-y-4 sm:space-y-6 group"
+            className="p-8 sm:p-12 flex flex-col items-center text-center space-y-6 group hover:bg-slate-50 transition-colors"
           >
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white text-blue-600 rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              <ShieldCheck className="w-8 h-8 sm:w-10 sm:h-10" />
+            <div className="w-16 h-16 bg-white text-blue-600 rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+              <ShieldCheck className="w-8 h-8" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight">Eternal Sillage</h3>
-              <p className="text-slate-500 font-bold text-[10px] sm:text-xs uppercase tracking-[0.3em]">14+ Hours Performance</p>
+            <div>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 mb-2">Eternal Sillage</h3>
+              <p className="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] leading-relaxed">14+ Hours Performance</p>
             </div>
           </motion.div>
+
           <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="flex flex-col items-center space-y-4 sm:space-y-6 group"
+            className="p-8 sm:p-12 flex flex-col items-center text-center space-y-6 group hover:bg-slate-50 transition-colors"
           >
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-900 text-white rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(37,99,235,1)] sm:shadow-[8px_8px_0px_0px_rgba(37,99,235,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              <Star className="w-8 h-8 sm:w-10 sm:h-10 text-blue-500" />
+            <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(37,99,235,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+              <Star className="w-8 h-8 text-blue-500" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight">Niche Quality</h3>
-              <p className="text-slate-500 font-bold text-[10px] sm:text-xs uppercase tracking-[0.3em]">Hand-Selected Ingredients</p>
+            <div>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900 mb-2">Niche Quality</h3>
+              <p className="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] leading-relaxed">Hand-Selected Ingredients</p>
             </div>
           </motion.div>
         </div>
@@ -230,14 +231,14 @@ const Home: React.FC = () => {
           </h2>
           <p className="text-slate-500 font-black uppercase tracking-[0.4em] text-xs sm:text-sm">Why we stand above the rest</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 divide-y-4 md:divide-y-0 md:divide-x-4 divide-slate-900 border-4 border-slate-900 rounded-[2rem] overflow-hidden shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] bg-white">
           <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-slate-50 p-8 sm:p-12 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]"
+            className="p-8 sm:p-12 group hover:bg-slate-50 transition-colors"
           >
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
               <span className="text-2xl font-black">01</span>
             </div>
             <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter mb-4">Small Batch Production</h3>
@@ -246,13 +247,13 @@ const Home: React.FC = () => {
             </p>
           </motion.div>
           <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="bg-slate-50 p-8 sm:p-12 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]"
+            className="p-8 sm:p-12 group hover:bg-slate-50 transition-colors"
           >
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
               <span className="text-2xl font-black">02</span>
             </div>
             <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter mb-4">60-Day Maceration</h3>

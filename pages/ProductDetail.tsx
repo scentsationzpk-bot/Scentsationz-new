@@ -155,6 +155,34 @@ const ProductDetail: React.FC = () => {
                     <p className="text-sm font-bold text-slate-900 mt-1">Extremely High (Room Filler)</p>
                   </div>
                 </div>
+
+                {/* Composition */}
+                <div className="w-full mt-8 pt-6 border-t-2 sm:border-t-4 border-slate-900 text-left">
+                  <h3 className="text-xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2 mb-6">Composition</h3>
+                  <div className="relative pl-6 space-y-6 before:absolute before:inset-y-0 before:left-[11px] before:w-1 before:bg-slate-200">
+                    <div className="relative">
+                      <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
+                        <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+                      </div>
+                      <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Top Notes</span>
+                      <p className="text-slate-600 font-bold text-sm">{specs.topNotes.join(', ')}</p>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
+                        <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+                      </div>
+                      <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Heart Notes</span>
+                      <p className="text-slate-600 font-bold text-sm">{specs.middleNotes.join(', ')}</p>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
+                        <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+                      </div>
+                      <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Base Notes</span>
+                      <p className="text-slate-600 font-bold text-sm">{specs.baseNotes.join(', ')}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             
               <div className="w-full text-left space-y-4 pt-6 border-t-2 sm:border-t-4 border-slate-900 mt-6">
@@ -264,6 +292,21 @@ const ProductDetail: React.FC = () => {
                   +
                 </button>
               </div>
+
+              <div className="w-full flex flex-col gap-3 mt-4">
+                <button 
+                  onClick={handleAddAction}
+                  className="w-full py-4 sm:py-5 bg-blue-600 text-white font-black rounded-xl sm:rounded-2xl text-lg sm:text-xl uppercase tracking-widest hover:bg-blue-700 active:translate-y-2 transition-all border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] active:shadow-none flex items-center justify-center gap-2"
+                >
+                  Add to Bag 🛍️
+                </button>
+                <button 
+                  onClick={() => { handleAddAction(); navigate('/checkout'); }}
+                  className="w-full py-4 sm:py-5 bg-slate-900 text-white font-black rounded-xl sm:rounded-2xl text-lg sm:text-xl uppercase tracking-widest hover:bg-slate-800 active:translate-y-2 transition-all border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] active:shadow-none flex items-center justify-center gap-2"
+                >
+                  Order Now - Risk Free
+                </button>
+              </div>
             </div>
             </div>
           </div>
@@ -311,111 +354,6 @@ const ProductDetail: React.FC = () => {
                 </div>
             </div>
 
-            {/* Blind-Buy Confidence */}
-            <div className="w-full bg-slate-900 rounded-2xl p-6 border-4 border-slate-900 mt-6 space-y-4 relative overflow-hidden text-white">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-blue-600 rounded-full blur-2xl opacity-20 pointer-events-none"></div>
-                <h4 className="font-black text-white uppercase tracking-widest text-xs flex items-center gap-2 relative z-10">
-                  <span className="text-xl">🎯</span> Blind-Buy Confidence
-                </h4>
-                <div className="relative z-10 space-y-3">
-                  <p className="font-bold text-slate-300 text-sm leading-relaxed">
-                    Hesitant about buying without smelling? We engineer our scents to be universally magnetic compliment-pullers.
-                  </p>
-                  <p className="text-xs font-bold text-slate-400 leading-relaxed">
-                    Crafted at <span className="text-blue-400 font-black bg-blue-600/20 px-1 rounded">40% Extrait de Parfum</span> concentration. No harsh alcohol openings—just pure, smooth oils that project for 14+ hours. What you read in the notes is exactly what you will experience.
-                  </p>
-                </div>
-            </div>
-
-          </div>
-
-          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12">
-            <h3 className="text-2xl font-black uppercase tracking-widest text-slate-900">The Scentsationz Promise</h3>
-            <div className="bg-slate-50 rounded-[2rem] p-8 border-4 border-slate-100 space-y-8">
-              
-              {/* Trust Item 1 */}
-              <div className="flex items-start gap-6">
-                <div className="w-14 h-14 rounded-2xl bg-white border-4 border-slate-200 flex items-center justify-center text-2xl shadow-sm shrink-0">
-                  🚚
-                </div>
-                <div>
-                  <h4 className="font-black text-slate-900 uppercase tracking-widest text-sm">Free Nationwide Delivery</h4>
-                  <p className="text-xs font-bold text-slate-500 mt-1 leading-relaxed">
-                    We cover 100% of the shipping costs. The price you see is the price you pay. No surprises at checkout.
-                  </p>
-                </div>
-              </div>
-
-              {/* Trust Item 2 */}
-              <div className="flex items-start gap-6">
-                <div className="w-14 h-14 rounded-2xl bg-white border-4 border-slate-200 flex items-center justify-center text-2xl shadow-sm shrink-0">
-                  🛡️
-                </div>
-                <div>
-                  <h4 className="font-black text-slate-900 uppercase tracking-widest text-sm">Founder's Quality Seal</h4>
-                  <p className="text-xs font-bold text-slate-500 mt-1 leading-relaxed">
-                    "I personally test every batch. If it doesn't last 10+ hours, it doesn't leave the vault." — The Founder (13yo)
-                  </p>
-                </div>
-              </div>
-
-              {/* Trust Item 3 */}
-              <div className="flex items-start gap-6">
-                <div className="w-14 h-14 rounded-2xl bg-white border-4 border-slate-200 flex items-center justify-center text-2xl shadow-sm shrink-0">
-                  💧
-                </div>
-                <div>
-                  <h4 className="font-black text-slate-900 uppercase tracking-widest text-sm">Extrait de Parfum (35-40%)</h4>
-                  <p className="text-xs font-bold text-slate-500 mt-1 leading-relaxed">
-                    Not an Eau de Toilette. This is pure perfume oil concentration for maximum projection and longevity.
-                  </p>
-                </div>
-              </div>
-
-              {/* Trust Item 4 */}
-              <div className="flex items-start gap-6">
-                <div className="w-14 h-14 rounded-2xl bg-white border-4 border-slate-200 flex items-center justify-center text-2xl shadow-sm shrink-0">
-                  📦
-                </div>
-                <div>
-                  <h4 className="font-black text-slate-900 uppercase tracking-widest text-sm">Safe Arrival Guarantee</h4>
-                  <p className="text-xs font-bold text-slate-500 mt-1 leading-relaxed">
-                    If your bottle arrives damaged, we replace it instantly. No questions asked. Your trust is our priority.
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12">
-            <h3 className="text-2xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2">Composition</h3>
-            <div className="relative pl-6 space-y-8 before:absolute before:inset-y-0 before:left-[11px] before:w-1 before:bg-slate-200">
-              <div className="relative">
-                <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
-                  <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                </div>
-                <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Top Notes</span>
-                <p className="text-slate-600 font-bold text-sm">{specs.topNotes.join(', ')}</p>
-                <p className="text-slate-400 text-[10px] uppercase tracking-widest mt-1 font-bold">0 - 15 Minutes</p>
-              </div>
-              <div className="relative">
-                <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
-                  <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                </div>
-                <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Heart Notes</span>
-                <p className="text-slate-600 font-bold text-sm">{specs.middleNotes.join(', ')}</p>
-                <p className="text-slate-400 text-[10px] uppercase tracking-widest mt-1 font-bold">15 Mins - 4 Hours</p>
-              </div>
-              <div className="relative">
-                <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
-                  <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                </div>
-                <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Base Notes</span>
-                <p className="text-slate-600 font-bold text-sm">{specs.baseNotes.join(', ')}</p>
-                <p className="text-slate-400 text-[10px] uppercase tracking-widest mt-1 font-bold">4 - 10+ Hours</p>
-              </div>
-            </div>
           </div>
 
           <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12 pb-8">
@@ -441,27 +379,6 @@ const ProductDetail: React.FC = () => {
                 <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">Cash on Delivery</h4>
                 <p className="text-sm font-bold text-slate-600">Order now, pay when it arrives at your doorstep. Zero risk, absolute convenience.</p>
               </div>
-            </div>
-          </div>
-
-          <div className="w-full mt-6 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12 pb-12">
-            <div className="bg-blue-600 text-white p-8 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] relative overflow-hidden">
-               <div className="absolute -right-10 -top-10 text-9xl opacity-20">🛡️</div>
-               <h3 className="text-3xl font-black uppercase tracking-tighter mb-4 relative z-10">The Blind-Buy Promise</h3>
-               <ul className="space-y-4 relative z-10 font-bold text-sm sm:text-base">
-                 <li className="flex items-start gap-3">
-                   <span className="text-xl">✅</span>
-                   <span><strong className="text-slate-900 bg-white px-1 rounded">40% Extrait Concentration:</strong> No weak reformulations. Pure, dense oils.</span>
-                 </li>
-                 <li className="flex items-start gap-3">
-                   <span className="text-xl">✅</span>
-                   <span><strong className="text-slate-900 bg-white px-1 rounded">60-Day Maceration:</strong> Steeped to perfection before it ever reaches you.</span>
-                 </li>
-                 <li className="flex items-start gap-3">
-                   <span className="text-xl">✅</span>
-                   <span><strong className="text-slate-900 bg-white px-1 rounded">Universal Appeal:</strong> Engineered specifically to pull compliments in Pakistani weather.</span>
-                 </li>
-               </ul>
             </div>
           </div>
 
