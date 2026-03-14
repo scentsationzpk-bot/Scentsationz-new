@@ -84,7 +84,7 @@ const Header: React.FC = () => {
               {/* Mobile Menu Button */}
               <button 
                 onClick={() => setMobileMenuOpen(true)}
-                className="lg:hidden w-10 h-10 bg-slate-900 text-white rounded-lg flex items-center justify-center hover:bg-blue-600 transition-all active:scale-95 shadow-md"
+                className="lg:hidden w-10 h-10 bg-slate-900 text-white rounded-xl border-2 border-slate-900 flex items-center justify-center hover:bg-blue-600 transition-all active:translate-x-0.5 active:translate-y-0.5 active:shadow-none shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 12h16M4 6h16M4 18h16"/>
@@ -104,7 +104,7 @@ const Header: React.FC = () => {
         />
         
         {/* Menu Content */}
-        <div className={`absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white border-l-4 sm:border-l-8 border-slate-900 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className={`absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white border-l-4 sm:border-l-8 border-slate-900 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div className="flex flex-col h-full p-6 sm:p-8 pt-16 sm:pt-20 overflow-y-auto">
             <button 
               onClick={() => setMobileMenuOpen(false)}
@@ -128,8 +128,8 @@ const Header: React.FC = () => {
                    onClick={() => setMobileMenuOpen(false)}
                    className={`flex items-center justify-between p-4 sm:p-6 rounded-xl sm:rounded-2xl border-2 sm:border-4 transition-all group ${
                      location.pathname === item.to 
-                     ? 'bg-blue-600 border-slate-900 text-white shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] translate-x-1 -translate-y-1' 
-                     : 'bg-white border-slate-100 text-slate-900 hover:border-blue-600'
+                     ? 'bg-blue-600 border-slate-900 text-white shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]' 
+                     : 'bg-white border-slate-100 text-slate-900 hover:border-blue-600 hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]'
                    }`}
                  >
                    <div className="flex items-center gap-3 sm:gap-4">

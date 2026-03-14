@@ -9,11 +9,8 @@ const Shop: React.FC = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>(getStoreDataSync().products);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(getStoreDataSync().products);
-  const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(getStoreDataSync().products.length === 0);
-
-  const categories = ['All', 'Bold', 'Fresh', 'Warm', 'Woody', 'Oud'];
 
   const fetchProducts = async () => {
     const p = await getProducts();
@@ -36,10 +33,6 @@ const Shop: React.FC = () => {
   useEffect(() => {
     let result = products;
     
-    if (activeCategory !== 'All') {
-      result = result.filter(p => p.category === activeCategory);
-    }
-    
     if (searchQuery) {
       result = result.filter(p => 
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -48,7 +41,7 @@ const Shop: React.FC = () => {
     }
     
     setFilteredProducts(result);
-  }, [activeCategory, products, searchQuery]);
+  }, [products, searchQuery]);
 
   if (loading) {
     return (
@@ -100,42 +93,17 @@ const Shop: React.FC = () => {
 
         {/* Filters & Controls */}
         <div className="flex flex-col lg:flex-row gap-8 items-start">
-          {/* Sidebar Filters */}
-          <div className="w-full lg:w-64 space-y-8 shrink-0">
-            <div className="bg-slate-50 p-8 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] space-y-6">
-              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.3em] text-slate-400">
-                <Filter className="w-3 h-3" /> Filter By Profile
-              </div>
-              <div className="flex flex-col gap-3">
-                {categories.map((cat) => (
-                  <button 
-                    key={cat} 
-                    onClick={() => setActiveCategory(cat)} 
-                    className={`group flex items-center justify-between px-6 py-4 rounded-xl border-4 transition-all font-black uppercase text-xs tracking-widest ${
-                      activeCategory === cat 
-                        ? 'bg-blue-600 border-slate-900 text-white shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] translate-x-1 -translate-y-1' 
-                        : 'bg-white border-slate-900 text-slate-500 hover:text-slate-900 hover:shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]'
-                    }`}
-                  >
-                    {cat}
-                    {activeCategory === cat && <Zap className="w-3 h-3 fill-white" />}
-                  </button>
-                ))}
-              </div>
+          {/* Stats Card */}
+          <div className="hidden lg:block bg-slate-900 p-8 rounded-[2rem] text-white space-y-4 w-64">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-blue-400">
+              <ShoppingBag className="w-3 h-3" /> Inventory Status
             </div>
-
-            {/* Stats Card */}
-            <div className="hidden lg:block bg-slate-900 p-8 rounded-[2rem] text-white space-y-4">
-              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-blue-400">
-                <ShoppingBag className="w-3 h-3" /> Inventory Status
-              </div>
-              <div className="space-y-1">
-                <p className="text-3xl font-black tracking-tighter">{products.length}</p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Artifacts</p>
-              </div>
-              <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-600 w-[85%]"></div>
-              </div>
+            <div className="space-y-1">
+              <p className="text-3xl font-black tracking-tighter">{products.length}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Artifacts</p>
+            </div>
+            <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+              <div className="h-full bg-blue-600 w-[85%]"></div>
             </div>
           </div>
 
@@ -204,8 +172,11 @@ const Shop: React.FC = () => {
                             <div className="w-full pt-8 border-t-4 border-slate-900 space-y-6">
                               <div className="flex flex-col items-center">
                                 <div className="flex items-center gap-3">
-                                  <span className="text-sm font-bold text-slate-400 line-through decoration-red-500 decoration-2">Rs. 7,200</span>
+                                  <span className="text-sm font-bold text-slate-400 line-through decoration-red-500 decoration-2">Rs. 12,000</span>
                                   <span className="text-2xl font-black text-slate-900 tracking-tighter">Rs. {product.price.toLocaleString()}</span>
+                                </div>
+                                <div className="mt-1 bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest">
+                                  Save Rs. {(12000 - product.price).toLocaleString()}
                                 </div>
                               </div>
                               
@@ -253,10 +224,10 @@ const Shop: React.FC = () => {
                   <p className="text-slate-500 font-bold">Try adjusting your search or profile filters.</p>
                 </div>
                 <button 
-                  onClick={() => { setActiveCategory('All'); setSearchQuery(''); }}
+                  onClick={() => { setSearchQuery(''); }}
                   className="px-8 py-4 bg-slate-900 text-white font-black rounded-xl uppercase tracking-widest text-xs"
                 >
-                  Reset Filters
+                  Reset Search
                 </button>
               </motion.div>
             )}

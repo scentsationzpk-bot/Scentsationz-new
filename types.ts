@@ -2,6 +2,7 @@ export interface Product {
   id: string;
   name: string;
   price: number;
+  originalPrice?: number;
   stock: number;
   description: string;
   category: string;
@@ -20,6 +21,14 @@ export interface Product {
     season?: string;
     bestTime?: string;
   };
+  perfumer?: {
+    name: string;
+    bio: string;
+    headshotUrl: string;
+  };
+  lastRestocked?: string;
+  fragranceFamily?: 'Woody' | 'Floral' | 'Fresh' | 'Oriental' | 'Citrus';
+  giftSetContentsImages?: string[];
 }
 
 export interface Review {

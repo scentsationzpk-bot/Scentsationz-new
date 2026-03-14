@@ -4,6 +4,7 @@ import { getProductById, addToCart } from '../storage';
 import { Product } from '../types';
 import { useToast } from '../App';
 import { NoteTooltip } from '../components/NoteTooltip';
+import { Star } from 'lucide-react';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -92,7 +93,7 @@ const ProductDetail: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center p-0 sm:p-4 bg-slate-900/80 backdrop-blur-sm">
-      <div className="bg-white w-full h-full sm:h-auto sm:max-w-5xl sm:rounded-2xl shadow-none sm:shadow-[20px_20px_0px_0px_rgba(15,23,42,1)] overflow-hidden flex flex-col animate-in zoom-in duration-300 border-0 sm:border-4 border-slate-900 max-h-screen sm:max-h-[90vh] relative">
+      <div className="bg-white w-full h-full sm:h-auto sm:max-w-5xl sm:rounded-2xl shadow-none sm:shadow-[20px_20px_0px_0px_rgba(15,23,42,1)] overflow-hidden flex flex-col animate-in zoom-in duration-300 border-0 sm:border-4 border-slate-900 max-h-screen sm:max-h-[90vh] relative font-sans">
         
         {/* Close Button - Always Visible */}
         <button 
@@ -121,15 +122,40 @@ const ProductDetail: React.FC = () => {
             {/* Right Column - Details */}
             <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 pb-12 flex flex-col items-center text-center bg-white">
               <div className="space-y-3 sm:space-y-6 flex flex-col items-center w-full">
-                <span className="text-blue-600 font-black text-[8px] sm:text-[12px] uppercase tracking-widest bg-blue-50 px-3 py-1 sm:px-6 sm:py-2 rounded-lg sm:rounded-xl border-2 sm:border-4 border-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] sm:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
-                  {product.category} Series
+                <span className={`font-black text-[8px] sm:text-[12px] uppercase tracking-widest px-3 py-1 sm:px-6 sm:py-2 rounded-lg sm:rounded-xl border-2 sm:border-4 border-slate-900 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] sm:shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] ${
+                  product.fragranceFamily === 'Woody' ? 'bg-emerald-900 text-white' :
+                  product.fragranceFamily === 'Floral' ? 'bg-pink-200 text-pink-900' :
+                  product.fragranceFamily === 'Fresh' ? 'bg-sky-200 text-sky-900' :
+                  product.fragranceFamily === 'Oriental' ? 'bg-amber-200 text-amber-900' :
+                  product.fragranceFamily === 'Citrus' ? 'bg-yellow-200 text-yellow-900' :
+                  'bg-blue-50 text-blue-600'
+                }`}>
+                  {product.fragranceFamily || product.category} Series
                 </span>
                 <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-tight uppercase">
                   {product.name}
                 </h2>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg sm:text-xl font-bold text-slate-400 line-through decoration-red-500 decoration-2">Rs. 7,200</span>
-                  <span className="text-2xl sm:text-3xl font-black text-slate-900">Rs. {product.price.toLocaleString()}</span>
+                <div className="flex items-center gap-2">
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className={`w-4 h-4 sm:w-5 sm:h-5 ${i < Math.floor(Number((4.2 + (Math.abs(product.id.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % 78) / 100).toFixed(2))) ? 'fill-blue-600 text-blue-600' : 'text-slate-200'}`} />
+                    ))}
+                  </div>
+                  <span className="text-[10px] font-black text-slate-900">{(4.2 + (Math.abs(product.id.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % 78) / 100).toFixed(2)} / 5.0</span>
+                </div>
+                {product.lastRestocked && (
+                  <div className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                    Last Restocked: {product.lastRestocked}
+                  </div>
+                )}
+                <div className="flex flex-col items-start gap-1">
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg sm:text-xl font-bold text-slate-400 line-through decoration-red-500 decoration-2">Rs. 12,000</span>
+                    <span className="text-2xl sm:text-3xl font-black text-slate-900">Rs. {product.price.toLocaleString()}</span>
+                  </div>
+                  <div className="bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest">
+                    Save Rs. {(12000 - product.price).toLocaleString()}
+                  </div>
                 </div>
                 <p className="text-slate-500 text-sm sm:text-base font-black max-w-md leading-relaxed">
                   {product.description}
@@ -156,6 +182,27 @@ const ProductDetail: React.FC = () => {
                     <p className="text-sm font-bold text-slate-900 mt-1">Extremely High (Room Filler)</p>
                   </div>
                 </div>
+                {product.giftSetContentsImages && product.giftSetContentsImages.length > 0 && (
+                  <div className="mt-8 w-full">
+                    <p className="font-black text-[10px] uppercase tracking-widest text-slate-400 mb-4">What's in the Box</p>
+                    <div className="grid grid-cols-3 gap-4">
+                      {product.giftSetContentsImages.map((img, i) => (
+                        <img key={i} src={img} alt="Box contents" className="w-full h-24 object-cover rounded-xl border-2 border-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]" />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {product.perfumer && (
+                  <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 mt-6 flex items-center gap-4 w-full">
+                    <img src={product.perfumer.headshotUrl} alt={product.perfumer.name} className="w-16 h-16 rounded-full object-cover border-2 border-slate-900" />
+                    <div className="text-left">
+                      <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">Perfumer</p>
+                      <p className="font-black text-lg text-slate-900">{product.perfumer.name}</p>
+                      <p className="text-xs text-slate-600 leading-snug">{product.perfumer.bio}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             
               <div className="w-full text-left space-y-4 pt-6 border-t-2 sm:border-t-4 border-slate-900 mt-6">
@@ -239,15 +286,21 @@ const ProductDetail: React.FC = () => {
 
             <div className="py-5 sm:py-8 border-y-2 sm:border-y-4 border-slate-900 flex flex-col items-center justify-center w-full gap-4 sm:gap-6 mt-6">
               <div className="flex flex-col items-center">
-                <span className="text-sm sm:text-lg font-bold text-slate-400 line-through decoration-red-500 decoration-2">
-                  Rs. {Math.floor(7200).toLocaleString()}
-                </span>
-                <span className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter">
-                  Rs. {(product.price + (addDairyMilk ? 50 * dairyMilkQuantity : 0)).toLocaleString()}
-                </span>
-                {7200 - product.price > 0 && (
-                  <span className="text-[8px] sm:text-xs font-black text-white bg-amber-700 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-widest mt-1 sm:mt-2 animate-pulse">
-                    Save Rs. {(7200 - product.price).toLocaleString()}
+                {product.originalPrice && product.originalPrice > product.price ? (
+                  <>
+                    <span className="text-sm sm:text-lg font-bold text-slate-400 line-through decoration-red-500 decoration-2">
+                      Rs. {product.originalPrice.toLocaleString()}
+                    </span>
+                    <span className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter">
+                      Rs. {(product.price + (addDairyMilk ? 50 * dairyMilkQuantity : 0)).toLocaleString()}
+                    </span>
+                    <span className="text-[8px] sm:text-xs font-black text-white bg-amber-700 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-widest mt-1 sm:mt-2 animate-pulse">
+                      Save Rs. {(product.originalPrice - product.price).toLocaleString()}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter">
+                    Rs. {(product.price + (addDairyMilk ? 50 * dairyMilkQuantity : 0)).toLocaleString()}
                   </span>
                 )}
               </div>
@@ -327,30 +380,30 @@ const ProductDetail: React.FC = () => {
                 Composition <span className="text-slate-400">🧬</span>
               </h3>
               
-              <div className="relative pl-12 space-y-16">
-                <div className="absolute left-[22px] top-4 bottom-4 w-1.5 bg-slate-900 rounded-full"></div>
+              <div className="relative space-y-8 sm:space-y-12">
+                <div className="absolute left-[21px] sm:left-[29px] top-4 bottom-4 w-1.5 bg-slate-900 rounded-full"></div>
 
-                <div className="relative group">
-                  <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform">🌿</div>
-                  <div className="bg-slate-50 p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,0.1)]">
-                     <h4 className="text-2xl font-black uppercase tracking-tighter text-slate-900 mb-4">Initial Contact</h4>
-                     <p className="text-slate-500 font-bold text-lg leading-relaxed">{specs.topNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.topNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
+                <div className="relative flex items-start gap-4 sm:gap-8 group">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-xl sm:text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform">🌿</div>
+                  <div className="flex-1 bg-slate-50 p-6 sm:p-10 rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+                     <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tighter text-slate-900 mb-2 sm:mb-4">Initial Contact</h4>
+                     <p className="text-slate-500 font-bold text-sm sm:text-lg leading-relaxed">{specs.topNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.topNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
                   </div>
                 </div>
 
-                <div className="relative group">
-                  <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-slate-900 border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform text-white">🌸</div>
-                  <div className="bg-white p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
-                     <h4 className="text-2xl font-black uppercase tracking-tighter text-slate-900 mb-4">The Heart Signature</h4>
-                     <p className="text-slate-900 font-bold text-lg leading-relaxed">{specs.middleNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.middleNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
+                <div className="relative flex items-start gap-4 sm:gap-8 group">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-full bg-slate-900 border-4 border-slate-900 flex items-center justify-center text-xl sm:text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform text-white">🌸</div>
+                  <div className="flex-1 bg-white p-6 sm:p-10 rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+                     <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tighter text-slate-900 mb-2 sm:mb-4">The Heart Signature</h4>
+                     <p className="text-slate-900 font-bold text-sm sm:text-lg leading-relaxed">{specs.middleNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.middleNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
                   </div>
                 </div>
 
-                <div className="relative group">
-                  <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform">🌲</div>
-                  <div className="bg-slate-900 p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] text-white">
-                     <h4 className="text-2xl font-black uppercase tracking-tighter text-white mb-4">The Final Trace</h4>
-                     <p className="text-slate-400 font-bold text-lg leading-relaxed">{specs.baseNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.baseNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
+                <div className="relative flex items-start gap-4 sm:gap-8 group">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-xl sm:text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform">🌲</div>
+                  <div className="flex-1 bg-slate-900 p-6 sm:p-10 rounded-2xl sm:rounded-[2rem] border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] text-white">
+                     <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tighter text-white mb-2 sm:mb-4">The Final Trace</h4>
+                     <p className="text-slate-400 font-bold text-sm sm:text-lg leading-relaxed">{specs.baseNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.baseNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
                   </div>
                 </div>
               </div>

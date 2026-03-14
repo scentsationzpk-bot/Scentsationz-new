@@ -720,12 +720,12 @@ export const seedIfEmpty = async () => {
       {
         id: 'starborn',
         name: 'STARBORN',
-        price: 3550,
+        price: 7295,
         stock: 50,
-        description: 'Ek aisi khushboo jo aapki personality ko bold banaye. Har mehfil mein sabki nazrein sirf aap par hongi. ✨🔥',
+        description: 'Ek zabardast aur taqatwar khushboo. Har mehfil mein apni alag pehchaan banayein.',
         category: 'Bold',
         imageUrl: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800',
-        luxuryStory: 'Starborn is the scent of destiny.',
+        luxuryStory: 'Starborn aapki kamyabi aur taqat ki pehchaan hai.',
         packagingDetails: ['Weighted Obsidian Glass', 'Gold-Embossed Monogram', 'Magnetic Precision Cap'],
         badge: 'Limited Edition',
         specifications: {
@@ -740,12 +740,12 @@ export const seedIfEmpty = async () => {
       {
         id: 'tobacco-trail',
         name: 'TOBACCO TRAIL',
-        price: 3550,
+        price: 7450,
         stock: 30,
-        description: 'Premium tobacco aur vanilla ka rich blend jo boss vibes deta hai. Sardi ki raaton ke liye behtareen. 🍂👑',
+        description: 'Tobacco aur vanilla ka behtareen premium blend. Sardiyon ki raaton ke liye sab se behtareen.',
         category: 'Woody',
         imageUrl: 'https://images.unsplash.com/photo-1583467875263-d50dec37a88c?auto=format&fit=crop&q=80&w=800',
-        luxuryStory: 'Tobacco Trail is an olfactory journey through a private cigar lounge.',
+        luxuryStory: 'Tobacco Trail ek private cigar lounge ke shandar safar ka ehsaas hai.',
         packagingDetails: ['Dark Walnut Finish Box', 'Copper-Engraved Plate', 'Heavy Crystal Vessel'],
         badge: 'Bestseller',
         specifications: {
@@ -760,12 +760,12 @@ export const seedIfEmpty = async () => {
       {
         id: 'cool-current',
         name: 'COOL CURRENT',
-        price: 3550,
+        price: 7595,
         stock: 50,
-        description: 'Fresh aur energetic scent jo poora din aapko active rakhe. Daily wear ke liye perfect aur refreshing. 🌊🧊',
+        description: 'Rozana lagane ke liye ek taaza aur energetic khushboo. Din bhar fresh aur active rahein.',
         category: 'Fresh',
         imageUrl: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=800',
-        luxuryStory: 'Cool Current is a breath of absolute clarity.',
+        luxuryStory: 'Cool Current ek thandi aur taaza hawa ka jhonka hai.',
         packagingDetails: ['Matte Teal Finish', 'Silver Engraving', 'Soft-Touch Presentation Box'],
         specifications: {
           topNotes: ['Sea Salt', 'Iced Lemon', 'Grapefruit'],
@@ -792,7 +792,7 @@ export const seedIfEmpty = async () => {
         discountText: 'Reserved Pairing • Free Concierge Shipping',
         type: 'duo',
         badge: 'Popular',
-        description: 'Select the ultimate day/night rotation from our Reserved collections.'
+        description: 'Hamari Reserved collection se din aur raat ke liye behtareen combo chunein.'
       }
     ];
 
@@ -806,7 +806,7 @@ export const seedIfEmpty = async () => {
         title: 'Free Delivery',
         code: 'SCENT101',
         discountAmount: 300,
-        description: 'Free Delivery for 1 Month',
+        description: '1 Mahinay ke liye Free Delivery.',
         type: 'fixed',
         isActive: true,
         validUntil: '2026-04-12',
@@ -815,7 +815,7 @@ export const seedIfEmpty = async () => {
       {
         id: 'welcome-10',
         title: 'Welcome Offer',
-        description: 'Get 10% off your first order with us.',
+        description: 'Apne pehle order par 10% discount haasil karein.',
         code: 'WELCOME10',
         discountPercentage: 10,
         type: 'percentage',

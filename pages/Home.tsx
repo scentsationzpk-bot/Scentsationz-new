@@ -218,8 +218,11 @@ const Home: React.FC = () => {
                   <div className="pt-6 sm:pt-8 border-t-4 border-slate-100 flex flex-col items-center w-full gap-6 sm:gap-8 mt-auto">
                     <div className="flex flex-col items-center">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm sm:text-lg font-bold text-slate-400 line-through decoration-red-500 decoration-2">Rs. 7,200</span>
+                        <span className="text-sm sm:text-lg font-bold text-slate-400 line-through decoration-red-500 decoration-2">Rs. 12,000</span>
                         <span className="text-2xl sm:text-3xl font-black text-slate-900">Rs. {product.price.toLocaleString()}</span>
+                      </div>
+                      <div className="mt-1 bg-red-100 text-red-600 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest">
+                        Save Rs. {(12000 - product.price).toLocaleString()}
                       </div>
                     </div>
                     <Link 

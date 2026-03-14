@@ -23,33 +23,33 @@ const OrderSuccess: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-6 sm:space-y-8">
-          <h1 className="text-6xl sm:text-9xl font-black text-slate-900 tracking-tighter leading-none uppercase italic">Vaulted.</h1>
-          <p className="text-slate-400 text-xl sm:text-3xl font-black uppercase tracking-[0.2em] italic">Your artifact is being prepared for transport.</p>
+        <div className="space-y-4 sm:space-y-8">
+          <h1 className="text-5xl sm:text-8xl md:text-9xl font-black text-slate-900 tracking-tighter leading-none uppercase italic">Vaulted.</h1>
+          <p className="text-slate-400 text-sm sm:text-xl md:text-3xl font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] italic px-4">Your artifact is being prepared for transport.</p>
         </div>
 
-        <div className="bg-slate-50 p-8 sm:p-12 rounded-[3rem] border-4 border-slate-900 inline-block shadow-[12px_12px_0px_0px_rgba(15,23,42,1)]">
-          <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block underline underline-offset-8">Registry Reference</span>
-          <span className="text-3xl sm:text-5xl font-black text-slate-900 uppercase tracking-tighter">{orderId}</span>
+        <div className="bg-slate-50 p-6 sm:p-12 rounded-3xl sm:rounded-[3rem] border-4 border-slate-900 inline-block shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] sm:shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] mx-4 sm:mx-0">
+          <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-[0.2em] sm:tracking-[0.4em] mb-2 sm:mb-3 block underline underline-offset-4 sm:underline-offset-8">Registry Reference</span>
+          <span className="text-2xl sm:text-5xl font-black text-slate-900 uppercase tracking-tighter break-all">{orderId}</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-10 px-4 sm:px-0">
           <button 
             onClick={handleConfirmWhatsApp}
-            className="group p-8 sm:p-12 bg-green-500 text-white rounded-3xl sm:rounded-[3rem] border-4 border-slate-900 shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all flex flex-col items-center gap-4"
+            className="group p-6 sm:p-12 bg-green-500 text-white rounded-3xl sm:rounded-[3rem] border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all flex flex-col items-center gap-2 sm:gap-4 w-full"
           >
-            <span className="text-4xl sm:text-6xl group-hover:scale-110 transition-transform">💬</span>
-            <span className="font-black text-xl sm:text-2xl uppercase tracking-tighter">Confirm via WhatsApp</span>
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-80">Priority Verification</span>
+            <span className="text-4xl sm:text-6xl group-active:scale-95 transition-transform">💬</span>
+            <span className="font-black text-lg sm:text-2xl uppercase tracking-tighter text-center">Confirm via WhatsApp</span>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-80 text-center">Priority Verification</span>
           </button>
 
           <Link 
             to="/shop" 
-            className="group p-8 sm:p-12 bg-white text-slate-900 rounded-3xl sm:rounded-[3rem] border-4 border-slate-900 shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all flex flex-col items-center gap-4"
+            className="group p-6 sm:p-12 bg-white text-slate-900 rounded-3xl sm:rounded-[3rem] border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all flex flex-col items-center gap-2 sm:gap-4 w-full"
           >
-            <span className="text-4xl sm:text-6xl group-hover:scale-110 transition-transform">🏠</span>
-            <span className="font-black text-xl sm:text-2xl uppercase tracking-tighter">Return to Archive</span>
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-40">Continue Exploring</span>
+            <span className="text-4xl sm:text-6xl group-active:scale-95 transition-transform">🏠</span>
+            <span className="font-black text-lg sm:text-2xl uppercase tracking-tighter text-center">Return to Archive</span>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-40 text-center">Continue Exploring</span>
           </Link>
         </div>
 
