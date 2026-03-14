@@ -54,7 +54,7 @@ const About: React.FC = () => {
             <div className="bg-white p-8 sm:p-12 md:p-20 rounded-3xl sm:rounded-[4rem] border-4 border-slate-50 shadow-xl space-y-6 sm:space-y-8 hover:border-blue-600 transition-all">
                <div className="text-4xl sm:text-6xl">🔬</div>
                <h3 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight">Innovation</h3>
-               <p className="text-slate-500 text-base sm:text-lg md:text-2xl leading-relaxed">Leveraging global fragrance technology to deliver extreme longevity in local climates.</p>
+               <p className="text-slate-500 text-base sm:text-lg md:text-2xl leading-relaxed">Leveraging global fragrance technology to deliver extreme longevity.</p>
             </div>
             <div className="bg-white p-8 sm:p-12 md:p-20 rounded-3xl sm:rounded-[4rem] border-4 border-slate-50 shadow-xl space-y-6 sm:space-y-8 hover:border-blue-600 transition-all">
                <div className="text-4xl sm:text-6xl">🤝</div>
@@ -80,12 +80,12 @@ const About: React.FC = () => {
             <div className="space-y-4 sm:space-y-6">
               <span className="text-4xl sm:text-6xl md:text-8xl block mb-2 sm:mb-4">🌡️</span>
               <h3 className="text-xl sm:text-2xl md:text-5xl font-black tracking-tight">Climate Optimized</h3>
-              <p className="text-slate-400 font-medium text-base sm:text-lg md:text-2xl">Meticulously analyzed for peak performance in Pakistan.</p>
+              <p className="text-slate-400 font-medium text-base sm:text-lg md:text-2xl">Meticulously analyzed for peak performance in any environment.</p>
             </div>
             <div className="space-y-4 sm:space-y-6">
-              <span className="text-4xl sm:text-6xl md:text-8xl block mb-2 sm:mb-4">🇵🇰</span>
-              <h3 className="text-xl sm:text-2xl md:text-5xl font-black tracking-tight">Homegrown Luxe</h3>
-              <p className="text-slate-400 font-medium text-base sm:text-lg md:text-2xl">Designed for the local lifestyle with global standards.</p>
+              <span className="text-4xl sm:text-6xl md:text-8xl block mb-2 sm:mb-4">✨</span>
+              <h3 className="text-xl sm:text-2xl md:text-5xl font-black tracking-tight">Global Luxe</h3>
+              <p className="text-slate-400 font-medium text-base sm:text-lg md:text-2xl">Designed for the modern lifestyle with global standards.</p>
             </div>
           </div>
         </div>

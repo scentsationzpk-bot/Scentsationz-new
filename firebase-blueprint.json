@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Perfume product details",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "number" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "luxuryStory": { "type": "string" },
+        "badge": { "type": "string" },
+        "specifications": {
+          "type": "object",
+          "properties": {
+            "topNotes": { "type": "array", "items": { "type": "string" } },
+            "middleNotes": { "type": "array", "items": { "type": "string" } },
+            "baseNotes": { "type": "array", "items": { "type": "string" } },
+            "longevity": { "type": "number" },
+            "sillage": { "type": "string" },
+            "occasions": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "required": ["name", "price", "stock", "category"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order details",
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "phone": { "type": "string" },
+            "address": { "type": "string" },
+            "paymentMethod": { "type": "string" }
+          }
+        },
+        "items": { "type": "array", "items": { "type": "object" } },
+        "total": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customer", "items", "total", "status"]
+    }
+  },
+  "firestore": {
+    "products": {
+      "schema": "Product",
+      "description": "Collection of perfume products"
+    },
+    "orders": {
+      "schema": "Order",
+      "description": "Collection of customer orders"
+    },
+    "bundles": {
+      "schema": "object",
+      "description": "Product bundles"
+    },
+    "promoters": {
+      "schema": "object",
+      "description": "Affiliate promoters"
+    },
+    "withdrawalRequests": {
+      "schema": "object",
+      "description": "Promoter payout requests"
+    },
+    "promotions": {
+      "schema": "object",
+      "description": "Discount codes and offers"
+    }
+  }
+}

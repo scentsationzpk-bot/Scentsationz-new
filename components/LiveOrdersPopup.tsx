@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from 'react';
 
 const mockOrders = [
-  { name: 'Ali', city: 'Lahore', product: 'Starborn 💫' },
-  { name: 'Hassan', city: 'Karachi', product: 'Cool Current 🌊' },
-  { name: 'Usman', city: 'Islamabad', product: 'Golden Pulse ✨' },
-  { name: 'Ahmed', city: 'Faisalabad', product: 'Tobacco Trail 🍂' },
-  { name: 'Hamza', city: 'Sialkot', product: 'Forever Dawn 🌅' },
-  { name: 'Zain', city: 'Rawalpindi', product: 'Starborn 💫' },
-  { name: 'Irfan', city: 'Multan', product: 'Cool Current 🌊' },
+  { name: 'Ali', product: 'Starborn 💫' },
+  { name: 'Hassan', product: 'Cool Current 🌊' },
+  { name: 'Usman', product: 'Golden Pulse ✨' },
+  { name: 'Ahmed', product: 'Tobacco Trail 🍂' },
+  { name: 'Hamza', product: 'Forever Dawn 🌅' },
+  { name: 'Zain', product: 'Starborn 💫' },
+  { name: 'Irfan', product: 'Cool Current 🌊' },
 ];
 
 const LiveOrdersPopup: React.FC = () => {
@@ -50,7 +50,7 @@ const LiveOrdersPopup: React.FC = () => {
         </div>
         <div className="flex-grow">
           <p className="text-sm font-black text-slate-800 tracking-tight leading-none">
-            {currentOrder.name} from {currentOrder.city}
+            {currentOrder.name} just secured
           </p>
           <p className="text-[11px] font-bold text-slate-500 mt-1.5 leading-tight">
             Ordered <span className="text-blue-600 font-black">{currentOrder.product}</span>

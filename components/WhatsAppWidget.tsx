@@ -7,7 +7,7 @@ const WhatsAppWidget: React.FC = () => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [message, setMessage] = useState("Hello! I want to know more about your perfumes 💫");
   const location = useLocation();
-  const number = "+923700162012";
+  const number = "03700162012";
 
   useEffect(() => {
     // Fetch product details for the current page to customize WhatsApp message

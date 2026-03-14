@@ -58,280 +58,109 @@ const Home: React.FC = () => {
             </div>
             
             <div className="space-y-4">
-              <h1 className="text-7xl sm:text-9xl lg:text-[11rem] font-black text-slate-900 tracking-tighter leading-[0.8] uppercase">
+              <h1 className="text-7xl sm:text-9xl lg:text-[13rem] font-black text-slate-900 tracking-tighter leading-[0.75] uppercase">
                 SCENT<br />
                 <span className="text-blue-600 italic">SATIONZ</span>
               </h1>
               <div className="flex items-center gap-4">
-                <div className="h-4 w-32 sm:w-48 bg-blue-600 border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]"></div>
-                <span className="text-xs font-black uppercase tracking-[0.5em] text-slate-400">Authentic Artifacts</span>
+                <div className="h-6 w-32 sm:w-64 bg-blue-600 border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]"></div>
+                <span className="text-xs font-black uppercase tracking-[0.5em] text-slate-400">The New Standard</span>
               </div>
             </div>
 
-            <p className="text-slate-500 text-lg sm:text-2xl md:text-3xl font-bold max-w-xl tracking-tight leading-tight uppercase italic">
-              "The scent of absolute power. Engineered for those who demand the extraordinary."
+            <p className="text-slate-900 text-2xl sm:text-4xl md:text-5xl font-black max-w-2xl tracking-tighter leading-[0.9] uppercase italic">
+              "We don't sell perfume. We sell <span className="text-blue-600">absolute presence</span>."
             </p>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 pt-4">
               <Link 
                 to="/shop"
-                className="group flex items-center justify-center gap-3 px-8 py-5 sm:px-12 sm:py-6 bg-blue-600 text-white font-black rounded-xl sm:rounded-2xl text-lg sm:text-2xl hover:translate-x-1 hover:translate-y-1 active:translate-x-0 active:translate-y-0 transition-all shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 uppercase tracking-tighter text-center"
+                className="group flex items-center justify-center gap-3 px-8 py-5 sm:px-12 sm:py-8 bg-blue-600 text-white font-black rounded-xl sm:rounded-2xl text-xl sm:text-3xl hover:translate-x-1 hover:translate-y-1 active:translate-x-0 active:translate-y-0 transition-all shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 uppercase tracking-tighter text-center"
               >
                 Enter The Vault
-                <ArrowRight className="w-6 h-6 sm:w-8 sm:h-8 group-hover:translate-x-2 transition-transform" />
+                <ArrowRight className="w-8 h-8 sm:w-10 sm:h-10 group-hover:translate-x-2 transition-transform" />
               </Link>
-              <Link 
-                to="/about"
-                className="group flex items-center justify-center gap-3 px-8 py-5 sm:px-12 sm:py-6 bg-white text-slate-900 font-black rounded-xl sm:rounded-2xl text-lg sm:text-2xl hover:translate-x-1 hover:translate-y-1 active:translate-x-0 active:translate-y-0 transition-all shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] border-4 border-slate-900 uppercase tracking-tighter text-center"
-              >
-                Our Identity
-              </Link>
-            </div>
-
-            <div className="pt-8 flex items-center gap-8 border-t-4 border-slate-50">
-              <div className="flex flex-col">
-                <span className="text-3xl sm:text-4xl font-black text-slate-900">40%</span>
-                <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-widest">Concentration</span>
-              </div>
-              <div className="w-px h-12 bg-slate-200"></div>
-              <div className="flex flex-col">
-                <span className="text-3xl sm:text-4xl font-black text-slate-900">14h+</span>
-                <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-widest">Longevity</span>
-              </div>
             </div>
           </motion.div>
         </div>
 
         {/* Right Visual Side - Immersive Story Panel */}
-        <div className="flex-1 relative min-h-[500px] lg:min-h-0 border-t-[8px] lg:border-t-0 lg:border-l-[12px] border-slate-900 bg-slate-900 overflow-hidden flex items-center justify-center p-8 sm:p-16">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(37,99,235,0.15),_transparent_70%)]"></div>
+        <div className="flex-1 relative min-h-[600px] lg:min-h-0 border-t-[8px] lg:border-t-0 lg:border-l-[12px] border-slate-900 bg-slate-900 overflow-hidden flex items-center justify-center p-8 sm:p-16">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(37,99,235,0.2),_transparent_70%)]"></div>
           
-          {/* Animated floating orbs to represent notes */}
-          <motion.div 
-            animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-1/4 left-1/4 w-32 h-32 bg-blue-500 rounded-full blur-[60px]"
-          ></motion.div>
-          <motion.div 
-            animate={{ y: [0, 30, 0], opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute bottom-1/3 right-1/4 w-40 h-40 bg-slate-400 rounded-full blur-[80px]"
-          ></motion.div>
-
-          <div className="relative z-10 text-center space-y-8 max-w-lg">
-            <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 px-4 py-2 rounded-full">
+          <div className="relative z-10 text-center space-y-12 max-w-xl">
+            <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 px-6 py-3 rounded-full">
               <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-              <span className="text-blue-300 font-black tracking-[0.4em] uppercase text-[10px]">The Olfactory Experience</span>
+              <span className="text-blue-300 font-black tracking-[0.4em] uppercase text-[12px]">The Olfactory Manifesto</span>
             </div>
             
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-[0.9]">
-              Close your eyes.<br/>Feel the <span className="text-blue-500 italic">Aura.</span>
+            <h2 className="text-5xl sm:text-7xl md:text-8xl font-black text-white uppercase tracking-tighter leading-[0.85]">
+              Scent is <br/><span className="text-blue-500 italic">Violence.</span>
             </h2>
             
-            <p className="text-slate-300 font-bold text-sm sm:text-base leading-relaxed">
-              Imagine the crisp air of a midnight drive, the warmth of aged leather, and the magnetic pull of smoked vanilla. Our extraits don't just smell good—they tell your story before you even speak.
+            <p className="text-slate-300 font-bold text-lg sm:text-xl leading-relaxed italic">
+              "A fragrance should not ask for permission. It should demand recognition. We engineered Scentsationz for the disruptors, the dreamers, and the dangerously ambitious."
             </p>
             
-            <div className="flex flex-wrap justify-center gap-3 pt-4">
-              <span className="px-4 py-2 border-2 border-slate-700 bg-slate-800/50 backdrop-blur-sm rounded-xl text-[10px] sm:text-xs font-black text-slate-300 uppercase tracking-widest">Smoked Vanilla</span>
-              <span className="px-4 py-2 border-2 border-slate-700 bg-slate-800/50 backdrop-blur-sm rounded-xl text-[10px] sm:text-xs font-black text-slate-300 uppercase tracking-widest">Aged Leather</span>
-              <span className="px-4 py-2 border-2 border-slate-700 bg-slate-800/50 backdrop-blur-sm rounded-xl text-[10px] sm:text-xs font-black text-slate-300 uppercase tracking-widest">Dark Woods</span>
+            <div className="grid grid-cols-2 gap-4 pt-8">
+              <div className="p-6 border-4 border-slate-700 bg-slate-800/30 rounded-3xl text-left space-y-2">
+                <span className="text-3xl block">🌑</span>
+                <p className="font-black text-white uppercase tracking-widest text-xs">Midnight Drive</p>
+                <p className="text-slate-500 text-[10px] font-bold uppercase">Cold Air & Smoked Wood</p>
+              </div>
+              <div className="p-6 border-4 border-slate-700 bg-slate-800/30 rounded-3xl text-left space-y-2">
+                <span className="text-3xl block">🔥</span>
+                <p className="font-black text-white uppercase tracking-widest text-xs">Aura of Power</p>
+                <p className="text-slate-500 text-[10px] font-bold uppercase">Aged Leather & Vanilla</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
+
       {/* Features Section - The Molecular Edge */}
-      <section className="max-w-7xl mx-auto px-4 py-20 sm:py-32 border-b-4 border-slate-900">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+      <section className="max-w-7xl mx-auto px-4 py-24 sm:py-40 border-b-4 border-slate-900 relative">
+        {/* Vertical Rail Text */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 hidden xl:block">
+          <p className="writing-mode-vertical-rl rotate-180 text-[10px] font-black uppercase tracking-[1em] text-slate-200">
+            Molecular Engineering • Olfactory Artifacts • Elite Concentration
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
           {/* Main Feature Highlight */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-7 bg-blue-600 rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-16 border-4 border-slate-900 shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] text-white relative overflow-hidden group"
+            className="lg:col-span-7 bg-blue-600 rounded-[3rem] p-10 sm:p-20 border-4 border-slate-900 shadow-[16px_16px_0px_0px_rgba(15,23,42,1)] text-white relative overflow-hidden group"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700"></div>
-            <div className="relative z-10 space-y-6">
-              <div className="inline-flex items-center gap-2 bg-white/20 border-2 border-white/30 px-4 py-2 rounded-full">
-                <Zap className="w-4 h-4 text-white" />
-                <span className="text-white font-black tracking-[0.4em] uppercase text-[10px]">The Molecular Edge</span>
+            <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-1000"></div>
+            <div className="relative z-10 space-y-10">
+              <div className="inline-flex items-center gap-3 bg-white/20 border-2 border-white/30 px-6 py-3 rounded-full">
+                <Zap className="w-5 h-5 text-white" />
+                <span className="text-white font-black tracking-[0.5em] uppercase text-[12px]">The Molecular Edge</span>
               </div>
-              <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-none">
-                40% Pure <br/><span className="italic opacity-80">Extrait.</span>
+              <h2 className="text-6xl sm:text-8xl font-black uppercase tracking-tighter leading-[0.85]">
+                40% PURE <br/><span className="italic text-blue-200">EXTRAIT.</span>
               </h2>
-              <p className="text-blue-50 font-bold text-lg leading-relaxed max-w-xl">
-                While most "luxury" brands dilute their scents to 15-20%, we engineer our artifacts at a massive 40% concentration. This isn't just perfume; it's a molecular statement that commands attention for 14+ hours.
+              <p className="text-blue-50 font-bold text-xl sm:text-2xl leading-tight max-w-2xl">
+                While industry giants dilute their formulas to 15%, we engineer our artifacts at a massive 40% concentration. This isn't just perfume; it's a molecular statement that commands attention for 14+ hours.
               </p>
-              <div className="pt-8 grid grid-cols-2 gap-8 border-t-2 border-white/20">
-                <div className="space-y-1">
-                  <span className="text-3xl font-black">14h+</span>
-                  <p className="text-[10px] font-black uppercase tracking-widest opacity-70">Active Projection</p>
+              <div className="pt-12 grid grid-cols-2 gap-12 border-t-4 border-white/20">
+                <div className="space-y-2">
+                  <span className="text-4xl sm:text-6xl font-black">14h+</span>
+                  <p className="text-xs font-black uppercase tracking-[0.3em] opacity-70">Active Projection</p>
                 </div>
-                <div className="space-y-1">
-                  <span className="text-3xl font-black">Zero</span>
-                  <p className="text-[10px] font-black uppercase tracking-widest opacity-70">Synthetic Fillers</p>
+                <div className="space-y-2">
+                  <span className="text-4xl sm:text-6xl font-black">ZERO</span>
+                  <p className="text-xs font-black uppercase tracking-[0.3em] opacity-70">Synthetic Fillers</p>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Secondary Features Stack */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex-1 bg-white rounded-[2rem] p-8 sm:p-10 border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] flex flex-col justify-center space-y-4 group hover:bg-slate-50 transition-colors"
-            >
-              <div className="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(37,99,235,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900">Eternal Sillage</h3>
-              <p className="text-slate-500 font-bold text-sm leading-relaxed">
-                Our base notes are anchored with premium resins and molecular fixatives that grip the skin, ensuring your presence remains long after you've left the room.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="flex-1 bg-slate-50 rounded-[2rem] p-8 sm:p-10 border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(37,99,235,1)] flex flex-col justify-center space-y-4 group hover:bg-white transition-colors"
-            >
-              <div className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-                <Star className="w-6 h-6" />
-              </div>
-              <h3 className="text-2xl font-black uppercase tracking-tight text-slate-900">Niche Sourcing</h3>
-              <p className="text-slate-500 font-bold text-sm leading-relaxed">
-                We source our raw materials from the same fields as the world's most expensive niche houses, ensuring every drop is an authentic luxury artifact.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* The Ritual - Experience Section */}
-      <section className="max-w-7xl mx-auto px-4 py-20 sm:py-32 border-b-4 border-slate-900">
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
-          <div className="lg:w-1/2 space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tighter uppercase leading-none">
-                The <span className="text-blue-600 italic">Ritual</span>
-              </h2>
-              <p className="text-slate-500 font-black uppercase tracking-[0.4em] text-xs sm:text-sm">How to master the extrait</p>
-            </div>
-            
-            <div className="space-y-12">
-              {[
-                { step: "01", title: "Pulse Points", desc: "Apply to the neck, wrists, and behind the ears. The heat from your body will activate the molecular bonds." },
-                { step: "02", title: "Do Not Rub", desc: "Rubbing breaks down the top notes prematurely. Let the extrait settle naturally into your skin's chemistry." },
-                { step: "03", title: "The Cloud", desc: "For a more subtle aura, spray into the air and walk through the mist. This ensures an even distribution." }
-              ].map((item, idx) => (
-                <motion.div 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  key={idx} 
-                  className="flex gap-6 sm:gap-8"
-                >
-                  <span className="text-4xl sm:text-5xl font-black text-blue-600/20 italic leading-none">{item.step}</span>
-                  <div className="space-y-2">
-                    <h4 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">{item.title}</h4>
-                    <p className="text-slate-500 font-bold text-sm sm:text-base leading-relaxed">{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          
-          <div className="lg:w-1/2 relative">
-            <div className="absolute inset-0 bg-blue-600 rounded-[3rem] rotate-3 border-4 border-slate-900 shadow-[20px_20px_0px_0px_rgba(15,23,42,1)]"></div>
-            <div className="relative bg-white rounded-[3rem] border-4 border-slate-900 overflow-hidden aspect-[4/5]">
-              <img 
-                src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=800" 
-                alt="Luxury perfume application ritual" 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent flex items-end p-8 sm:p-12">
-                <p className="text-white font-black uppercase tracking-[0.2em] text-xs sm:text-sm italic">"A ritual of power, performed daily."</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Blind-Buy Confidence Banner */}
-      <section className="max-w-7xl mx-auto px-4 py-12 sm:py-16 border-b-4 border-slate-900">
-        <motion.div 
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          className="w-full bg-slate-900 rounded-[2rem] sm:rounded-[3rem] p-8 sm:p-16 border-4 border-slate-900 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] text-white"
-        >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600 rounded-full blur-3xl opacity-20 pointer-events-none"></div>
-          <div className="relative z-10 space-y-4 md:max-w-2xl text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-blue-600/20 border-2 border-blue-500/30 px-4 py-2 rounded-full mb-2">
-              <span className="text-blue-400 font-black tracking-[0.4em] uppercase text-[10px]">Zero Hesitation</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tighter leading-none">
-              The Ultimate <span className="text-blue-400 italic">Blind Buy</span>
-            </h2>
-            <p className="text-slate-300 font-bold text-sm sm:text-lg leading-relaxed">
-              Hesitant to buy perfume online? We've engineered our scent profiles to be universally magnetic. By blending high-quality, recognizable notes at a massive <span className="bg-blue-600/30 px-2 py-1 rounded text-blue-300 font-black">40% Extrait concentration</span>, we guarantee a compliment-pulling masterpiece.
-            </p>
-            <p className="text-slate-400 font-bold text-xs sm:text-sm">
-              No synthetic alcohol blasts. Just pure, smooth, room-filling sillage from the first spray to the 14th hour. Command the room with absolute confidence.
-            </p>
-          </div>
-          <div className="relative z-10 shrink-0">
-            <div className="w-32 h-32 sm:w-40 sm:h-40 bg-blue-600 rounded-full border-4 border-slate-800 flex items-center justify-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <span className="text-5xl sm:text-6xl">🎯</span>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* The Scentsationz Standard */}
-      <section className="max-w-7xl mx-auto px-4 py-16 sm:py-24 border-b-4 border-slate-900">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tighter uppercase leading-none">
-            The Scentsationz <span className="text-blue-600 italic">Standard</span>
-          </h2>
-          <p className="text-slate-500 font-black uppercase tracking-[0.4em] text-xs sm:text-sm">Why we stand above the rest</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 divide-y-4 md:divide-y-0 md:divide-x-4 divide-slate-900 border-4 border-slate-900 rounded-[2rem] overflow-hidden shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] bg-white">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="p-8 sm:p-12 group hover:bg-slate-50 transition-colors"
-          >
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              <span className="text-2xl font-black">01</span>
-            </div>
-            <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter mb-4">Small Batch Production</h3>
-            <p className="text-slate-600 font-bold leading-relaxed">
-              We don't mass produce. Every fragrance is blended in small, controlled batches to ensure absolute consistency and the highest quality control possible.
-            </p>
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="p-8 sm:p-12 group hover:bg-slate-50 transition-colors"
-          >
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-2xl border-4 border-slate-900 flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
-              <span className="text-2xl font-black">02</span>
-            </div>
-            <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter mb-4">60-Day Maceration</h3>
-            <p className="text-slate-600 font-bold leading-relaxed">
-              Patience is our secret ingredient. We let our oils steep and mature for a full 60 days before bottling, resulting in a smoother, richer, and longer-lasting scent profile.
-            </p>
-          </motion.div>
         </div>
       </section>
 
@@ -407,43 +236,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-
-      {/* Community Verdict */}
-      <section className="max-w-7xl mx-auto px-4 py-16 sm:py-32 space-y-12 sm:space-y-24 text-center">
-        <div className="space-y-4">
-          <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-slate-900 tracking-tighter uppercase leading-none">
-            Community <span className="text-blue-600 italic">Verdict</span>
-          </h2>
-          <p className="text-slate-500 font-black uppercase tracking-[0.4em] text-[8px] sm:text-sm">Real Stories From The Registry</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-10">
-          {[
-            {name:"Hassan",city:"Lahore",text:"The complexity of these extraits is staggering. Starborn has become my signature scent.",rating:5},
-            {name:"Areeb",city:"Karachi",text:"Unmatched longevity. I can still smell the base notes after a full day in the Karachi humidity.",rating:5},
-            {name:"Faheem",city:"Islamabad",text:"The presentation is pure luxury. Scentsationz is easily competing with the top niche houses.",rating:5}
-          ].map((i,e) => (
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: e * 0.1 }}
-              key={e} 
-              className="bg-white p-6 sm:p-12 rounded-2xl border-2 sm:border-4 border-slate-900 space-y-4 sm:space-y-8 flex flex-col justify-between hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] items-center min-h-[220px] sm:min-h-[300px]"
-            >
-              <div className="flex space-x-1 text-blue-600">
-                {[...Array(i.rating)].map((_, idx) => (
-                  <Star key={idx} className="w-4 h-4 sm:w-6 sm:h-6 fill-current" />
-                ))}
-              </div>
-              <p className="text-base sm:text-xl font-black text-slate-900 italic leading-relaxed">"{i.text}"</p>
-              <div className="space-y-1">
-                <p className="font-black uppercase tracking-widest text-slate-900 text-xs sm:text-base">{i.name}</p>
-                <p className="text-[8px] sm:text-sm font-bold text-slate-400 uppercase tracking-widest">{i.city}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
       {/* Contact Form */}
       <ContactForm />

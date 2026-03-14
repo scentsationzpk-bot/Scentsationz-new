@@ -37,13 +37,13 @@ const Cart: React.FC = () => {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-32 text-center animate-in fade-in duration-700">
-        <div className="w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center mx-auto mb-8 border border-slate-100">
-           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-300"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      <div className="max-w-7xl mx-auto px-4 py-32 text-center animate-in fade-in duration-500">
+        <div className="w-24 h-24 sm:w-32 sm:h-32 bg-slate-50 rounded-[2rem] sm:rounded-[3rem] flex items-center justify-center mx-auto mb-8 sm:mb-12 border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-slate-900 sm:w-12 sm:h-12"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
         </div>
-        <h2 className="text-4xl font-black text-slate-900 mb-4 tracking-tighter uppercase">Registry Empty 🏛️</h2>
-        <p className="text-slate-500 mb-10 text-xl font-medium max-w-sm mx-auto uppercase">Explore our collections to begin your olfactory journey.</p>
-        <Link to="/shop" className="inline-flex items-center px-10 py-5 bg-slate-900 text-white font-bold rounded-2xl hover:bg-black transition-all shadow-xl active:scale-95 uppercase tracking-widest text-xs border-4 border-slate-900">
+        <h2 className="text-4xl sm:text-6xl font-black text-slate-900 mb-4 sm:mb-6 tracking-tighter uppercase leading-none">Registry Empty</h2>
+        <p className="text-slate-500 mb-10 sm:mb-16 text-lg sm:text-xl font-medium max-w-sm mx-auto uppercase tracking-tight">Explore our collections to begin your olfactory journey.</p>
+        <Link to="/shop" className="inline-flex items-center px-10 py-5 sm:px-16 sm:py-8 bg-slate-900 text-white font-black rounded-2xl sm:rounded-3xl hover:bg-black transition-all shadow-[6px_6px_0px_0px_rgba(37,99,235,1)] active:shadow-none active:translate-x-1 active:translate-y-1 uppercase tracking-widest text-xs sm:text-sm border-4 border-slate-900">
           Explore Collection 🛍️
         </Link>
       </div>
@@ -51,63 +51,79 @@ const Cart: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 animate-in fade-in slide-in-from-bottom-4 duration-700 bg-white">
-      <div className="flex items-end gap-3 sm:gap-4 mb-8 sm:mb-12">
-        <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter uppercase">The Registry Bag</h1>
-        <span className="text-xl sm:text-2xl">🏛️</span>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20 animate-in fade-in slide-in-from-bottom-8 duration-500 bg-white selection:bg-slate-900 selection:text-white">
+      <div className="flex flex-col sm:flex-row items-baseline gap-4 sm:gap-8 mb-16 sm:mb-24">
+        <h1 className="text-6xl sm:text-9xl font-black text-slate-900 tracking-tighter uppercase leading-none">The Bag</h1>
+        <span className="text-3xl sm:text-5xl font-black text-slate-300 uppercase tracking-widest italic">Registry</span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-16">
-        <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 sm:gap-24">
+        <div className="lg:col-span-2 space-y-12 sm:space-y-16">
           {items.map((item, idx) => (
-            <div key={`${item.id}-${idx}`} className="group flex flex-col sm:flex-row gap-6 sm:gap-8 p-6 sm:p-8 bg-white border-4 border-slate-900 rounded-2xl sm:rounded-[2.5rem] shadow-[6px_6px_0px_0px_rgba(15,23,42,0.05)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,0.05)] hover:shadow-[10px_10px_0px_0px_rgba(15,23,42,0.1)] sm:hover:shadow-[12px_12px_0px_0px_rgba(15,23,42,0.1)] transition-all duration-500">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 bg-slate-50 rounded-xl sm:rounded-[1.5rem] flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0 overflow-hidden border-2 border-slate-100">
+            <div key={`${item.id}-${idx}`} className="group flex flex-col sm:flex-row gap-10 sm:gap-16 p-10 sm:p-16 bg-white border-4 border-slate-900 rounded-[2rem] sm:rounded-[4rem] shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] hover:shadow-[16px_16px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-all duration-300">
+              <div className="w-40 h-40 sm:w-64 sm:h-64 bg-slate-50 rounded-3xl sm:rounded-[3rem] flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0 overflow-hidden border-4 border-slate-100 group-hover:border-slate-900 transition-colors">
                 <img 
-                  src={item.imageUrl ? item.imageUrl.replace('w=800', 'w=200') : 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=60&w=200'} 
+                  src={item.imageUrl ? item.imageUrl.replace('w=800', 'w=400') : 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=60&w=400'} 
                   alt={item.name} 
                   loading="lazy"
-                  className="w-full h-full object-contain p-3 sm:p-4 grayscale group-hover:grayscale-0 transition-all duration-700" 
+                  className="w-full h-full object-contain p-8 sm:p-16 grayscale group-hover:grayscale-0 transition-all duration-700 scale-90 group-hover:scale-100" 
                 />
               </div>
-              <div className="flex-grow flex flex-col sm:flex-row justify-between gap-4 sm:gap-6 text-center sm:text-left">
-                <div>
-                  <h3 className="font-black text-xl sm:text-2xl text-slate-900 mb-1 uppercase tracking-tighter">{item.name}</h3>
-                  <p className="text-slate-400 font-black text-[8px] sm:text-[10px] uppercase tracking-widest mb-1">{item.selectedTier || 'Reserved Edition'}</p>
+              <div className="flex-grow flex flex-col sm:flex-row justify-between gap-8 sm:gap-12 text-center sm:text-left">
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="font-black text-4xl sm:text-5xl text-slate-900 mb-3 uppercase tracking-tighter leading-none">{item.name}</h3>
+                    <div className="flex flex-wrap justify-center sm:justify-start gap-3">
+                      <span className="bg-slate-100 text-slate-500 font-black text-[10px] sm:text-xs uppercase tracking-widest px-4 py-2 rounded-full border-2 border-slate-200">
+                        {item.selectedTier || 'Reserved Edition'}
+                      </span>
+                      {item.isGift && (
+                        <span className="bg-blue-50 text-blue-600 font-black text-[10px] sm:text-xs uppercase tracking-widest px-4 py-2 rounded-full border-2 border-blue-200">
+                          Gift Wrap
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
                   {item.customization && (
-                    <p className="text-blue-600 font-black text-[8px] sm:text-[10px] uppercase tracking-widest mb-2 italic">Personalized: "{item.customization}"</p>
+                    <div className="inline-block px-6 py-3 bg-slate-900 text-white rounded-2xl border-2 border-slate-900">
+                      <p className="font-black text-xs sm:text-sm uppercase tracking-widest italic leading-none">"{item.customization}"</p>
+                    </div>
                   )}
+
                   {item.isGift && (
-                    <div className="mt-2 mb-4 p-3 bg-slate-50 rounded-xl border-2 border-slate-100 text-left">
-                      <p className="text-[8px] sm:text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">🎁 Gift Options</p>
-                      {item.giftName && <p className="text-[10px] sm:text-xs font-bold text-slate-700"><span className="text-slate-400">To:</span> {item.giftName}</p>}
-                      {item.giftMessage && <p className="text-[10px] sm:text-xs font-bold text-slate-700"><span className="text-slate-400">Message:</span> {item.giftMessage}</p>}
-                      {item.addDairyMilk && <p className="text-[10px] sm:text-xs font-bold text-slate-700"><span className="text-slate-400">Extras:</span> Dairy Milk x{item.dairyMilkQuantity}</p>}
+                    <div className="p-6 sm:p-8 bg-blue-50 rounded-3xl border-2 border-blue-200 text-left space-y-3">
+                      <p className="text-[10px] sm:text-xs font-black text-blue-600 uppercase tracking-widest mb-2">Recipient Details</p>
+                      {item.giftName && <p className="text-sm sm:text-base font-bold text-slate-900"><span className="text-blue-400 uppercase text-[10px] tracking-widest mr-3">To:</span> {item.giftName}</p>}
+                      {item.giftMessage && <p className="text-sm sm:text-base font-bold text-slate-900"><span className="text-blue-400 uppercase text-[10px] tracking-widest mr-3">Msg:</span> {item.giftMessage}</p>}
+                      {item.addDairyMilk && <p className="text-sm sm:text-base font-bold text-slate-900"><span className="text-blue-400 uppercase text-[10px] tracking-widest mr-3">Add:</span> Dairy Milk x{item.dairyMilkQuantity}</p>}
                     </div>
                   )}
-                  <p className="text-slate-900 font-black text-lg sm:text-xl mb-4">Rs. {item.price.toLocaleString()}</p>
-                  <button
-                    onClick={() => handleRemove(item)}
-                    className="text-[10px] sm:text-sm font-black text-red-400 hover:text-red-600 transition-colors flex items-center justify-center sm:justify-start gap-2 group/btn uppercase tracking-widest"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center group-hover/btn:bg-red-100 transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                    </div>
-                    Discard Item
-                  </button>
+
+                  <div className="flex items-center justify-center sm:justify-start gap-8">
+                    <p className="text-slate-900 font-black text-3xl sm:text-4xl tracking-tighter">Rs. {item.price.toLocaleString()}</p>
+                    <button
+                      onClick={() => handleRemove(item)}
+                      className="text-[10px] sm:text-xs font-black text-red-500 hover:text-red-700 transition-colors flex items-center gap-2 group/btn uppercase tracking-widest"
+                    >
+                      Discard
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center gap-2 h-fit self-center bg-slate-50 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl border-4 border-slate-900">
+
+                <div className="flex items-center justify-center gap-6 h-fit self-center bg-slate-50 p-4 sm:p-5 rounded-3xl sm:rounded-[2rem] border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
                   <button
                     onClick={() => handleUpdateQty(item, item.quantity - 1)}
-                    className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl bg-white shadow-sm hover:bg-slate-900 hover:text-white transition-all active:scale-90 border-2 border-slate-900"
+                    className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl sm:rounded-3xl bg-white hover:bg-slate-900 hover:text-white transition-all active:scale-90 border-4 border-slate-900"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="sm:w-8 sm:h-8"><path d="M5 12h14"/></svg>
                   </button>
-                  <span className="w-8 sm:w-10 text-center font-black text-lg sm:text-xl text-slate-900">{item.quantity}</span>
+                  <span className="w-12 sm:w-16 text-center font-black text-2xl sm:text-4xl text-slate-900">{item.quantity}</span>
                   <button
                     onClick={() => handleUpdateQty(item, item.quantity + 1)}
-                    className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl bg-white shadow-sm hover:bg-slate-900 hover:text-white transition-all active:scale-90 border-2 border-slate-900"
+                    className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center rounded-2xl sm:rounded-3xl bg-white hover:bg-slate-900 hover:text-white transition-all active:scale-90 border-4 border-slate-900"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="sm:w-8 sm:h-8"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                   </button>
                 </div>
               </div>
@@ -115,48 +131,48 @@ const Cart: React.FC = () => {
           ))}
         </div>
 
-        <div className="bg-white p-6 sm:p-10 rounded-2xl sm:rounded-[3rem] border-4 border-slate-900 h-fit shadow-[10px_10px_0px_0px_rgba(15,23,42,0.1)] sm:shadow-[15px_15px_0px_0px_rgba(15,23,42,0.1)] lg:sticky lg:top-32">
-          <h3 className="text-xl sm:text-2xl font-black text-slate-900 mb-6 sm:mb-8 tracking-tighter uppercase">Registry Total</h3>
+        <div className="bg-white p-10 sm:p-16 rounded-[2rem] sm:rounded-[4rem] border-4 border-slate-900 h-fit shadow-[16px_16px_0px_0px_rgba(15,23,42,1)] lg:sticky lg:top-32">
+          <h3 className="text-4xl sm:text-5xl font-black text-slate-900 mb-12 sm:mb-16 tracking-tighter uppercase leading-none">Summary</h3>
           
           {/* Bundle Upsell / Progress */}
-          <div className="mb-6 sm:mb-8 p-3 sm:p-4 bg-blue-50 border-2 border-blue-200 rounded-xl sm:rounded-2xl">
+          <div className="mb-12 sm:mb-16 p-8 sm:p-10 bg-blue-50 border-4 border-blue-600 rounded-3xl sm:rounded-[2rem] shadow-[8px_8px_0px_0px_rgba(37,99,235,1)]">
             {totalItems === 1 ? (
-              <p className="text-[10px] sm:text-xs font-bold text-blue-800 uppercase tracking-widest text-center">Add 1 more item to unlock 10% Bundle Discount! 🎁</p>
+              <p className="text-xs sm:text-sm font-black text-blue-900 uppercase tracking-widest text-center leading-relaxed">Add 1 more item to unlock <span className="text-blue-600">10% Bundle Discount!</span> 🎁</p>
             ) : totalItems === 2 ? (
-              <p className="text-[10px] sm:text-xs font-bold text-blue-800 uppercase tracking-widest text-center">10% Discount Unlocked! Add 1 more for 15% off! 🚀</p>
+              <p className="text-xs sm:text-sm font-black text-blue-900 uppercase tracking-widest text-center leading-relaxed"><span className="text-green-600">10% Discount Unlocked!</span> Add 1 more for 15% off! 🚀</p>
             ) : (
-              <p className="text-[10px] sm:text-xs font-bold text-blue-800 uppercase tracking-widest text-center">Maximum 15% Bundle Discount Unlocked! 🎉</p>
+              <p className="text-xs sm:text-sm font-black text-blue-900 uppercase tracking-widest text-center leading-relaxed"><span className="text-green-600">Maximum 15% Discount Unlocked!</span> 🎉</p>
             )}
           </div>
 
-          <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-10">
-            <div className="flex justify-between text-slate-500 font-bold uppercase text-[10px] sm:text-sm">
+          <div className="space-y-8 sm:space-y-10 mb-12 sm:mb-20">
+            <div className="flex justify-between text-slate-400 font-black uppercase text-xs sm:text-sm tracking-widest">
               <span>Subtotal</span>
-              <span>Rs. {subtotal.toLocaleString()}</span>
+              <span className="text-slate-900">Rs. {subtotal.toLocaleString()}</span>
             </div>
             {discountAmount > 0 && (
-              <div className="flex justify-between text-blue-600 font-black uppercase text-[10px] sm:text-sm">
+              <div className="flex justify-between text-blue-600 font-black uppercase text-xs sm:text-sm tracking-widest">
                 <span>Bundle Discount ({(discountPercentage * 100).toFixed(0)}%)</span>
                 <span>- Rs. {discountAmount.toLocaleString()}</span>
               </div>
             )}
-            <div className="flex justify-between text-slate-500 font-bold uppercase text-[10px] sm:text-sm">
+            <div className="flex justify-between text-slate-400 font-black uppercase text-xs sm:text-sm tracking-widest">
               <span>Shipping</span>
-              <span className="text-green-600 font-black">Complimentary</span>
+              <span className="text-green-600">Complimentary</span>
             </div>
-            <div className="pt-4 sm:pt-6 border-t-4 border-slate-900 flex justify-between text-xl sm:text-2xl font-black text-slate-900 tracking-tighter uppercase">
-              <span>Total</span>
-              <span>Rs. {finalTotal.toLocaleString()}</span>
+            <div className="pt-10 sm:pt-12 border-t-4 border-slate-900 flex justify-between items-end">
+              <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter uppercase leading-none">Total</span>
+              <span className="text-4xl sm:text-6xl font-black text-blue-600 tracking-tighter leading-none">Rs. {finalTotal.toLocaleString()}</span>
             </div>
           </div>
           <Link
             to="/checkout"
-            className="w-full inline-flex items-center justify-center py-4 sm:py-6 bg-slate-900 text-white font-black text-lg sm:text-xl rounded-xl sm:rounded-2xl hover:bg-black transition-all shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] active:shadow-none active:translate-x-1 active:translate-y-1 mb-6 uppercase tracking-widest border-4 border-slate-900"
+            className="w-full inline-flex items-center justify-center py-8 sm:py-12 bg-slate-900 text-white font-black text-2xl sm:text-4xl rounded-3xl sm:rounded-[3rem] hover:bg-black transition-all shadow-[10px_10px_0px_0px_rgba(37,99,235,1)] active:shadow-none active:translate-x-2 active:translate-y-2 mb-10 uppercase tracking-widest border-4 border-slate-900 animate-pulse"
           >
-            Finalize Selection 🗝️
+            Checkout 🗝️
           </Link>
-          <div className="bg-slate-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center border-2 border-slate-100">
-             <p className="text-[8px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">Secure cloud-synced registry. Handcrafted for the discerning. 💫</p>
+          <div className="bg-slate-50 rounded-3xl sm:rounded-[2rem] p-8 sm:p-10 text-center border-4 border-slate-100">
+             <p className="text-xs sm:text-sm text-slate-400 font-black uppercase tracking-widest leading-relaxed">Secure cloud-synced registry. Handcrafted for the discerning. 💫</p>
           </div>
         </div>
       </div>

@@ -54,8 +54,19 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
 const STORAGE_KEY = 'scentsationz_universal_v4';
 const SEED_FLAG_KEY = 'scentsationz_seeded_v3';
 
-let productsCache: Product[] | null = null;
-let bundlesCache: Bundle[] | null = null;
+let productsCache: Product[] | null = (() => {
+  try {
+    const cached = localStorage.getItem('scentsationz_products_cache');
+    return cached ? JSON.parse(cached) : null;
+  } catch { return null; }
+})();
+
+let bundlesCache: Bundle[] | null = (() => {
+  try {
+    const cached = localStorage.getItem('scentsationz_bundles_cache');
+    return cached ? JSON.parse(cached) : null;
+  } catch { return null; }
+})();
 
 // Initialize real-time listeners for automatic updates
 export const initRealTimeSync = () => {

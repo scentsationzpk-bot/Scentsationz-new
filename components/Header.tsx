@@ -43,7 +43,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 pointer-events-none ${
+      <header className={`sticky top-0 z-[100] transition-all duration-500 pointer-events-none ${
         isScrolled ? 'py-1 sm:py-2' : 'py-2 sm:py-4'
       }`}>
         <div className="max-w-[1400px] mx-auto px-3 sm:px-4 pointer-events-auto">
@@ -146,20 +146,18 @@ const Header: React.FC = () => {
             <div className="mt-auto space-y-6">
                <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Need Support?</p>
-                 <a href="tel:+923700162012" className="text-lg font-black text-slate-900 block hover:text-blue-600">+92 370 0162012</a>
+                 <a href="tel:03700162012" className="text-lg font-black text-slate-900 block hover:text-blue-600">0370 0162012</a>
                  <p className="text-[10px] font-bold text-green-600 uppercase tracking-widest mt-1 italic">Online Assistance: Active</p>
                </div>
                
                <div className="flex items-center justify-center gap-4">
-                  <a href="https://instagram.com/scentsationz.pk" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white text-xl">📸</a>
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white text-xl">🐦</div>
-                  <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white text-xl">📘</div>
+                  <a href="https://instagram.com/scentsationz.pk" target="_blank" rel="noopener noreferrer" className="text-sm font-black text-slate-900 uppercase tracking-widest hover:text-blue-600">Instagram</a>
+                  <a href="https://wa.me/923700162012" target="_blank" rel="noopener noreferrer" className="text-sm font-black text-slate-900 uppercase tracking-widest hover:text-blue-600">WhatsApp</a>
                </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="h-16 sm:h-24 lg:h-28"></div>
     </>
   );
 };

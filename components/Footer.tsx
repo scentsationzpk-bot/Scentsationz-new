@@ -16,10 +16,24 @@ const Footer: React.FC = () => {
             <p className="text-sm text-slate-400 font-medium leading-relaxed max-w-xs">
               Defining identity through olfactory precision. Premium molecular profiles for the modern legacy.
             </p>
-            <div className="flex gap-4 pt-2">
-               <a href="https://instagram.com/scentsationz.pk" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-blue-600 hover:scale-110 transition-all cursor-pointer shadow-lg">📸</a>
-               <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-blue-600 hover:scale-110 transition-all cursor-pointer shadow-lg">🐦</div>
-               <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-white text-xl hover:bg-blue-600 hover:scale-110 transition-all cursor-pointer shadow-lg">📘</div>
+            <div className="flex flex-col gap-4 pt-2">
+               <a 
+                 href="https://instagram.com/scentsationz.pk" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 className="flex items-center gap-3 group"
+               >
+                 <span className="text-sm font-bold text-slate-400 group-hover:text-white transition-colors uppercase tracking-widest">Instagram</span>
+               </a>
+               
+               <a 
+                 href="https://wa.me/923700162012" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 className="flex items-center gap-3 group"
+               >
+                 <span className="text-sm font-bold text-slate-400 group-hover:text-white transition-colors uppercase tracking-widest">WhatsApp</span>
+               </a>
             </div>
           </div>
 
@@ -38,8 +52,8 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-6">Support</h4>
             <ul className="space-y-4">
-              <li><a href="tel:+923700162012" className="block py-1 text-base font-bold text-slate-300 hover:text-blue-400 transition-colors">+92 370 0162012</a></li>
-              <li><span className="block py-1 text-base font-bold text-slate-300">Karachi, Pakistan</span></li>
+              <li><a href="tel:03700162012" className="block py-1 text-base font-bold text-slate-300 hover:text-blue-400 transition-colors">0370 0162012</a></li>
+              <li><span className="block py-1 text-base font-bold text-slate-300">Global Distribution</span></li>
               <li><span className="block py-1 text-base font-bold text-blue-400 italic">Online Support: Active</span></li>
             </ul>
           </div>

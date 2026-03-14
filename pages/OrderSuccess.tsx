@@ -14,50 +14,62 @@ const OrderSuccess: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-16 sm:py-32 text-center animate-in zoom-in fade-in duration-700 bg-white selection:bg-slate-900 selection:text-white">
-      <div className="w-24 h-24 sm:w-32 sm:h-32 bg-slate-900 rounded-2xl sm:rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 sm:mb-10 border-4 border-slate-900 shadow-2xl relative">
-        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="sm:w-12 sm:h-12"><path d="M20 6 9 17l-5-5"/></svg>
-        <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 text-2xl sm:text-4xl animate-bounce">🏛️</div>
-      </div>
-      
-      <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-slate-900 mb-4 sm:mb-6 tracking-tighter uppercase leading-none">Registry <span className="italic text-slate-400">Vaulted</span></h1>
-      <p className="text-slate-500 text-lg sm:text-xl mb-8 sm:mb-12 font-medium max-w-2xl mx-auto uppercase">Your identity is being processed. Our team will verify your details and ship your signature artifact shortly.</p>
-      
-      <div className="bg-slate-50 p-6 sm:p-10 rounded-2xl sm:rounded-[3rem] border-4 border-slate-900 mb-10 sm:mb-16 inline-block shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:shadow-[10px_10px_0px_0px_rgba(15,23,42,1)]">
-        <span className="text-[8px] sm:text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-1 sm:mb-2 block underline underline-offset-4">Reference Reference ID</span>
-        <span className="text-xl sm:text-3xl font-black text-slate-900 uppercase tracking-tighter">{orderId}</span>
-      </div>
-      
-      <div className="mb-12 sm:mb-20">
-        <p className="text-slate-900 font-black text-xl sm:text-3xl italic leading-tight uppercase">“A masterpiece is headed your way. 🏛️”</p>
-      </div>
-      
-      <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center mb-12 sm:mb-16">
-        <button 
-          onClick={handleConfirmWhatsApp}
-          className="w-full sm:w-auto px-8 sm:px-16 py-5 sm:py-8 bg-slate-900 text-white font-black rounded-2xl sm:rounded-3xl hover:bg-black transition-all shadow-2xl active:scale-95 text-lg sm:text-xl uppercase tracking-widest border-4 border-slate-900"
-        >
-          Confirm via WhatsApp 💬
-        </button>
-        <Link to="/shop" className="text-lg sm:text-xl font-black text-slate-400 uppercase tracking-widest hover:text-slate-900 transition-colors underline underline-offset-8">
-          Back to Collection
-        </Link>
-      </div>
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-8 selection:bg-slate-900 selection:text-white">
+      <div className="max-w-4xl w-full text-center space-y-12 sm:space-y-20 animate-in zoom-in fade-in duration-700">
+        <div className="relative inline-block">
+          <div className="absolute inset-0 bg-blue-600 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+          <div className="relative bg-white border-8 border-slate-900 p-10 sm:p-16 rounded-[4rem] sm:rounded-[6rem] shadow-[20px_20px_0px_0px_rgba(15,23,42,1)]">
+            <span className="text-7xl sm:text-9xl block animate-bounce">🏛️</span>
+          </div>
+        </div>
 
-      {/* Viral Loop: Join Referral Program */}
-      <div className="bg-blue-50 p-6 sm:p-10 rounded-2xl sm:rounded-[3rem] border-4 border-blue-600 max-w-3xl mx-auto shadow-[6px_6px_0px_0px_rgba(37,99,235,1)] sm:shadow-[10px_10px_0px_0px_rgba(37,99,235,1)]">
-        <h2 className="text-2xl sm:text-3xl font-black text-blue-900 uppercase tracking-tighter mb-3 sm:mb-4">Love Scentsationz? Earn with us! 💸</h2>
-        <p className="text-blue-700 font-bold mb-6 sm:mb-8 text-sm sm:text-base">Join our Promoter Program and earn 10% commission on every sale you refer. Get paid directly to your Easypaisa or JazzCash account.</p>
-        <Link 
-          to="/promoter/signup"
-          className="inline-block px-8 sm:px-12 py-4 sm:py-6 bg-blue-600 text-white font-black rounded-xl sm:rounded-2xl hover:bg-blue-700 transition-all shadow-xl active:scale-95 text-base sm:text-lg uppercase tracking-widest border-4 border-blue-900"
-        >
-          Become a Promoter 🚀
-        </Link>
-      </div>
+        <div className="space-y-6 sm:space-y-8">
+          <h1 className="text-6xl sm:text-9xl font-black text-slate-900 tracking-tighter leading-none uppercase italic">Vaulted.</h1>
+          <p className="text-slate-400 text-xl sm:text-3xl font-black uppercase tracking-[0.2em] italic">Your artifact is being prepared for transport.</p>
+        </div>
 
-      <div className="mt-20 sm:mt-32 pt-10 sm:pt-16 border-t-4 border-slate-50">
-         <p className="text-[8px] sm:text-[10px] font-black text-slate-300 uppercase tracking-[0.5em]">Luxury is defined by the silence of precision.</p>
+        <div className="bg-slate-50 p-8 sm:p-12 rounded-[3rem] border-4 border-slate-900 inline-block shadow-[12px_12px_0px_0px_rgba(15,23,42,1)]">
+          <span className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-[0.4em] mb-3 block underline underline-offset-8">Registry Reference</span>
+          <span className="text-3xl sm:text-5xl font-black text-slate-900 uppercase tracking-tighter">{orderId}</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10">
+          <button 
+            onClick={handleConfirmWhatsApp}
+            className="group p-8 sm:p-12 bg-green-500 text-white rounded-3xl sm:rounded-[3rem] border-4 border-slate-900 shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all flex flex-col items-center gap-4"
+          >
+            <span className="text-4xl sm:text-6xl group-hover:scale-110 transition-transform">💬</span>
+            <span className="font-black text-xl sm:text-2xl uppercase tracking-tighter">Confirm via WhatsApp</span>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-80">Priority Verification</span>
+          </button>
+
+          <Link 
+            to="/shop" 
+            className="group p-8 sm:p-12 bg-white text-slate-900 rounded-3xl sm:rounded-[3rem] border-4 border-slate-900 shadow-[10px_10px_0px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all flex flex-col items-center gap-4"
+          >
+            <span className="text-4xl sm:text-6xl group-hover:scale-110 transition-transform">🏠</span>
+            <span className="font-black text-xl sm:text-2xl uppercase tracking-tighter">Return to Archive</span>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest opacity-40">Continue Exploring</span>
+          </Link>
+        </div>
+
+        <div className="pt-12 sm:pt-20 border-t-4 border-slate-100">
+          <div className="bg-blue-50 p-8 sm:p-12 rounded-[3rem] border-4 border-blue-600 relative overflow-hidden group shadow-[10px_10px_0px_0px_rgba(37,99,235,1)]">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <span className="text-8xl sm:text-9xl">✨</span>
+            </div>
+            <h3 className="text-2xl sm:text-4xl font-black text-blue-900 tracking-tighter uppercase mb-4">Promoter Protocol</h3>
+            <p className="text-blue-700 font-black text-xs sm:text-sm uppercase tracking-widest leading-relaxed max-w-md mx-auto">
+              Love Scentsationz? Join our Promoter Program and earn 10% commission on every sale you refer.
+            </p>
+            <Link 
+              to="/promoter/signup"
+              className="mt-8 sm:mt-10 inline-block px-12 py-6 bg-blue-600 text-white border-4 border-blue-900 rounded-2xl font-black text-xl sm:text-2xl tracking-widest shadow-[6px_6px_0px_0px_rgba(30,58,138,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all uppercase"
+            >
+              Join the Elite 🚀
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

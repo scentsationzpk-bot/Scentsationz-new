@@ -155,34 +155,6 @@ const ProductDetail: React.FC = () => {
                     <p className="text-sm font-bold text-slate-900 mt-1">Extremely High (Room Filler)</p>
                   </div>
                 </div>
-
-                {/* Composition */}
-                <div className="w-full mt-8 pt-6 border-t-2 sm:border-t-4 border-slate-900 text-left">
-                  <h3 className="text-xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2 mb-6">Composition</h3>
-                  <div className="relative pl-6 space-y-6 before:absolute before:inset-y-0 before:left-[11px] before:w-1 before:bg-slate-200">
-                    <div className="relative">
-                      <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
-                        <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                      </div>
-                      <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Top Notes</span>
-                      <p className="text-slate-600 font-bold text-sm">{specs.topNotes.join(', ')}</p>
-                    </div>
-                    <div className="relative">
-                      <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
-                        <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                      </div>
-                      <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Heart Notes</span>
-                      <p className="text-slate-600 font-bold text-sm">{specs.middleNotes.join(', ')}</p>
-                    </div>
-                    <div className="relative">
-                      <div className="absolute -left-[29px] top-1 w-6 h-6 rounded-full border-4 border-slate-900 bg-white flex items-center justify-center z-10">
-                        <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                      </div>
-                      <span className="font-black text-slate-900 uppercase text-sm tracking-widest block mb-1">Base Notes</span>
-                      <p className="text-slate-600 font-bold text-sm">{specs.baseNotes.join(', ')}</p>
-                    </div>
-                  </div>
-                </div>
               </div>
             
               <div className="w-full text-left space-y-4 pt-6 border-t-2 sm:border-t-4 border-slate-900 mt-6">
@@ -276,8 +248,7 @@ const ProductDetail: React.FC = () => {
                   Save Rs. {(7200 - product.price).toLocaleString()}
                 </span>
               </div>
-              
-              <div className="flex items-center gap-4 sm:gap-6 bg-slate-50 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+               <div className="flex items-center gap-4 sm:gap-6 bg-slate-50 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
                 <button 
                   onClick={() => setQuantity(q => Math.max(1, q-1))} 
                   className="w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white flex items-center justify-center font-black border-2 sm:border-4 border-slate-900 hover:bg-slate-900 hover:text-white transition-all text-lg sm:text-2xl"
@@ -292,21 +263,6 @@ const ProductDetail: React.FC = () => {
                   +
                 </button>
               </div>
-
-              <div className="w-full flex flex-col gap-3 mt-4">
-                <button 
-                  onClick={handleAddAction}
-                  className="w-full py-4 sm:py-5 bg-blue-600 text-white font-black rounded-xl sm:rounded-2xl text-lg sm:text-xl uppercase tracking-widest hover:bg-blue-700 active:translate-y-2 transition-all border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] active:shadow-none flex items-center justify-center gap-2"
-                >
-                  Add to Bag 🛍️
-                </button>
-                <button 
-                  onClick={() => { handleAddAction(); navigate('/checkout'); }}
-                  className="w-full py-4 sm:py-5 bg-slate-900 text-white font-black rounded-xl sm:rounded-2xl text-lg sm:text-xl uppercase tracking-widest hover:bg-slate-800 active:translate-y-2 transition-all border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] active:shadow-none flex items-center justify-center gap-2"
-                >
-                  Order Now - Risk Free
-                </button>
-              </div>
             </div>
             </div>
           </div>
@@ -316,7 +272,7 @@ const ProductDetail: React.FC = () => {
               <div className="flex items-center gap-2 justify-center bg-red-50 p-2 rounded-xl border-2 border-red-100 animate-pulse">
                 <span className="text-xl">🔥</span>
                 <p className="text-xs font-black text-red-600 uppercase tracking-widest">
-                  Only {product.stock > 0 ? product.stock : 'a few'} bottles left in stock!
+                  Only 2-4 bottles left in stock!
                 </p>
               </div>
               <div className="flex items-center gap-2 justify-center bg-blue-50 p-2 rounded-xl border-2 border-blue-100">
@@ -327,78 +283,74 @@ const ProductDetail: React.FC = () => {
               </div>
             </div>
 
-            {/* Delivery Timeline */}
-            <div className="w-full bg-slate-50 rounded-2xl p-6 border-4 border-slate-100 mt-4 space-y-4 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-blue-100 rounded-full blur-2xl opacity-50 pointer-events-none"></div>
-                <h4 className="font-black text-slate-900 uppercase tracking-widest text-xs flex items-center gap-2 relative z-10">
-                  <span className="text-xl">🚀</span> Express Logistics
+            {/* Condensed Shipping & Guarantee */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
+                <h4 className="font-black text-slate-900 uppercase tracking-widest text-xs flex items-center gap-2 mb-4">
+                  <span className="text-xl">🚀</span> Fast Shipping
                 </h4>
-                <div className="relative pl-4 border-l-4 border-slate-200 space-y-6 z-10">
-                  <div className="relative">
-                    <div className="absolute -left-[22px] top-1 w-5 h-5 rounded-full bg-blue-600 border-4 border-white shadow-sm animate-pulse"></div>
-                    <p className="font-black text-slate-900 text-sm uppercase tracking-tight">Rawalpindi & Islamabad</p>
-                    <p className="text-[10px] font-bold text-blue-600 mt-1 uppercase tracking-widest bg-blue-100 px-2 py-1 rounded w-fit">⚡ 1-Hour Delivery</p>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase text-slate-400">Local</span>
+                    <span className="text-[10px] font-black uppercase text-blue-600 bg-blue-100 px-2 py-0.5 rounded">Same Day</span>
                   </div>
-                  <div className="relative">
-                    <div className="absolute -left-[22px] top-1 w-5 h-5 rounded-full bg-slate-300 border-4 border-white shadow-sm"></div>
-                    <p className="font-black text-slate-900 text-sm uppercase tracking-tight">Nationwide</p>
-                    <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-widest">📦 3-5 Working Days</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase text-slate-400">Standard</span>
+                    <span className="text-[10px] font-black uppercase text-slate-900">3-5 Days</span>
                   </div>
                 </div>
-                <div className="bg-green-50 p-3 rounded-xl flex items-center gap-3 border-2 border-green-100 relative z-10">
-                   <span className="text-xl">💳</span>
-                   <div>
-                     <p className="font-black text-green-800 text-[10px] uppercase tracking-widest">JazzCash Exclusive</p>
-                     <p className="text-[10px] font-bold text-green-600">Get Rs. 200 OFF instantly at checkout!</p>
-                   </div>
+              </div>
+
+              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
+                <h4 className="font-black text-slate-900 uppercase tracking-widest text-xs flex items-center gap-2 mb-4">
+                  <span className="text-xl">🛡️</span> Quality
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase text-slate-400">Concentration</span>
+                    <span className="text-[10px] font-black uppercase text-slate-900">40% Extrait</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-black uppercase text-slate-400">Maceration</span>
+                    <span className="text-[10px] font-black uppercase text-slate-900">60 Days</span>
+                  </div>
                 </div>
-            </div>
-
-          </div>
-
-          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12 pb-8">
-            <h3 className="text-2xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2">No-Nonsense Guarantee</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-transform">
-                <span className="text-4xl block mb-4">💧</span>
-                <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">40% Extrait</h4>
-                <p className="text-sm font-bold text-slate-600">Maximum concentration. We don't water down our formulas. You get pure, dense perfume oil that lasts all day.</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-transform">
-                <span className="text-4xl block mb-4">🕰️</span>
-                <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">60-Day Maceration</h4>
-                <p className="text-sm font-bold text-slate-600">Every batch is aged for two months before bottling. This smooths out the harsh alcohol notes and deepens the scent.</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-transform">
-                <span className="text-4xl block mb-4">🛡️</span>
-                <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">Blind Buy Safe</h4>
-                <p className="text-sm font-bold text-slate-600">Engineered for mass appeal. These are compliment-pulling DNAs that work perfectly in Pakistani weather.</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] hover:-translate-y-1 transition-transform">
-                <span className="text-4xl block mb-4">🚚</span>
-                <h4 className="font-black text-slate-900 uppercase tracking-widest text-lg mb-2">Cash on Delivery</h4>
-                <p className="text-sm font-bold text-slate-600">Order now, pay when it arrives at your doorstep. Zero risk, absolute convenience.</p>
               </div>
             </div>
-          </div>
 
-          <div className="w-full mt-10 pt-8 border-t-4 border-slate-900 text-left space-y-6 px-8 md:px-12 pb-12">
-            <h3 className="text-2xl font-black uppercase tracking-widest border-b-4 border-slate-900 pb-2">A Note from the Founder</h3>
-            <div className="bg-slate-50 p-6 rounded-2xl border-4 border-slate-900 relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
-               <div className="relative z-10">
-                 <p className="text-lg font-black text-slate-900 mb-4">"Age is just a number. Passion is everything."</p>
-                 <p className="text-sm font-bold text-slate-600 leading-relaxed mb-4">
-                   Hi, I'm the 13-year-old founder of Scentsationz. I started this journey with a simple dream: to prove that world-class luxury doesn't need a designer label. Every bottle is crafted with the same obsession for quality that I pour into my own future. When you choose Scentsationz, you're not just buying a perfume; you're supporting a young dreamer's vision to redefine excellence in Pakistan.
-                 </p>
-                 <div className="flex items-center gap-3 mt-6">
-                   <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-black text-xs">F</div>
-                   <div>
-                     <p className="font-black text-slate-900 text-xs uppercase tracking-widest">The Founder</p>
-                     <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Scentsationz</p>
-                   </div>
-                 </div>
-               </div>
+            {/* Scent Journey Vertical Timeline */}
+            <div className="space-y-12 mt-12">
+              <h3 className="text-4xl font-black tracking-tighter text-slate-900 uppercase flex items-center justify-center lg:justify-start gap-4">
+                Composition <span className="text-slate-400">🧬</span>
+              </h3>
+              
+              <div className="relative pl-12 space-y-16">
+                <div className="absolute left-[22px] top-4 bottom-4 w-1.5 bg-slate-900 rounded-full"></div>
+
+                <div className="relative group">
+                  <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform">🌿</div>
+                  <div className="bg-slate-50 p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,0.1)]">
+                     <h4 className="text-2xl font-black uppercase tracking-tighter text-slate-900 mb-4">Initial Contact</h4>
+                     <p className="text-slate-500 font-bold text-lg leading-relaxed">{specs.topNotes.join(' • ')}</p>
+                  </div>
+                </div>
+
+                <div className="relative group">
+                  <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-slate-900 border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform text-white">🌸</div>
+                  <div className="bg-white p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+                     <h4 className="text-2xl font-black uppercase tracking-tighter text-slate-900 mb-4">The Heart Signature</h4>
+                     <p className="text-slate-900 font-bold text-lg leading-relaxed">{specs.middleNotes.join(' • ')}</p>
+                  </div>
+                </div>
+
+                <div className="relative group">
+                  <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform">🌲</div>
+                  <div className="bg-slate-900 p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] text-white">
+                     <h4 className="text-2xl font-black uppercase tracking-tighter text-white mb-4">The Final Trace</h4>
+                     <p className="text-slate-400 font-bold text-lg leading-relaxed">{specs.baseNotes.join(' • ')}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

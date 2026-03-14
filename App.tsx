@@ -79,12 +79,16 @@ const App: React.FC = () => {
   useEffect(() => {
     const init = async () => {
       initRealTimeSync();
-      // Lightning fast: don't even wait for seedIfEmpty if already seeded
-      if (!localStorage.getItem('scentsationz_seeded_v2')) {
+      
+      // Lightning fast: check cache first
+      const hasSeeded = localStorage.getItem('scentsationz_seeded_v2');
+      const hasProducts = !!localStorage.getItem('scentsationz_products_cache');
+      
+      if (!hasSeeded || !hasProducts) {
         await seedIfEmpty();
       }
       
-      // Pre-fetch data in background
+      // Background pre-fetch
       getProducts();
       getBundles();
       
@@ -201,7 +205,7 @@ const DashboardOverview = () => {
     { label: 'Inventory', value: productsCount, icon: '🛍️', color: 'bg-blue-50 text-blue-600 border-blue-100' },
     { label: 'Total Orders', value: orders.length, icon: '📦', color: 'bg-green-50 text-green-600 border-green-100' },
     { label: 'Low Stock', value: lowStockCount, icon: '⚠️', color: 'bg-orange-50 text-orange-600 border-orange-100' },
-    { label: 'Revenue (PKR)', value: revenue.toLocaleString(), icon: '💰', color: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
+    { label: 'Revenue', value: revenue.toLocaleString(), icon: '💰', color: 'bg-indigo-50 text-indigo-600 border-indigo-100' },
   ];
 
   return (
