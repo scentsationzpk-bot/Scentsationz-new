@@ -83,41 +83,7 @@ const Home: React.FC = () => {
             </div>
           </motion.div>
         </div>
-
-        {/* Right Visual Side - Immersive Story Panel */}
-        <div className="flex-1 relative min-h-[600px] lg:min-h-0 border-t-[8px] lg:border-t-0 lg:border-l-[12px] border-slate-900 bg-slate-900 overflow-hidden flex items-center justify-center p-8 sm:p-16">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(37,99,235,0.2),_transparent_70%)]"></div>
-          
-          <div className="relative z-10 text-center space-y-12 max-w-xl">
-            <div className="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm border-2 border-slate-700 px-6 py-3 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-              <span className="text-blue-300 font-black tracking-[0.4em] uppercase text-[12px]">The Olfactory Manifesto</span>
-            </div>
-            
-            <h2 className="text-5xl sm:text-7xl md:text-8xl font-black text-white uppercase tracking-tighter leading-[0.85]">
-              Scent is <br/><span className="text-blue-500 italic">Violence.</span>
-            </h2>
-            
-            <p className="text-slate-300 font-bold text-lg sm:text-xl leading-relaxed italic">
-              "A fragrance should not ask for permission. It should demand recognition. We engineered Scentsationz for the disruptors, the dreamers, and the dangerously ambitious."
-            </p>
-            
-            <div className="grid grid-cols-2 gap-4 pt-8">
-              <div className="p-6 border-4 border-slate-700 bg-slate-800/30 rounded-3xl text-left space-y-2">
-                <span className="text-3xl block">🌑</span>
-                <p className="font-black text-white uppercase tracking-widest text-xs">Midnight Drive</p>
-                <p className="text-slate-500 text-[10px] font-bold uppercase">Cold Air & Smoked Wood</p>
-              </div>
-              <div className="p-6 border-4 border-slate-700 bg-slate-800/30 rounded-3xl text-left space-y-2">
-                <span className="text-3xl block">🔥</span>
-                <p className="font-black text-white uppercase tracking-widest text-xs">Aura of Power</p>
-                <p className="text-slate-500 text-[10px] font-bold uppercase">Aged Leather & Vanilla</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
-
 
       {/* Features Section - The Molecular Edge */}
       <section className="max-w-7xl mx-auto px-4 py-24 sm:py-40 border-b-4 border-slate-900 relative">
