@@ -210,12 +210,15 @@ const Shop: React.FC = () => {
                               </div>
                               
                               <div className="grid grid-cols-2 gap-3 w-full">
-                                <Link 
-                                  to={`/product/${product.id}`}
+                                <button 
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate(`/product/${product.id}`);
+                                  }}
                                   className="flex items-center justify-center py-4 bg-white text-slate-900 font-black rounded-xl border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all uppercase tracking-widest text-[10px]"
                                 >
                                   Details
-                                </Link>
+                                </button>
                                 <button 
                                   onClick={(e) => {
                                     e.preventDefault();

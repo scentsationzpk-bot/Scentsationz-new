@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProductById, addToCart } from '../storage';
 import { Product } from '../types';
 import { useToast } from '../App';
+import { NoteTooltip } from '../components/NoteTooltip';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -244,9 +245,11 @@ const ProductDetail: React.FC = () => {
                 <span className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter">
                   Rs. {(product.price + (addDairyMilk ? 50 * dairyMilkQuantity : 0)).toLocaleString()}
                 </span>
-                <span className="text-[8px] sm:text-xs font-black text-white bg-red-500 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-widest mt-1 sm:mt-2 animate-pulse">
-                  Save Rs. {(7200 - product.price).toLocaleString()}
-                </span>
+                {7200 - product.price > 0 && (
+                  <span className="text-[8px] sm:text-xs font-black text-white bg-amber-700 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full uppercase tracking-widest mt-1 sm:mt-2 animate-pulse">
+                    Save Rs. {(7200 - product.price).toLocaleString()}
+                  </span>
+                )}
               </div>
                <div className="flex items-center gap-4 sm:gap-6 bg-slate-50 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl border-2 sm:border-4 border-slate-900 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] sm:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
                 <button 
@@ -331,7 +334,7 @@ const ProductDetail: React.FC = () => {
                   <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform">🌿</div>
                   <div className="bg-slate-50 p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,0.1)]">
                      <h4 className="text-2xl font-black uppercase tracking-tighter text-slate-900 mb-4">Initial Contact</h4>
-                     <p className="text-slate-500 font-bold text-lg leading-relaxed">{specs.topNotes.join(' • ')}</p>
+                     <p className="text-slate-500 font-bold text-lg leading-relaxed">{specs.topNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.topNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
                   </div>
                 </div>
 
@@ -339,7 +342,7 @@ const ProductDetail: React.FC = () => {
                   <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-slate-900 border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform text-white">🌸</div>
                   <div className="bg-white p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
                      <h4 className="text-2xl font-black uppercase tracking-tighter text-slate-900 mb-4">The Heart Signature</h4>
-                     <p className="text-slate-900 font-bold text-lg leading-relaxed">{specs.middleNotes.join(' • ')}</p>
+                     <p className="text-slate-900 font-bold text-lg leading-relaxed">{specs.middleNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.middleNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
                   </div>
                 </div>
 
@@ -347,7 +350,7 @@ const ProductDetail: React.FC = () => {
                   <div className="absolute -left-[56px] top-0 w-12 h-12 rounded-full bg-white border-4 border-slate-900 flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] z-10 group-hover:scale-110 transition-transform">🌲</div>
                   <div className="bg-slate-900 p-10 rounded-[2rem] border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] text-white">
                      <h4 className="text-2xl font-black uppercase tracking-tighter text-white mb-4">The Final Trace</h4>
-                     <p className="text-slate-400 font-bold text-lg leading-relaxed">{specs.baseNotes.join(' • ')}</p>
+                     <p className="text-slate-400 font-bold text-lg leading-relaxed">{specs.baseNotes.map((note, i) => <React.Fragment key={i}><NoteTooltip note={note} />{i < specs.baseNotes.length - 1 ? ' • ' : ''}</React.Fragment>)}</p>
                   </div>
                 </div>
               </div>

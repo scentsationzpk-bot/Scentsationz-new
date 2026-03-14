@@ -16,6 +16,7 @@ const Checkout: React.FC = () => {
     address: '',
     referralCode: localStorage.getItem('scentsationz_referral_code') || '',
   });
+  const [isDiscrete, setIsDiscrete] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'JazzCash' | 'Cash on Delivery'>('JazzCash');
   const [loading, setLoading] = useState(false);
   const [couponCode, setCouponCode] = useState('');
@@ -90,7 +91,8 @@ const Checkout: React.FC = () => {
           phone: formData.phone,
           city: formData.city,
           address: formData.address,
-          paymentMethod: paymentMethod
+          paymentMethod: paymentMethod,
+          isDiscrete: isDiscrete
         },
         items: data.cart,
         total: finalTotal,
@@ -139,6 +141,23 @@ const Checkout: React.FC = () => {
                   <label className="text-xs sm:text-sm font-black uppercase tracking-[0.3em] text-slate-400 ml-6">City Hub</label>
                   <input required type="text" value={formData.city} onChange={e => setFormData(prev => ({ ...prev, city: e.target.value }))} className="w-full px-10 py-6 sm:py-8 rounded-3xl sm:rounded-[2rem] border-4 border-slate-100 bg-slate-50 focus:bg-white focus:border-slate-900 transition-all font-black text-xl sm:text-2xl outline-none shadow-[8px_8px_0px_0px_rgba(15,23,42,0.05)] focus:shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] placeholder:text-slate-300 uppercase tracking-widest" placeholder="CITY" />
                 </div>
+              </div>
+
+              <div className="space-y-4 sm:space-y-6">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className="relative flex items-center justify-center w-8 h-8">
+                    <input 
+                      type="checkbox" 
+                      checked={isDiscrete}
+                      onChange={(e) => setIsDiscrete(e.target.checked)}
+                      className="peer appearance-none w-8 h-8 border-4 border-slate-900 rounded-lg checked:bg-blue-600 transition-colors cursor-pointer"
+                    />
+                    <svg className="absolute w-4 h-4 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span className="font-black text-xl uppercase tracking-widest text-slate-900 group-hover:text-blue-600 transition-colors">Scent-Free Discrete Packaging 📦</span>
+                </label>
               </div>
 
               <div className="space-y-4 sm:space-y-6">
